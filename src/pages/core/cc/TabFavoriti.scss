@@ -1,0 +1,33 @@
+.tab-favoriti {
+    .fullheight {
+        height: 100%;
+    }
+
+    .xc {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .vcs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hcs {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    ion-icon {
+        font-size: 100px;
+        color: #ccc
+    }
+    .no-records {
+        font-size: 14pt;
+        color: #ccc
+    }
+    
+}

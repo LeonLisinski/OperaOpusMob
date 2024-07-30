@@ -1,0 +1,19 @@
+#login ion-button {
+    --background: #39655d;
+    --background-hover: #22443e;
+    --background-activated: #39655d;
+    --background-focused: #22443e;
+
+  }
+
+
+  #login ion-toolbar {
+    --background: #39655d;
+    --color: white;
+
+  }  
+
+  #login ion-content {
+    --background: rgba(57,101,93, 0.1);
+
+  }  

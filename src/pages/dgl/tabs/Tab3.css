@@ -1,0 +1,19 @@
+.item-background-color {
+    --ion-item-background:#edf6ed;
+}
+
+.item-background-color-green {
+    --ion-item-background:#edf6ed;
+}
+
+.item-background-color-gray {
+    --ion-item-background:#fafafa;
+}
+
+.item-background-color-red {
+    --ion-item-background:#f6edee;
+}
+
+.item-background-color-yellow {
+    --ion-item-background:#feffe8;
+}

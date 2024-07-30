@@ -1,0 +1,25 @@
+.sigCanvas {
+    /* width: 'auto';
+    /*height: 100%; */
+}
+
+
+.sigPad {
+    width: 100%;
+    height: 100%;
+  }
+
+
+  .signature-wrapper {
+    position: relative;
+    border: 3px solid #e1e1e1;
+    
+
+  }
+
+  .signature {
+    position: relative;
+    
+    width: 100%;
+    height: 100%;
+  }
