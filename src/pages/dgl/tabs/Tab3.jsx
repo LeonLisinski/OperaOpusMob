@@ -177,7 +177,7 @@ const Tab3 = () => {
 
 	const renderListItem = (layoutItem, item) => {
 
-		const mainLabel = layoutItem["label"] && <span className='item-label'>{layoutItem["label"]}: </span>;
+		const mainLabel = layoutItem["label"] && <span className='item-lbl'>{layoutItem["label"]}: </span>;
 		const response = layoutItem.fields.map((field, index) => {
 			const value = getItemValue(field, item, index);
 			return value && <><span className={`${layoutItem['class']}`}>{value}</span></>

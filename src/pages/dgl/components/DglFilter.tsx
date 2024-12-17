@@ -107,13 +107,16 @@ const DglFilter = (props) => {
             {filtertemp && filtertemp.statuses && filtertemp.statuses.map((item, index) => (
               <IonItem key={item.id} className='ion-no-padding'>
                 <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 4, background: item.indcolor }}></div>
-                <IonLabel style={{ paddingLeft: 15 }}>{item.name}</IonLabel>
+                
                 <IonCheckbox
                   onIonChange={(e) => toggleStatus(e, item)}
                   checked={item.checked}
                   color="primary"
+                  
                   value={item.checked}
-                ></IonCheckbox>
+                  labelPlacement='start'
+                  style={{paddingLeft: 10, paddingRight:10}}
+                >{item.name}</IonCheckbox>
               </IonItem>
             ))}
           </IonList>
@@ -134,8 +137,7 @@ const DglFilter = (props) => {
               </div>
               <div style={{ paddingTop: 30 }}>
               <IonItem>
-                <IonLabel style={{fontSize:16}}>Samo moje stavke</IonLabel>
-                <IonToggle slot="end" checked={filtertemp.samomoje} onIonChange={onChangeSamoMoje}></IonToggle>
+                <IonToggle style={{fontSize:16}}  checked={filtertemp.samomoje} onIonChange={onChangeSamoMoje}>Samo moje stavke</IonToggle>
               </IonItem>
               </div>
             </div>

@@ -123,7 +123,6 @@ export const createDoc = createAsyncThunk('gen/createDoc', async (fake, { dispat
     const app = gen.app;
     const module = gen.module;
 
-
     const queries = [{
         query: query.sp,
         params: {
@@ -133,6 +132,23 @@ export const createDoc = createAsyncThunk('gen/createDoc', async (fake, { dispat
             korime: auth?.user?.korime,
             sifosobe: auth?.user?.sifosobe,
             id: gen.data.id
+        },
+        commandType: 'sp'
+    }]
+
+    const data = await getData({ queries }, auth);
+    return data;
+});
+
+export const copyRNfromUpit = createAsyncThunk('gen/copyRNfromUpit', async (id, { dispatch, getState }) => {
+    const auth = getState()?.auth;
+
+    const queries = [{
+        query: 'spMob_DGL_RadniNalozi_Query',
+        params: {
+            action: 'get',
+            korime: auth?.user?.korime,
+            dglid: id,
         },
         commandType: 'sp'
     }]

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import moment from 'moment';
-import { getData } from '../../../../utils/dataHelper';
+import { getData, getAttachemnt } from '../../../../utils/dataHelper';
 
 export const getList = createAsyncThunk('servis/radninalozi/list', async (id, { dispatch, getState }) => {
     const originalData = getState().servis.radniNalozi;
@@ -59,7 +59,7 @@ export const copyRNfromUpit = createAsyncThunk('servis/radninalozi/getgla', asyn
     }]
 
     const data = await getData({ queries }, auth);
-    await dispatch(setSifDv('SRN'));
+    await dispatch(setSifDv('RNsec'));
     await dispatch(setItemData(data[0]));
     await dispatch(getListItem(data[0]));
     //dispatch(getList());
@@ -322,15 +322,13 @@ export const saveComment = createAsyncThunk('servis/radninalozi/saveComment', as
 
 export const getPrivitci = createAsyncThunk('servis/radninalozi/getPrivitci', async (d, { dispatch, getState }) => {
     const auth = getState()?.auth;
-    const docs = getState().docs;
+    const dglid = getState().servis.radniNalozi.data.dglid;
 
-    const dglid = docs.data.dglid;
-    const query = docs.layouts.queries.dgl.prilozi;
 
     const queries = [{
-        query: query.sp,
+        query: "spMob_DGL_RadniNalozi_Query",
         params: {
-            ...query.params,
+            action: 'getPrilozi',
             korime: auth?.user?.korime,
             dglid: dglid
         },
@@ -338,9 +336,18 @@ export const getPrivitci = createAsyncThunk('servis/radninalozi/getPrivitci', as
     }]
 
     const data = await getData({ queries }, auth);
-    dispatch(setPrivitci(data));
-
+    await dispatch(setPrivitci(data));
 });
+
+export const getPrivitak = createAsyncThunk('servis/radninalozi/getPrivitak', async (id, { dispatch, getState }) => {
+    const auth = getState()?.auth;
+
+    const data = await getAttachemnt({id: id}, auth);
+
+    await dispatch(setPrivitak(data));
+    return data;
+});
+
 
 
 
@@ -353,7 +360,8 @@ export const radniNaloziSlice = createSlice({
         originaldata: null,
         data: null,        
         datadet: null,
-        privitck: null,
+        privitak: null,
+        privitci: null,
         loading: false,
         error: '',
         filterdefaults: null,
@@ -424,7 +432,10 @@ export const radniNaloziSlice = createSlice({
             const data = action.payload;
             state.privitci = data;
         },
-
+        setPrivitak: (state, action) => {
+            const data = action.payload;
+            state.privitak = data;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -470,7 +481,7 @@ export const radniNaloziSlice = createSlice({
 
 })
 
-export const { setSifDv, setItemData, setItemDataDet, setItemDataComment, setSearchList, setFilter, setFilterTemp, setFilterTempValues, setFilterStatuses, setFilterTempStatuses, setApplyFilters} = radniNaloziSlice.actions
+export const { setSifDv, setItemData, setItemDataDet, setItemDataComment, setSearchList, setPrivitci, setPrivitak, setFilter, setFilterTemp, setFilterTempValues, setFilterStatuses, setFilterTempStatuses, setApplyFilters} = radniNaloziSlice.actions
 
 
 export const selectRadniNalozi = ({ servis }) => {

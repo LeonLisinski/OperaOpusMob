@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import moment from 'moment';
-import getData, { getDocsDefinitions } from '../../../utils/dataHelper';
+
+import { getData, getAttachemnt, getDocsDefinitions } from '../../../utils/dataHelper';
 
 
 export const getSettings = createAsyncThunk('docs/dgl/getSettings', async (id, { dispatch, getState }) => {
@@ -190,6 +191,21 @@ export const getPrivitci = createAsyncThunk('docs/dgl/getPrivitci', async (d, { 
     dispatch(setPrivitci(data));
 
 });
+
+
+export const getPrivitak = createAsyncThunk('docs/dgl/getPrivitak', async (id, { dispatch, getState }) => {
+    const auth = getState()?.auth;
+
+    const data = await getAttachemnt({id: id}, auth);
+
+    await dispatch(setPrivitak(data));
+    return data;
+});
+
+
+
+
+
 
 // export const getListDet = createAsyncThunk('docs/dgl/listidet', async (d, { dispatch, getState }) => {
 //     const auth = getState()?.auth;
@@ -469,6 +485,7 @@ export const docsSlice = createSlice({
 
         },
         privitci: null,
+        privitak: null,
         searchtext: null,
         originaldata: null,
         data: null,
@@ -514,6 +531,10 @@ export const docsSlice = createSlice({
         setPrivitci: (state, action) => {
             const data = action.payload;
             state.privitci = data;
+        },
+        setPrivitak: (state, action) => {
+            const data = action.payload;
+            state.privitak = data;
         },
         setItemDataEditValues: (state, action) => {
             const data = {...state.dataEdit, ...action.payload}
@@ -641,7 +662,7 @@ export const docsSlice = createSlice({
 
 })
 
-export const { setSifDv, setDocsLayout, setItemData, setItemDataSignature, setItemDataEdit, setPrivitci, setItemDataEditValues, setDstDataEdit, setDstDataEditReset, setDstDataEditValues, setDstTip, setItemDataDet, setItemDataComment, setSearchList, setFilter, setFilterTemp, setFilterTempValues, setFilterStatuses, setFilterTempStatuses, setApplyFilters} = docsSlice.actions
+export const { setSifDv, setDocsLayout, setItemData, setItemDataSignature, setItemDataEdit, setPrivitci, setPrivitak, setItemDataEditValues, setDstDataEdit, setDstDataEditReset, setDstDataEditValues, setDstTip, setItemDataDet, setItemDataComment, setSearchList, setFilter, setFilterTemp, setFilterTempValues, setFilterStatuses, setFilterTempStatuses, setApplyFilters} = docsSlice.actions
 
 
 export const selectDocs = ({ docs }) => {

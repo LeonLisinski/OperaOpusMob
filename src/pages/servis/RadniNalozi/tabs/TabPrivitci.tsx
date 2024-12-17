@@ -1,4 +1,5 @@
 import {
+  IonBackButton,
   IonButton,
   IonButtons,
   IonCol,
@@ -10,6 +11,9 @@ import {
   IonIcon,
   IonImg,
   IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
   IonLabel,
   IonList,
   IonPage,
@@ -21,41 +25,78 @@ import {
   useIonAlert,
   useIonRouter,
 } from "@ionic/react";
-import { add, arrowBack, camera } from "ionicons/icons";
-import { memo, useEffect, useState } from "react";
+import { add, arrowBack, attach, camera } from "ionicons/icons";
+import moment from "moment";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+// import DetailAzur from "../components/DetailAzur";
 import TabsTitle from "./TabsTitle";
 
 import "./TabPrivitci.css";
-import { getPrivitci } from "../store";
+import { changeStatus, deleteDst, getPrivitci, getPrivitak } from "../store";
+import { base64FromPath, usePhotoGallery } from "../../../../hooks/usePhotoGallery";
+import { Camera } from "@capacitor/camera";
+//import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
-import FilesAdd from "../components/FilesAdd";
+import { FileOpener } from '@capawesome-team/capacitor-file-opener';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
+
+
+import { saveAttachemnts } from '../../../../utils/dataHelper';
+
+
 
 const TabPrivitci = () => {
   const router = useIonRouter();
 
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const [presentAlert] = useIonAlert();
 
-  const sifdv = useSelector((state:any) => state.servis.radniNalozi?.sifdv);
-  
-  const [showModal, setShowModal] = useState(false);
+  const sifdv = useSelector((state) => state.servis.radniNalozi?.sifdv);
+  const privitak = useSelector((state) => state.servis.radniNalozi?.privitak);
+  const { deletePhoto, photos, takePhoto, pickPhoto } = usePhotoGallery();
+  const [photoToDelete, setPhotoToDelete] = useState();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    populateList();
+  }, []);
 
   const populateList = async () => {
     await dispatch(getPrivitci());
   };
 
-  const list = useSelector((state:any) => state.servis.radniNalozi?.privitci);
+
+  const data = useSelector((state) => state.servis.radniNalozi?.data);
+  const list = useSelector((state) => state.servis.radniNalozi?.privitci);
 
   const onItemClick = async (e, item) => {
-    window.open(item.putanja, "_blank", "noreferrer");
-  };
+    console.log('item', item);
+    const responseDispachData = await dispatch(getPrivitak(item.id));
+    const responseData = responseDispachData.payload;
+    console.log('responseData', responseData);
+    await Filesystem.writeFile({
+      directory: Directory.Documents,
+      path: `opera/${responseData.FileName}`,
+      data: responseData.Base64String,
+      //encoding: Encoding.UTF8,
+      recursive: true
+    });
 
-  
-	const onHideModal = (e) => {
-		setShowModal(false);
-	}
+    Filesystem.getUri({
+      directory: Directory.Documents,
+      path: `opera/${responseData.FileName}`
+    }).then((getUriResult) => {
+      const path = getUriResult.uri;
+      FileOpener.openFile({
+        path: path
+      })
+    });
+
+
+    //window.open(item.putanja, "_blank", "noreferrer");
+  };
 
   const renderList = () => {
     return (
@@ -88,8 +129,25 @@ const TabPrivitci = () => {
     );
   };
 
+
+  // const takePicture = async () => {
+	// const image = await Camera.getPhoto({
+	//   quality: 90,
+	//   allowEditing: true,
+	//   resultType: CameraResultType.Uri
+	// });
+
+	// // image.webPath will contain a path that can be set as an image src.
+	// // You can access the original file using image.path, which can be
+	// // passed to the Filesystem API to read the raw data of the image,
+	// // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+	// var imageUrl = image.webPath;
+
+	// alert("ok");
+  // };
+
   const handleRefresh = async (e) => {
-    //await populateData();
+    await populateList();
     e.detail.complete();
   };
 
@@ -97,9 +155,168 @@ const TabPrivitci = () => {
     router.push(`/servis/radninalozi/${sifdv}`, "none");
   };
 
-  const onNewClick = () => {
-    setShowModal(true);
-  }
+  // const openFile = async (photo) => {
+  //   console.log('photo3', photo);
+
+
+  //   await FileOpener.openFile({
+  //     path: photo.filepath,
+  //   });
+
+
+  //   // const fileOpenerOptions: FileOpenerOptions = {
+  //   //   filePath: photo.filepath,
+  //   //   contentType: 'image/jpeg',
+  //   // }
+
+  //   // try {
+
+
+  //   //   await FileOpener.open(fileOpenerOptions);
+  //   // } catch (e) {
+  //   //   console.log('Error opening file', e);
+  //   // }
+
+  //   // await FileOpener.openFile({
+  //   //   path: photo.filepath,
+  //   // });
+  // };
+
+  // const openFile2 = async (photo) => {
+  //   console.log('photo3', photo);
+
+
+  //   await FileOpener.openFile({
+  //     path: 'content://data/user/0/com.opera.mobile/files/Pictures/JPEG_20240502_144734_2128035145779355120.jpg'
+  //   });
+  // };
+
+  // const openFile3 = async (photo) => {
+  //   console.log('photo3', photo);
+
+  //   const uriResult = await Filesystem.getUri({
+  //     path: 'file:///data/user/0/com.opera.mobile/files/Pictures/JPEG_20240502_144734_2128035145779355120.jpg'
+  //   });
+
+  //   console.log('uriResult',uriResult);
+
+  //   await FileOpener.openFile({
+  //     path: uriResult.uri
+  //   });
+  // };
+  
+  // const openFile4 = async (photo) => {
+
+  //   await FileOpener.openFile({
+  //     path: 'file:///data/user/0/com.opera.mobile/files/rekap.pdf'
+  //   });
+  // };
+
+  // const openFile5 = async (photo) => {
+  //   await FileOpener.openFile({
+  //     path: 'file:///data/user/0/com.opera.mobile/files/tlocrt1.pdf'
+  //   });
+  // };
+
+  // const openFile6 =   async (photo) => {
+  //   await FileOpener.openFile({
+  //     path: 'file:///storage/emulated/0/Download/ormar.png'
+  //   });
+  // };
+
+  // const openFile7 =   async (photo) => {
+  //   await FileOpener.openFile({
+  //     path: 'file:///data/user/0/com.opera.mobile/files/ormar.png'
+  //   });
+  // };
+
+
+  // const openFile8 =   async (photo) => {
+  //   await FileOpener.openFile({
+  //     path: 'file:///storage/emulated/0/Download/js.jpg'
+  //   });
+  // };
+
+  // const openFile9 =   async (photo) => {
+  //   await FileOpener.openFile({
+  //     path: 'file:///data/user/0/com.opera.mobile/files/js.jpg'
+  //   });
+  // };
+
+  // const openFile10 =   async (photo) => {
+  //   await FileOpener.openFile({
+  //     path: 'file:///data/user/0/com.opera.mobile/cache/js.jpg'
+  //   });
+  // };
+
+
+
+
+
+  // const pickFiles = async () => {
+  //   const result = await FilePicker.pickFiles({
+  //     types: ['image/png'],
+  //     multiple: true,
+  //   });
+  // };
+  
+  // const pickImages = async () => {
+  //   const result = await FilePicker.pickImages({
+  //     multiple: true,
+  //   });
+  // };
+  
+  // const pickMedia = async () => {
+  //   const result = await FilePicker.pickMedia({
+  //     multiple: true,
+  //   });
+
+  //   console.log('result', result);
+
+  //   console.log(base64FromPath(result.files[0].path))
+  // };
+  
+  // const pickVideos = async () => {
+  //   const result = await FilePicker.pickVideos({
+  //     multiple: true,
+  //   });
+  // };
+  
+  const appendFileToFormData = async () => {
+    const result = await FilePicker.pickFiles({
+      readData: true
+    });
+
+    console.log('appendFileToFormData', result);
+  
+    // const formData = new FormData();
+
+    const parameters = {
+      dglid: data.dglid,
+      files: result.files
+    }
+
+    console.log('appendFileToFormData', parameters);
+    
+    // console.log(1);
+
+
+    await saveAttachemnts({parameters: parameters}, auth);
+    populateList();
+
+
+    // console.log('appendFileToFormData', file);
+
+    // if (file.blob) {
+    //   console.log('file.blob', file.blob);
+    //   const rawFile = new File(file.blob, file.name, {
+    //     type: file.mimeType,
+    //   });
+    //   formData.append('file', rawFile, file.name);
+    // }
+  };  
+
+
 
   return (
     <IonPage>
@@ -126,16 +343,54 @@ const TabPrivitci = () => {
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
+{/* 
+        <IonGrid>
+          <IonRow>
+            {photos && photos.map((photo, index) => (
+              <IonCol size="6" key={index}>
+                <IonImg
+                  //onClick={() => setPhotoToDelete(photo)}
+                  onClick={() => openFile(photo)}
+                  src={photo.webviewPath}
+                />
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid> */}
 
         {list && list.length > 0 && renderList()}
 
+{/* 
+        <IonButton onClick={(e) => takePhoto()}>test 1</IonButton>
+        <IonButton onClick={(e) => takePicture()}>test 2</IonButton>
+        <IonButton onClick={(e) => pickPhoto()}>Pick</IonButton>
+
+        <IonButton onClick={(e) => openFile2()}>OpenFile 2</IonButton>
+
+        <IonButton onClick={(e) => openFile3()}>OpenFile 3</IonButton>
+
+        <IonButton onClick={(e) => openFile4()}>PDF 1 </IonButton>
+        <IonButton onClick={(e) => openFile5()}>PDF 2 </IonButton>
+
+        <IonButton onClick={(e) => openFile6()}>6 </IonButton>
+        <IonButton onClick={(e) => openFile7()}>7 </IonButton>
+        <IonButton onClick={(e) => openFile8()}>8 </IonButton>
+        <IonButton onClick={(e) => openFile9()}>9</IonButton>
+        <IonButton onClick={(e) => openFile10()}>10 </IonButton>
+
+
+        <IonButton onClick={(e) => pickFiles()}>pickFiles </IonButton>
+        <IonButton onClick={(e) => pickImages()}>pickFiles </IonButton>
+        <IonButton onClick={(e) => pickMedia()}>pickMedia </IonButton>
+        <IonButton onClick={(e) => pickPhoto()}>pickPhoto </IonButton>
+        <IonButton onClick={(e) => pickVideos()}>pickVideos </IonButton> */}
+        {/* <IonButton onClick={(e) => appendFileToFormData()}>appendFileToFormData </IonButton> */}
+
         <IonFab horizontal="end" vertical="bottom" slot="fixed">
-          <IonFabButton onClick={(e) => onNewClick(e)}>
-            <IonIcon icon={add} />
+          <IonFabButton onClick={(e) => appendFileToFormData()}>
+            <IonIcon icon={attach} />
           </IonFabButton>
         </IonFab>
-
-        <FilesAdd showModal={showModal} onHideModal={onHideModal}></FilesAdd>
       </IonContent>
     </IonPage>
   );

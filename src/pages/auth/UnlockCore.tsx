@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonCol, IonContent, IonFab, IonFabButton, IonFooter, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRefresher, IonRefresherContent, IonRow, IonSpinner, IonToast, IonToolbar, RefresherEventDetail, useIonRouter } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonContent, IonFab, IonFabButton, IonFooter, IonGrid, IonIcon, IonInput, IonInputPasswordToggle, IonItem, IonLabel, IonPage, IonRefresher, IonRefresherContent, IonRow, IonSpinner, IonToast, IonToolbar, RefresherEventDetail, useIonRouter } from '@ionic/react';
 import { cube, briefcase, person, build, bulb, play, lockClosedOutline, exit, power, lockClosed, ellipsisVerticalCircleOutline } from 'ionicons/icons';
 
 import './UnlockCore.scss';
@@ -164,12 +164,14 @@ const UnlockCore: React.FC = () => {
 								<IonCol>
 									<IonItem style={{ marginTop: 15 }}>
 										<IonLabel position="floating" style={{ color: '#969696' }}> Šifra za otključavanje aplikacije:</IonLabel>
+										<br></br>
 										<IonInput
-											style={{ fontSize: 30, textAlign: 'center' }}
+											style={{ fontSize: 30, height:50}}
 											type="password"
 											value={password}
 											onIonInput={(e) => setPassword(e.detail.value!)}
 										>
+											<IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
 										</IonInput>
 									</IonItem>
 								</IonCol>

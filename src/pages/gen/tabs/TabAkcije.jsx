@@ -7,11 +7,11 @@ import DetailAzur from '../components/DetailAzur';
 import TabsTitle from './TabsTitle';
 
 import './TabAkcije.css';
-import { changeStatus, createDoc, deleteDst, getPrivitci, setDstDataEdit } from '../store';
+import { changeStatus, createDoc, deleteDst, getPrivitci, setDstDataEdit, copyRNfromUpit } from '../store';
 import DetailAzurNew from '../components/DetailAzurNew';
 import { usePhotoGallery } from '../../../hooks/usePhotoGallery';
-import { copyRNfromUpit } from '../../servis/RadniNalozi/store';
 import { selectAppByCode } from '../../core/cc/store';
+import { getListItem } from '../../dgl/store';
 
 const TabAkcije = () => {
     const router = useIonRouter();
@@ -49,9 +49,14 @@ const TabAkcije = () => {
 	}
 
     const openSRN = async (id) => {
-        await dispatch(copyRNfromUpit(id));
+        const data = await dispatch(copyRNfromUpit(id));
         await dispatch(selectAppByCode('servis-mobile'));
-        router.push('/servis/radninalozitabs', 'none');
+
+        console.log('data.payload[0]', data.payload[0]);
+
+
+        await dispatch(getListItem(data.payload[0]));
+        router.push('/docs/dgltabs/tab1', 'none');
     }
 
 

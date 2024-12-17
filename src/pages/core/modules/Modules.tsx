@@ -2,6 +2,7 @@ import {
   IonContent,
   IonIcon,
   IonItem,
+  IonLabel,
   IonList,
   IonListHeader,
   IonPage,
@@ -53,11 +54,12 @@ const Modules: React.FC = (props) => {
           <IonItem
             key={i}
             detail={true}
-            button
+            button ={true}
             onClick={() => onModuleClick(module)}
+            style={{paddingRight:8}}
           >
-            <IonIcon slot="start" name={module.icon} />
-            {module.title}
+            <IonIcon slot="start" name={module.icon} style={{color: '#39655d'}} />
+            <IonLabel><p style={{color: 'black', fontSize:15}}>{module.title}</p></IonLabel>
           </IonItem>
         );
         //});

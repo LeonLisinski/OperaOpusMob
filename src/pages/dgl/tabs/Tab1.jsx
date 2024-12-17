@@ -95,7 +95,7 @@ const Tab1 = (props) => {
 
 		return <IonItem lines={item.lines == false && 'none'} key={index}>
 				<IonLabel className="ion-text-wrap">
-					{item.caption && <h3>{item.caption}</h3>}
+					{item.caption && <p>{item.caption}</p>}
 					{renderGroupItemValue(item)}
 					{/* <p className={item.class}>{listItem[item.field]}</p> */}
 				</IonLabel>
@@ -127,9 +127,9 @@ const Tab1 = (props) => {
 
 
 		if (isHTML(value)) {
-			return <p className={item.class} dangerouslySetInnerHTML={{ __html: value }}></p>;
+			return <h2 className={item.class} dangerouslySetInnerHTML={{ __html: value }}></h2>;
 		} else {
-			return <p className={item.class}>{value}</p>
+			return <h2 className={item.class}>{value}</h2>
 		}
 
 		
@@ -150,6 +150,7 @@ const Tab1 = (props) => {
 			</IonHeader>
 
 			<IonContent fullscreen >
+				<div id="tab1">
 				<IonHeader collapse="condense">
 					<IonToolbar>
 						<IonTitle size="small">
@@ -178,7 +179,7 @@ const Tab1 = (props) => {
 						
 						<MasterAzur showModal={showMasterModal} item={masterModalItem} onHideModal={onHideMasterModal}></MasterAzur>
 					</>
-				
+					</div>
 			</IonContent>
 		</IonPage>
 	);

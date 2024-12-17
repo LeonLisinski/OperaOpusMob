@@ -26,7 +26,7 @@ export const getData = async (props, auth) => {
 	//let database = store.getState().global.connection.database;
 	props = await cloneDeep(props);
 
-	const database = 'ooPT';
+	const database = auth.connection.database;
 
 	const findParamsObject = (props) => {
 
@@ -338,6 +338,66 @@ export const getReport = async (props, auth, type) => {
     }
    
 }
+
+export const saveAttachemnts = async (props, auth, type) => {
+	console.log('saveAttachemnts', props, auth);
+
+    const { parameters } = props;
+    try {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic dGVzdDoxMjM=' },
+            body: JSON.stringify({
+				db: auth?.db,
+				parameters: parameters
+            })
+        };
+
+		const serviceEndpoint = `${auth?.api}/saveatt`;
+        //let serviceEndpoint = SERVICE_REPX_ENDPOINT;
+    
+        const response = await fetch(serviceEndpoint, requestOptions)
+
+        const data = await response.json();
+        if (response.status != 200) {
+            throw(`${data}`);
+        }
+        return data;    
+    } catch (error) {
+        throw error;
+    }
+   
+}
+
+export const getAttachemnt = async (props, auth) => {
+    const { id } = props;
+
+    try {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic dGVzdDoxMjM=' },
+            body: JSON.stringify({
+				db: auth?.db,
+				id: id
+            })
+        };
+
+		const serviceEndpoint = `${auth?.api}/getatt`;
+        //let serviceEndpoint = SERVICE_REPX_ENDPOINT;
+    
+        const response = await fetch(serviceEndpoint, requestOptions)
+
+        const data = await response.json();
+        if (response.status != 200) {
+            throw(`${data}`);
+        }
+        return data;    
+    } catch (error) {
+        throw error;
+    }
+   
+}
+
 
 export const getMailZamjenaData = async (props) => {
 	try {

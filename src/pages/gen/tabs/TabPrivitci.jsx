@@ -79,7 +79,7 @@ const TabPrivitci = () => {
                         </IonButton>
                     </IonButtons>
                     <IonTitle>
-                        <TabsTitle />
+                        <TabsTitle />werewrwr
                     </IonTitle>
                 </IonToolbar>
             </IonHeader>

@@ -1,4 +1,4 @@
-import { IonButtons, IonContent, IonHeader, IonModal, IonPage, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonButtons, IonContent, IonHeader, IonInputPasswordToggle, IonModal, IonPage, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import React, { useRef, useState } from 'react';
 import { IonGrid, IonRow, IonCol } from '@ionic/react';
 import { personCircle } from "ionicons/icons";
@@ -144,11 +144,12 @@ const Login: React.FC = () => {
 					<IonRow>
 						<IonCol>
 							<IonItem>
-								<IonLabel position="floating"> Korisničko ime</IonLabel>
 								<IonInput
 									type="text"
 									value={username}
 									onIonInput={(e) => setUsername(e.detail.value!)}
+									label='Korisničko ime'
+									labelPlacement="stacked"
 								>
 								</IonInput>
 							</IonItem>
@@ -158,12 +159,14 @@ const Login: React.FC = () => {
 					<IonRow>
 						<IonCol>
 							<IonItem>
-								<IonLabel position="floating"> Password</IonLabel>
 								<IonInput
 									type="password"
 									value={password}
 									onIonInput={(e) => setPassword(e.detail.value!)}
+									label='Lozinka'
+									labelPlacement="stacked"
 								>
+									<IonInputPasswordToggle slot="end"></IonInputPasswordToggle>
 								</IonInput>
 							</IonItem>
 						</IonCol>
