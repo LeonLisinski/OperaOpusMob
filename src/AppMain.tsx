@@ -87,8 +87,8 @@ const AppMain: React.FC = () => {
 
   }
 
-  function withAsyncComponent(WrappedComponent) {
-    return function AsyncComponent(props) {
+  function withAsyncComponent(WrappedComponent: any) {
+    return function AsyncComponent(props: any) {
 
       const [component, setComponent] = useState(null);
   

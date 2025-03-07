@@ -339,8 +339,8 @@ export const getReport = async (props, auth, type) => {
    
 }
 
-export const saveAttachemnts = async (props, auth, type) => {
-	console.log('saveAttachemnts', props, auth);
+export const saveAttachments = async (props, auth, type) => {
+	console.log('saveAttachments', props, auth);
 
     const { parameters } = props;
     try {

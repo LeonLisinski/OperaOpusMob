@@ -29,7 +29,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem';
 
 import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
-import { saveAttachemnts } from '../../../utils/dataHelper';
+import { saveAttachments } from '../../../utils/dataHelper';
 
 
 const TabPrivitci = () => {
@@ -84,7 +84,7 @@ const TabPrivitci = () => {
       files: result.files
     }
 
-    await saveAttachemnts({parameters: parameters}, auth);
+    await saveAttachments({parameters: parameters}, auth);
     populateList();
   };  
 

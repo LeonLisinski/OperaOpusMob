@@ -43,7 +43,7 @@ import { FileOpener } from '@capawesome-team/capacitor-file-opener';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
 
-import { saveAttachemnts } from '../../../../utils/dataHelper';
+import { saveAttachments } from '../../../../utils/dataHelper';
 
 
 
@@ -51,11 +51,11 @@ const TabPrivitci = () => {
   const router = useIonRouter();
 
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state: any) => state.auth);
   const [presentAlert] = useIonAlert();
 
-  const sifdv = useSelector((state) => state.servis.radniNalozi?.sifdv);
-  const privitak = useSelector((state) => state.servis.radniNalozi?.privitak);
+  const sifdv = useSelector((state: any) => state.servis.radniNalozi?.sifdv);
+  const privitak = useSelector((state: any) => state.servis.radniNalozi?.privitak);
   const { deletePhoto, photos, takePhoto, pickPhoto } = usePhotoGallery();
   const [photoToDelete, setPhotoToDelete] = useState();
 
@@ -68,10 +68,10 @@ const TabPrivitci = () => {
   };
 
 
-  const data = useSelector((state) => state.servis.radniNalozi?.data);
-  const list = useSelector((state) => state.servis.radniNalozi?.privitci);
+  const data = useSelector((state: any) => state.servis.radniNalozi?.data);
+  const list = useSelector((state: any) => state.servis.radniNalozi?.privitci);
 
-  const onItemClick = async (e, item) => {
+  const onItemClick = async (e, item: any) => {
     console.log('item', item);
     const responseDispachData = await dispatch(getPrivitak(item.id));
     const responseData = responseDispachData.payload;
@@ -95,14 +95,17 @@ const TabPrivitci = () => {
     });
 
 
+    //lokacija fs.mida.local\\group$\\Opera\\Prilozi\\Dokumenti\\9200\\2025\\SRN\\0281-02-25\\281.pdf
+    //za pregled na webu tribaju prava
     //window.open(item.putanja, "_blank", "noreferrer");
+
   };
 
   const renderList = () => {
     return (
       <IonList>
         {list &&
-          list.map((item, i) => {
+          list.map((item: any, i: any) => {
             return (
               <IonItem
                 className="ion-no-padding"
@@ -146,7 +149,7 @@ const TabPrivitci = () => {
 	// alert("ok");
   // };
 
-  const handleRefresh = async (e) => {
+  const handleRefresh = async (e: any) => {
     await populateList();
     e.detail.complete();
   };
@@ -301,7 +304,7 @@ const TabPrivitci = () => {
     // console.log(1);
 
 
-    await saveAttachemnts({parameters: parameters}, auth);
+    await saveAttachments({parameters: parameters}, auth);
     populateList();
 
 
