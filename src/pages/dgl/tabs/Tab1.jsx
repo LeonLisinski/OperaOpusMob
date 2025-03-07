@@ -169,17 +169,18 @@ const Tab1 = (props) => {
 							</div>
 						}
 						
-						{listItem?.editable &&
+
+						
+						<MasterAzur showModal={showMasterModal} item={masterModalItem} onHideModal={onHideMasterModal}></MasterAzur>
+					</>
+					</div>
+					{listItem?.editable &&
 							<IonFab horizontal='end' vertical='bottom' slot="fixed">
 								<IonFabButton onClick={(e) => onEditClick(e)} >
 									<IonIcon icon={create} />
 								</IonFabButton>
 							</IonFab>
 						}
-						
-						<MasterAzur showModal={showMasterModal} item={masterModalItem} onHideModal={onHideMasterModal}></MasterAzur>
-					</>
-					</div>
 			</IonContent>
 		</IonPage>
 	);

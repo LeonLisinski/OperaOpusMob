@@ -24,15 +24,10 @@ const Tab3 = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [modalItem, setModalItem] = useState(null);
-
-
-
-
-    
+    const [modalItemParentId, setModalItemParentId] = useState(null);
 
 
     const list = useSelector((state) => {
-        console.log('params.tip', params.tip)
         return state.docs.datadet.filter(x => x.tip == params.tip);
 
     });
@@ -40,9 +35,8 @@ const Tab3 = () => {
 
 
 	useEffect(() => {
-        console.log('ppppp', params.tip);
 		dispatch(setDstTip(params.tip));
-	}, [params.tip]);
+	}, [params]);
 
 
     const goBack = () => {
@@ -50,7 +44,15 @@ const Tab3 = () => {
     }
 
     const onNewClick = async (e) => {
+        setModalItemParentId(null);
         e.preventDefault();
+        await dispatch(setDstDataEditReset());
+        handleShowModal(null);
+    }
+
+    const onCmdClickDodajPodstavku = async(e, item, index) => {
+        e.preventDefault();
+        setModalItemParentId(item.dstid);
         await dispatch(setDstDataEditReset());
         handleShowModal(null);
     }
@@ -118,6 +120,8 @@ const Tab3 = () => {
         closeSlidingItem(index);
     }
 
+
+
     const closeSlidingItem = (index) => {
 		const slidingItem = document.getElementById(`slidingItem${index}`);
 		slidingItem?.close();
@@ -129,7 +133,7 @@ const Tab3 = () => {
         return (
             <IonList>
                 {list && list.map((item, i) => {
-                    return <IonItemSliding id={`slidingItem${i}`} key={`slidingItem${i}`}>                
+                    return <IonItemSliding id={`slidingItem${i}`} key={`slidingItem${i}`} className={item.podclassname}>                
                         <IonItem className={`ion-no-padding ${item.indclassname}`} button onClick={(e) => onItemClick(e, item)} detail={true} key={i} >
                             <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 4, background: item.indcolor }}></div>
                             <IonLabel style={{ paddingLeft: 15 }}>
@@ -149,17 +153,21 @@ const Tab3 = () => {
                                     <IonItemOption style={{ minWidth: 100 }} color="danger" onClick={(e) => onClickObrisi(e, item)}>Obriši</IonItemOption>
                                 </IonItemOptions>
                             } */}
-                        <IonItemOptions side="end">
-                            {item?.deletable &&
+                            {item?.cmddelete &&
                                 <IonItemOptions side="start">
                                     <IonItemOption style={{ minWidth: 100 }} color="danger" onClick={(e) => onClickObrisi(e, item)}>Obriši</IonItemOption>
                                 </IonItemOptions>
                             } 
+                        <IonItemOptions side="end">
+
                             {item?.cmdpotvrdakolicine &&
                                 <IonItemOption style={{ minWidth: 100 }} color="primary" onClick={(e) => onClickPotvrdaKolicine(e, item, i)}>Potvrdi<br></br>količinu</IonItemOption>
                             }
                             {item?.cmddeletepotvrdakolicine &&
                                 <IonItemOption style={{ minWidth: 100 }} color="danger" onClick={(e) => onClickDeletePotvrdaKolicine(e, item, i)}>Ukloni<br></br>potvrđenu<br></br>količinu</IonItemOption>
+                            }
+                            {item?.cmdpodstavke &&
+                                <IonItemOption style={{ minWidth: 100 }} color="primary" onClick={(e) => onCmdClickDodajPodstavku(e, item, i)}>Dodaj<br></br>podstavku</IonItemOption>
                             }
                         </IonItemOptions>
                     </IonItemSliding>
@@ -246,7 +254,7 @@ const Tab3 = () => {
                                 <IonIcon icon={add} />
                             </IonFabButton>
                         </IonFab>
-                        <DetailAzurNew showModal={showModal} item={modalItem} onHideModal={onHideModal}></DetailAzurNew>
+                        <DetailAzurNew showModal={showModal} item={modalItem} parentId={modalItemParentId} onHideModal={onHideModal}></DetailAzurNew>
                     </>
                 }
 

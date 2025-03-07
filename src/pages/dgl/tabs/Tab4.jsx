@@ -81,17 +81,22 @@ const Tab4 = () => {
 			if (dgl['nazivobjekta']) {
 				mailSubject += ' - ' + dgl['nazivobjekta'];
 			}
+			// const mailBody = `Poštovani, 
+			// 	<br><br>
+			// 	u prilogu kopija ovjerenog radnog naloga za izvršene usluge.
+			// 	<br><br>
+			// 	Lp, 
+			// 	<br><br>
+			// 	ZAŠTITA JUKIĆ d.o.o.<br>
+			// 	KOPRIVNIČKA 121, KUNOVEC BREG<br>
+			// 	48000 KOPRIVNICA<br>
+			// 	OIB: 93544633496
+			// 	`;
+
 			const mailBody = `Poštovani, 
-				<br><br>
-				u prilogu kopija ovjerenog radnog naloga za izvršene usluge.
-				<br><br>
-				Lp, 
-				<br><br>
-				ZAŠTITA JUKIĆ d.o.o.<br>
-				KOPRIVNIČKA 121, KUNOVEC BREG<br>
-				48000 KOPRIVNICA<br>
-				OIB: 93544633496
-				`;
+			<br><br>
+			u prilogu kopija ovjerenog radnog naloga za izvršene usluge.
+			`;
 
 			const data = await getReport({ reportName: layouts.properties?.reportName, mailTo:mailTo, mailSubject: mailSubject, mailBody: mailBody, parameters: parameters}, auth, 'mobile').catch(err => {
 				setMessage(err);

@@ -237,6 +237,7 @@ const TabStavke = () => {
                     <IonRefresherContent >
                     </IonRefresherContent>
                 </IonRefresher>
+                
                 {list && list.length > 0 && renderList()}
 
                 {listItem?.editable &&

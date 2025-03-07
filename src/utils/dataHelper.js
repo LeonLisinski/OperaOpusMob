@@ -133,8 +133,7 @@ export const getData = async (props, auth) => {
 
 		const data = await response.json();
 		if (response.status != 200) {
-			throw (`${query};
-                ${data}`);
+			throw (data);
 		}
 		return data;
 	} catch (error) {
@@ -439,8 +438,7 @@ export const getDefinitions = async (props) => {
 		const data = await response.json();
 
 		if (response.status != 200) {
-			throw (`${props.query};
-                ${data}`);
+			throw (data);
 		}
 		return data;
 	} catch (error) {
@@ -452,21 +450,41 @@ export const getDefinitions = async (props) => {
 
 export const getDocsDefinitions = async (props, auth) => {
 	try {
-		const requestOptions = {
+
+		let prefix;
+		if (auth?.layoutprefix) {
+			prefix = auth?.layoutprefix + '/' 
+		}
+		
+
+		let requestOptions = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic dGVzdDoxMjM=' },
 			body: JSON.stringify({
-				folder: props?.folder
+				folder: prefix + props?.folder
             })
 		};
-
-		const serviceEndpoint = auth?.api + '/doclayouts';
-
-		const response = await fetch(serviceEndpoint, requestOptions);
+		let serviceEndpoint = auth?.api + '/doclayouts';
+		let response = await fetch(serviceEndpoint, requestOptions);
 
 
 		
-		const data = await response.json();
+		let data = await response.json();
+
+		if (!data || Object.keys(data).length == 0) {
+			requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic dGVzdDoxMjM=' },
+				body: JSON.stringify({
+					folder: props?.folder
+				})
+			};
+			serviceEndpoint = auth?.api + '/doclayouts';
+			response = await fetch(serviceEndpoint, requestOptions);
+
+			data = await response.json();
+		}
+
 
 		if (response.status != 200) {
 			throw (`${props.query};

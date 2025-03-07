@@ -109,7 +109,7 @@ export const getDocsLayout = createAsyncThunk('gen/getDocsLayout', async (fake, 
     const gen = getState().gen;
 
     const folder = {
-        folder: `${gen.app}\\${gen.module}`
+        folder: `${gen.app}/${gen.module}`
     }
 
     const data = await getDocsDefinitions({ ...folder }, auth);
@@ -240,7 +240,6 @@ export const saveGla = createAsyncThunk('gen/saveGla', async (saveData, { dispat
 
     /*const sifOsobe = auth.user?.sifosobe;
     , izradilasifosobe: sifOsobe*/
-
     
     const queries = [{
         query: query?.sp,

@@ -43,15 +43,17 @@ const DglMainTabs: React.FC<DglMainTabsProps> = () => {
           <IonIcon icon={list} />
           <IonLabel>Stavke</IonLabel>
         </IonTabButton>
+        {listItem!.tabradvisible &&
         <IonTabButton tab="rad" href="/docs/dgltabs/tab3/rad">
           <IonIcon icon={time} />
           <IonLabel>Rad</IonLabel>
         </IonTabButton>        
+        }
         <IonTabButton tab="privitci" href="/docs/dgltabs/tabPrivitci">
           <IonIcon icon={attach} />
           <IonLabel>Privitci</IonLabel>
         </IonTabButton>
-        {listItem!.signable &&
+        {listItem!.tabpotipsvisible &&
         <IonTabButton tab="potpis" href="/docs/dgltabs/tab4">
           <IonIcon icon={pencil} />
           <IonLabel>Potpis</IonLabel>

@@ -25,6 +25,10 @@ const Search = (props) => {
 	const gen = useSelector((state) => {
 		return state.gen;
 	});	
+	
+	const core = useSelector((state) => {
+		return state.core;
+	});	
 
 	const [originalData, setOriginalData] = useState([]);
 	const [searchData, setSearchData] = useState([]);
@@ -97,7 +101,7 @@ const Search = (props) => {
 			if (props.app == 'crm') {
 				params = {...params, id: gen?.data?.id}
 			} else {
-				params = {...params, sifdv: docs?.sifdv || servis?.sifdv}
+				params = {...params, sifdv: core?.cc?.selectedModule?.sifdv || docs?.sifdv || servis?.sifdv}
 			}
 
 

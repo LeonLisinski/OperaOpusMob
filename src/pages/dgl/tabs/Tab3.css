@@ -17,3 +17,7 @@
 .item-background-color-yellow {
     --ion-item-background:#feffe8;
 }
+
+ion-item-sliding.item-podstavka {
+    padding-left: 20px;
+}
