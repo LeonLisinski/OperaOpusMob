@@ -23,12 +23,14 @@ export const authSlice = createSlice({
     initialState: {
         api: null,
         db: null,
+        layoutprefix: null,
         user: null,
         connection: null,
     },
     reducers: {
         setApi: (state, action) => {
             const data = action.payload;
+            state.layoutprefix = data.layoutprefix;
             state.api = data.serverpath;
             state.db = data.db;
         },

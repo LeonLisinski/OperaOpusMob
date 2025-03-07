@@ -129,6 +129,7 @@ export const setSearchText = createAsyncThunk('docs/dgl/searchText', async (text
 
     text = text.toLowerCase().replace('č', 'c').replace('ć', 'c').replace('š', 's').replace('đ', 'd').replace('ž', 'z');
 
+    console.log(originalData);
 
     const filteredData = originalData.filter(x => {
         let value = false;
@@ -627,7 +628,16 @@ export const docsSlice = createSlice({
             .addCase(saveDGL.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            })            
+            })  
+            .addCase(saveDoc.pending, (state, action) => {
+                state.loading = false;
+                state.error = null;
+            })    
+            .addCase(saveDoc.rejected, (state, action) => {
+                console.log('saveDoc.rejected');
+                state.loading = false;
+                state.error = action.error.message;
+            })   
             .addCase(getDocsLayout.fulfilled, (state, action) => {
                 const data = action.payload;
                 state.layouts = {...state.layouts, ...data};

@@ -229,7 +229,7 @@ const TabPotpis = () => {
 					<div style={{ padding: 12 }}>
 						<IonButton onClick={onClickSpremi} expand='block' color={'dark'} fill={'solid'} disabled={loading == true}>
 							{loading && <><IonSpinner></IonSpinner>&nbsp;&nbsp;</>}
-							Spremi / Pošalji izvještaj
+							Spremi / Pošalji izvještaj 34 343
 						</IonButton>
 					</div>
 

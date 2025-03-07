@@ -31,6 +31,7 @@ export const ccSlice = createSlice({
         apps: [
         ],
         selectedApp: null,
+        selectedModule: null,
         unlocked: [],
     },
     reducers: {
@@ -67,6 +68,10 @@ export const ccSlice = createSlice({
         selectApp: (state, action) => {
             const data = action.payload;
             state.selectedApp = data;
+        },
+        selectModule: (state, action) => {
+            const data = action.payload;
+            state.selectedModule = data;
         }
     },
     extraReducers: (builder) => {
@@ -102,7 +107,7 @@ export const ccSlice = createSlice({
 
 })
 
-export const { selectApp, unlockApp, setUnlockedApp } = ccSlice.actions
+export const { selectApp, selectModule, unlockApp, setUnlockedApp } = ccSlice.actions
 
 
 export default ccSlice.reducer

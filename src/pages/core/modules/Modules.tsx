@@ -17,12 +17,14 @@ import { calendarOutline, readerOutline } from "ionicons/icons";
 import "./Modules.scss";
 import { useState } from "react";
 import Header from "../../../components/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addIcons } from "ionicons";
 import NoData from "../../../components/NoData";
+import { selectModule } from '../cc/store';
 
 const Modules: React.FC = (props) => {
   const ionRouter = useIonRouter();
+  const dispatch = useDispatch();
 
   const [showToast, setShowToast] = useState(false);
 
@@ -41,7 +43,8 @@ const Modules: React.FC = (props) => {
     }, 2000);
   };
 
-  const onModuleClick = (item) => {
+  const onModuleClick = async (item) => {
+    await dispatch(selectModule(item));
     ionRouter.push(item.url);
   };
 

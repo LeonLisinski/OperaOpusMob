@@ -176,7 +176,7 @@ const GenList = (props) => {
 
 		if (layoutItem.format) {
 			if (layoutItem.type == 'date') {
-				value = moment(value).format('DD.MM.YYYY')
+				value = moment(value).format(layoutItem.format || 'DD.MM.YYYY')
 			}
 		}
 		return <>{index > 0 ? <span>&nbsp;&nbsp;&nbsp;</span> : ''}<span className={layoutItem.class}>{value}</span></>;

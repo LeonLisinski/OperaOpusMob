@@ -39,6 +39,9 @@ const MasterAzur = (props) => {
   const [podruznica, setPodruznica] = useState({ id: null, name: '...' });
   const [ugovor, setUgovor] = useState({ id: null, name: '...' });
   const [serviser, setServiser] = useState({ id: null, name: '...' });
+  const [vrstePosla, setVrstePosla] = useState({ id: null, name: '...' });
+  const [mjestaTroska, setMjestaTroska] = useState({ id: null, name: '...' });
+  
 
   const [datumIzvrsenja, setDatumIzvrsenja] = useState({ value: null });
 
@@ -56,9 +59,10 @@ const MasterAzur = (props) => {
     setPartner({ id: null, name: '...' });
     setPodruznica({ id: null, name: '...' });
     setUgovor({ id: null, name: '...' });
+    setVrstePosla({ id: null, name: '...' });
+    setMjestaTroska({ id: null, name: '...' });
 
 
-    console.log('aaa', props.item);
     if (props.item?.dglid) {
       setServiser({ id: props.item?.serviserid, name: props.item?.serviser ? props.item?.serviser : '...' });
       setDatumIzvrsenja({ value: moment(props.item?.datumizvrsenja).format('YYYY-MM-DD') });
@@ -132,6 +136,15 @@ const MasterAzur = (props) => {
         alert("Obavezan unos ugovora.");
         return;
       }
+      if (!vrstePosla.id) {
+        alert("Obavezan unos vrste poosla.");
+        return;
+      }
+      if (!mjestaTroska.id) {
+        alert("Obavezan unos mjesta troška.");
+        return;
+      }
+
 
 
       let formComment = commentRef.current.value;
@@ -146,7 +159,9 @@ const MasterAzur = (props) => {
         sifpartnera: partner.id,
         dodadresaid: podruznica.id,
         sifpred: ugovor.id,
-        napomena7: formComment
+        napomena7: formComment,
+        sifmjtr: mjestaTroska.id,
+        sifvrsteposla: vrstePosla.id
       }
     }
 
@@ -181,7 +196,12 @@ const MasterAzur = (props) => {
         setPodruznica({ id: null, name: null });
       }
     }
-
+    else if (modalEntity == 'vrsteposla') {
+      setVrstePosla({ id: e.id, name: e.name });
+    }
+    else if (modalEntity == 'mjestatroska') {
+      setMjestaTroska({ id: e.id, name: e.name });
+    }
     setShowModal(false);
   }
 
@@ -233,12 +253,25 @@ const MasterAzur = (props) => {
                   {podruznica.name}
                 </IonButton>
               </div>
+              <div style={{ paddingTop: 8 }}>
+                <IonLabel>Vrsta posla:</IonLabel>
+                <IonButton className='ion-text-wrap' style={{ height: 44 }} onClick={() => handleShowModal('vrsteposla', 'simple', 200, null)} expand="block" fill={podruznica.id ? 'solid' : 'outline'}>
+                  {vrstePosla.name}
+                </IonButton>
+              </div>
+              <div style={{ paddingTop: 8 }}>
+                <IonLabel>Mjesto troška:</IonLabel>
+                <IonButton className='ion-text-wrap' style={{ height: 44 }} onClick={() => handleShowModal('mjestatroska', 'simple', 200, null)} expand="block" fill={podruznica.id ? 'solid' : 'outline'}>
+                  {mjestaTroska.name}
+                </IonButton>
+              </div>
               <div style={{ paddingTop: 15 }}>
                 <IonLabel>Opis kvara:</IonLabel>
                 <IonTextarea placeholder="..." autoGrow={true} style={{ border: '1px solid #ccc', minHeight: 150, whiteSpace: 'pre-wrap' }} ref={commentRef}></IonTextarea>
               </div>
             </>
           }
+
           <Search entity={modalEntity} showModal={showModal} type={modelType} onClick={onClick} onHideModal={onHideModal} debaunce={modalDebaunce} parentId={modalParentId}></Search>
         </IonContent>
 

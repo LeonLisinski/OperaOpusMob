@@ -60,7 +60,7 @@ const DetailAzur = (props) => {
       kolicina: formKolicina
     }
 
-    console.log('formData', formData);
+    
     //return;
 
     await dispatch(saveGla({ formData: formData }));

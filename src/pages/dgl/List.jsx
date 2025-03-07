@@ -29,6 +29,11 @@ const DglList = (props) => {
 
 	const layouts = useSelector((state) => state.docs.layouts);
 
+
+	const settings = useSelector((state) => state.docs.settings);
+
+	const selectedModule = useSelector((state) => state.core?.cc?.selectedModule);
+
 	//const list = useSelector(selectList);
 
 	const pageRef = useRef(null);
@@ -40,8 +45,6 @@ const DglList = (props) => {
 	const [filterText2, setFilterText2] = useState('');
 
 	const { list, loading, filter } = useSelector(selectDocs)
-
-
 
 	useEffect(() => {
 		initLoad();
@@ -181,7 +184,7 @@ const DglList = (props) => {
 
 		if (layoutItem.format) {
 			if (layoutItem.type == 'date') {
-				value = moment(value).format('DD.MM.YYYY')
+				value = moment(value).format(layoutItem.format || 'DD.MM.YYYY')
 			}
 		}
 		return <>{index > 0 ? <span>&nbsp;&nbsp;&nbsp;</span> : ''}<span className={layoutItem.class}>{value}</span></>;
@@ -229,7 +232,7 @@ const DglList = (props) => {
 					}
 
 					{showSearchbar &&
-						<IonSearchbar ref={searchbarRef} showCancelButton="always" placeholder="Pretraga..." onIoninput={(e) => dispatch(setSearchText(e.detail.value))} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
+						<IonSearchbar ref={searchbarRef} showCancelButton="always" placeholder="Pretraga..." onIonInput={(e) => dispatch(setSearchText(e.detail.value))} onIonCancel={() => setShowSearchbar(false)}></IonSearchbar>
 					}
 					{!showSearchbar &&
 						<IonButtons slot="end">
@@ -242,7 +245,7 @@ const DglList = (props) => {
 						</IonButtons>
 					}
 					{!showSearchbar &&
-						<IonTitle>Radni nalozi - {sifdv}</IonTitle>
+						<IonTitle>{selectedModule?.title}</IonTitle>
 					}
 				</IonToolbar>
 				<IonToolbar className='filterToolbar'>
@@ -271,11 +274,13 @@ const DglList = (props) => {
 				{!loading &&
 					layouts && list && list.length > 0 && renderList()
 				}
-				<IonFab horizontal='end' vertical='bottom' slot="fixed">
-					<IonFabButton onClick={(e) => onNewClick(e)} >
-						<IonIcon icon={add} />
-					</IonFabButton>
-				</IonFab>
+				{settings?.dglallownew &&
+					<IonFab horizontal='end' vertical='bottom' slot="fixed">
+						<IonFabButton onClick={(e) => onNewClick(e)} >
+							<IonIcon icon={add} />
+						</IonFabButton>
+					</IonFab>
+				}
 
 				<MasterAzur showModal={showMasterModal} item={masterModalItem} onHideModal={onHideMasterModal}></MasterAzur>
 			</IonContent>
