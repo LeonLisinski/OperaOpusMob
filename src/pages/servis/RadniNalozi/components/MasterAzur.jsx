@@ -152,6 +152,7 @@ const MasterAzur = (props) => {
         formComment = formComment.replace("\n", "\r\n");
       }
 
+
       formData = {
         ...formData,
         sifdv: storeRadniNalozi.sifdv,
@@ -176,7 +177,8 @@ const MasterAzur = (props) => {
 
 
 
-  const onClick = (e) => {
+  const onClick = (e) => { 
+
     if (modalEntity == 'partner') {
       setPartner(e);
       if (e.id != partnerBeforeModal.id) {

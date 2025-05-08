@@ -76,6 +76,9 @@ export const getGla = createAsyncThunk('docs/dgl/getGla', async (id, { dispatch,
 export const getFilterDefaults = createAsyncThunk('docs/dgl/getFilterDefaults', async (fake, { dispatch, getState }) => {
     const auth = getState()?.auth;
     const docs = getState().docs;
+    
+    console.log('strukturafilter', docs);  
+    
     const query = docs.layouts.queries.dgl.filterdefaults;
 
     const queries = [{
@@ -114,16 +117,18 @@ export const getStatuses = createAsyncThunk('docs/dgl/getStatuses', async (fake,
 export const getDocsLayout = createAsyncThunk('docs/dgl/getDocsLayout', async (fake, { dispatch, getState }) => {
     const auth = getState()?.auth;
     const docs = getState().docs;
-
+    console.log('strukturalayout', docs)
     const folder = {
         folder: docs.sifdv
     }
 
-    const data = await getDocsDefinitions({ ...folder }, auth);
+    const data = await getDocsDefinitions({ ...folder }, auth)
+    
     return data;
 });
 
 export const setSearchText = createAsyncThunk('docs/dgl/searchText', async (text, { dispatch, getState }) => {
+    
     const originalData = getState().docs.originaldata;
     const searchFields = JSON.parse(getState().docs.settings.searchfields);
 

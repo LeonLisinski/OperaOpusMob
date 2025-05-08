@@ -132,10 +132,12 @@ export const getData = async (props, auth) => {
 		const response = await fetch(serviceEndpoint, requestOptions);
 
 		const data = await response.json();
+		
 		if (response.status != 200) {
 			throw (data);
 		}
 		return data;
+
 	} catch (error) {
 		console.error(error);
 
@@ -266,6 +268,7 @@ export const login = async (props, auth) => {
 			)
 		};
 
+		//provjeri login
 		//const serviceEndpoint = SERVICE_LOGIN_ENDPOINT;
 		const serviceEndpoint = auth?.api + '/login';
 		const response = await fetch(serviceEndpoint, requestOptions);
@@ -464,11 +467,11 @@ export const getDocsDefinitions = async (props, auth) => {
 				folder: prefix + props?.folder
             })
 		};
+		
 		let serviceEndpoint = auth?.api + '/doclayouts';
 		let response = await fetch(serviceEndpoint, requestOptions);
 
 
-		
 		let data = await response.json();
 
 		if (!data || Object.keys(data).length == 0) {

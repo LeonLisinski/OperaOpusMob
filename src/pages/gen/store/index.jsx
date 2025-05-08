@@ -109,6 +109,7 @@ export const getDocsLayout = createAsyncThunk('gen/getDocsLayout', async (fake, 
     const gen = getState().gen;
 
     const folder = {
+        //folder: `${gen.app}\\${gen.module}`
         folder: `${gen.app}/${gen.module}`
     }
 

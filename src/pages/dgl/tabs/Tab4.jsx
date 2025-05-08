@@ -76,6 +76,7 @@ const Tab4 = () => {
 			if (layouts.properties?.testEmail) {
 				mailTo = layouts.properties?.testEmail;
 			}
+
 			
 			let mailSubject = `RADNI NALOG - ${dgl['broj radnog naloga']}`;
 			if (dgl['nazivobjekta']) {
@@ -92,6 +93,7 @@ const Tab4 = () => {
 			// 	48000 KOPRIVNICA<br>
 			// 	OIB: 93544633496
 			// 	`;
+
 
 			const mailBody = `Poštovani, 
 			<br><br>

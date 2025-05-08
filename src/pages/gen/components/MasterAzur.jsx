@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSearchbar, IonText, IonTextarea, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSearchbar, IonText, IonTextarea, IonTitle, IonToolbar, useIonRouter, useIonAlert } from '@ionic/react';
 import moment from 'moment';
 import { createRef, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,8 @@ const MasterAzur = (props) => {
     const dispatch = useDispatch()
     const router = useIonRouter();
     const modal = useRef(null);
+
+    const [presentAlert] = useIonAlert();
 
     const storeDocs = useSelector(selectDocs);
     const layouts = useSelector((state) => state.gen.layouts);
@@ -31,7 +33,7 @@ const MasterAzur = (props) => {
 
 
     const [searchModalProps, setSearchModalProps] = useState(
-        {...searchModalPropsDefaults}
+        { ...searchModalPropsDefaults }
     );
 
     const [dateModalProps, setDateModalProps] = useState(
@@ -48,14 +50,13 @@ const MasterAzur = (props) => {
         if (!props.showModal)
             return;
 
-        
-
         if (props.item?.id) {
             dispatch(setItemDataEdit());
             setTitle(`Editiranje - ${props.item["id"]}`);
         } else {
             dispatch(setItemDataEdit('reset'));
         }
+
     }, [props.showModal]);
 
 
@@ -172,18 +173,45 @@ const MasterAzur = (props) => {
     const onClickSpremi = async (e) => {
         let formData = { ...dataNew };
 
+        //const data = await dispatch(saveGla({ id: storeDocs.data?.id, formData: formData }))
 
-        const data = await dispatch(saveGla({ id: storeDocs.data?.id, formData: formData }))
+        try {
+            var response = await dispatch(saveGla({ id: storeDocs.data?.id, formData: formData }))
+
+            if (response.error) {
+
+                presentAlert({
+                    header: 'Greška',
+                    message: response.error.message,
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            role: 'cancel',
+                            handler: () => {
+
+                            },
+                        }
+                    ]
+                })
+                return;
+            }
+
+            modal.current?.dismiss();
+
+        } catch (ex) {
+            console.log(ex);
+        }
 
         props.onHideModal(e);
 
         if (!props.item?.id) {
             router.push('/gen/tabs');
         }
+        
     }
 
     const renderForm = () => {
-        
+
         return layouts && layouts?.glaEditItems?.map((item, index) => {
             return <div style={{ paddingBottom: 8 }}>
                 <IonLabel>{item.caption}:</IonLabel>
@@ -211,11 +239,11 @@ const MasterAzur = (props) => {
         //     }
 
         // } else {
-            value = storeDocs.dataEdit && storeDocs.dataEdit[item?.selectFieldText];
+        value = storeDocs.dataEdit && storeDocs.dataEdit[item?.selectFieldText];
         //}
 
         var fill = 'outline';
-        if (value) 
+        if (value)
             fill = 'solid';
 
 
@@ -227,7 +255,7 @@ const MasterAzur = (props) => {
     const renderDateControl = (item) => {
         const value = renderDateControlValue(item);
         var fill = 'outline';
-        if (value) 
+        if (value)
             fill = 'solid';
 
         return <IonButton mode="ios" className='ion-text-wrap' onClick={() => handleShowDateModal({ selectFieldKey: item.selectFieldKey, azurFieldKey: item.azurFieldKey })} expand="block" disabled={checkDisabledValue(item)} fill={fill}>
@@ -249,7 +277,7 @@ const MasterAzur = (props) => {
     }
 
     const checkDisabledValue = (item) => {
-        if ( item.disabled) {
+        if (item.disabled) {
             if (item.disabled == "allways") {
                 return true;
             } else if (item.disabled == "edit" && item.data) {
@@ -263,7 +291,7 @@ const MasterAzur = (props) => {
 
 
         let value;
-        
+
         // if (!storeDocs.data && storeDocs?.settings?.dgldefaults && item?.selectFieldKey) {
         //     value = storeDocs?.settings?.dgldefaults[item?.selectFieldKey];
         //     if (value) {
@@ -272,9 +300,9 @@ const MasterAzur = (props) => {
         //         setDataNew((prevState) => ({ ...prevState, ...azurValue }));
         //     }
         // } else {
-            value = storeDocs.dataEdit && storeDocs.dataEdit[item?.selectFieldKey];
+        value = storeDocs.dataEdit && storeDocs.dataEdit[item?.selectFieldKey];
         // }
-        
+
         if (value) {
             return moment(value).format(item.format || "DD.MM.YYYY.");
         }

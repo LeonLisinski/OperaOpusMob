@@ -53,7 +53,7 @@ const DglMainTabs: React.FC<DglMainTabsProps> = () => {
           <IonIcon icon={attach} />
           <IonLabel>Privitci</IonLabel>
         </IonTabButton>
-        {listItem!.tabpotipsvisible &&
+        {listItem!.tabpotpisvisible &&
         <IonTabButton tab="potpis" href="/docs/dgltabs/tab4">
           <IonIcon icon={pencil} />
           <IonLabel>Potpis</IonLabel>
