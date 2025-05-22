@@ -117,7 +117,7 @@ export const getStatuses = createAsyncThunk('docs/dgl/getStatuses', async (fake,
 export const getDocsLayout = createAsyncThunk('docs/dgl/getDocsLayout', async (fake, { dispatch, getState }) => {
     const auth = getState()?.auth;
     const docs = getState().docs;
-    console.log('strukturalayout', docs)
+    
     const folder = {
         folder: docs.sifdv
     }

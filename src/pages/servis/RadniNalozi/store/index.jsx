@@ -47,11 +47,13 @@ export const getGla = createAsyncThunk('servis/radninalozi/getgla', async (id, {
 
 export const copyRNfromUpit = createAsyncThunk('servis/radninalozi/getgla', async (id, { dispatch, getState }) => {
     const auth = getState()?.auth;
+    const docs = getState().docs;
+    const query = docs.layouts.queries.dgl.list;
 
     const queries = [{
-        query: 'spMob_DGL_RadniNalozi_Query',
+        query: query.sp,
         params: {
-            action: 'get',
+            ...query.params,
             korime: auth?.user?.korime,
             dglid: id,
         },
@@ -59,9 +61,16 @@ export const copyRNfromUpit = createAsyncThunk('servis/radninalozi/getgla', asyn
     }]
 
     const data = await getData({ queries }, auth);
-    await dispatch(setSifDv('RNsec'));
-    await dispatch(setItemData(data[0]));
-    await dispatch(getListItem(data[0]));
+
+    console.log('copyRNfromUpit', data);
+
+    dispatch(getListItem(data[0]));
+
+
+
+    // await dispatch(setSifDv('RNsec'));
+    // await dispatch(setItemData(data[0]));
+    // await dispatch(getListItem(data[0]));
     //dispatch(getList());
 });
 
@@ -117,9 +126,7 @@ export const setSearchText = createAsyncThunk('servis/radninalozi/searchText', a
 export const getListItem = createAsyncThunk('servis/radninalozi/listitem', async (item, { dispatch, getState }) => {
     const auth = getState()?.auth;
 
-
     dispatch(setItemData(item))
-
 
     const queries = [{
         query: 'spMob_DGL_RadniNalozi_Query',

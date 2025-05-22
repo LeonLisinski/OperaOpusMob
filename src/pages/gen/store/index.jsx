@@ -48,6 +48,20 @@ export const getList = createAsyncThunk('gen/getList', async (id, { dispatch, ge
     return data
 });
 
+export const getSifDvById = createAsyncThunk('gen/getList', async (id, { dispatch, getState }) => {
+    const queries = [{
+        query: 'spMob_DGL_Query',
+        params: {
+            action: 'getSifDv',
+            dglid: id
+        },
+        commandType: 'sp'
+    }]
+
+    const data = await getData({ queries }, auth);
+    return data
+});
+
 export const getGla = createAsyncThunk('gen/getGla', async (id, { dispatch, getState }) => {
     const auth = getState()?.auth;
     const gen = getState().gen;
@@ -143,18 +157,23 @@ export const createDoc = createAsyncThunk('gen/createDoc', async (fake, { dispat
 
 export const copyRNfromUpit = createAsyncThunk('gen/copyRNfromUpit', async (id, { dispatch, getState }) => {
     const auth = getState()?.auth;
+    const docs = getState().docs;
+    const query = docs.layouts.queries.dgl.list;
 
     const queries = [{
-        query: 'spMob_DGL_RadniNalozi_Query',
+        query: query.sp,
         params: {
-            action: 'get',
+            ...query.params,
             korime: auth?.user?.korime,
             dglid: id,
         },
         commandType: 'sp'
     }]
 
+
     const data = await getData({ queries }, auth);
+    dispatch(getListItem(data[0]));
+
     return data;
 });
 

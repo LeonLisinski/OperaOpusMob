@@ -14,7 +14,7 @@ import { changeStatusDgl } from '../store';
 import TabsTitle from './TabsTitle';
 import moment from 'moment';
 import MasterAzur from '../components/MasterAzur';
-import { create } from 'ionicons/icons';
+import { arrowBack, create } from 'ionicons/icons';
 
 const Tab1 = (props) => {
 	const dispatch = useDispatch();
@@ -23,6 +23,8 @@ const Tab1 = (props) => {
 	const listItem = useSelector((state) => state.docs.data);
 
 	const layouts = useSelector((state) => state.docs.layouts);
+
+	const sifdv = useSelector((state) => state.docs.sifdv);
 
 	const [showMasterModal, setShowMasterModal] = useState(false);
 	const [masterModalItem, setMasterModalItem] = useState(null);
@@ -43,7 +45,9 @@ const Tab1 = (props) => {
 	}
 
 	const goBack = () => {
+		    
 		router.push(`/docs/dgl/${root.sifdv}`, 'none');
+		//router.push(`/docs/dgl/${root.sifdv}`, 'none');
 	}
 
 	const onEditClick = (e) => {
@@ -141,7 +145,10 @@ const Tab1 = (props) => {
 			<IonHeader>
 				<IonToolbar>
 					<IonButtons slot="start">
-						<IonBackButton />
+						{/* <IonBackButton /> */}
+						<IonButton onClick={() => goBack()}>
+							<IonIcon slot="icon-only" icon={arrowBack}></IonIcon>
+						</IonButton>
 					</IonButtons>
 					<IonTitle>
 						<TabsTitle />

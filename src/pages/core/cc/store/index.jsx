@@ -24,6 +24,20 @@ export const selectAppByCode = createAsyncThunk('core/cc/selectAppByCode', async
     }
 });
 
+export const selectModuleBySifDv = createAsyncThunk('core/cc/selectModuleBySifDv', async (d, { dispatch, getState }) => {
+    const apps = getState()?.core.cc.apps;
+
+    const foundIndex = apps.findIndex(x => x.code == d.code);
+    const app = apps[foundIndex];
+    const modules = app.items[0].items;
+
+    const foundModuleIndex = modules.findIndex(x => x.sifdv == d.sifdv);
+
+    if (foundModuleIndex >= 0) {
+        dispatch(selectModule(modules[foundModuleIndex]));
+    }
+});
+
 export const ccSlice = createSlice({
     name: 'core/cc',
     initialState: {

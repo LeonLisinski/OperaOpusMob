@@ -7,11 +7,11 @@ import DetailAzur from '../components/DetailAzur';
 import TabsTitle from './TabsTitle';
 
 import './TabAkcije.css';
-import { changeStatus, createDoc, deleteDst, getPrivitci, setDstDataEdit, copyRNfromUpit } from '../store';
+import { changeStatus, createDoc, deleteDst, getPrivitci, setDstDataEdit, copyRNfromUpit, getSifDvById } from '../store';
 import DetailAzurNew from '../components/DetailAzurNew';
 import { usePhotoGallery } from '../../../hooks/usePhotoGallery';
-import { selectAppByCode } from '../../core/cc/store';
-import { getListItem } from '../../dgl/store';
+import { selectAppByCode, selectModuleBySifDv } from '../../core/cc/store';
+import { getDocsLayout, getFilterDefaults, getListItem, getSettings, getStatuses, setSifDv } from '../../dgl/store';
 
 const TabAkcije = () => {
     const router = useIonRouter();
@@ -39,7 +39,7 @@ const TabAkcije = () => {
                     text: 'Otvori',
                     role: 'confirm',
                     handler: () => {
-                        openSRN(data.payload[0].dglid);
+                        openSRN(data.payload[0]);
                     },
                   },
                 ]
@@ -48,13 +48,20 @@ const TabAkcije = () => {
 
 	}
 
-    const openSRN = async (id) => {
-        const data = await dispatch(copyRNfromUpit(id));
+    const openSRN = async (payload) => {
+        await dispatch(setSifDv(payload.sifdv));
+
         await dispatch(selectAppByCode('servis-mobile'));
+        await dispatch(selectModuleBySifDv({code: 'servis-mobile', sifdv: payload.sifdv}));
+        await dispatch(getDocsLayout());
 
-        console.log('data.payload[0]', data.payload[0]);
+        await dispatch(getSettings());
 
+        //await dispatch(setSifDv('RNele'));
+        await dispatch(getFilterDefaults());
+        await dispatch(getStatuses());
 
+        const data = await dispatch(copyRNfromUpit(payload.dglid));
         await dispatch(getListItem(data.payload[0]));
         router.push('/docs/dgltabs/tab1', 'none');
     }
