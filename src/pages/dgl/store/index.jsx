@@ -118,12 +118,20 @@ export const getDocsLayout = createAsyncThunk('docs/dgl/getDocsLayout', async (f
     const auth = getState()?.auth;
     const docs = getState().docs;
     
+    const sifGruoe = auth.user?.sifgrupe
+
     const folder = {
-        folder: docs.sifdv
+        folder: `${docs.sifdv}/${sifGruoe}`
     }
 
-    const data = await getDocsDefinitions({ ...folder }, auth)
-    
+    var data = await getDocsDefinitions({ ...folder }, auth)
+
+    if (Object.keys(data).length === 0) {
+        const folder2 = {
+            folder: `${docs.sifdv}`
+        }
+        data = await getDocsDefinitions({ ...folder2 }, auth)
+    }
     return data;
 });
 

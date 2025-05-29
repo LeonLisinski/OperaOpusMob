@@ -21,6 +21,8 @@ const GenList = (props) => {
 
 	const searchbarRef = createRef();
 
+	console.log('GEN');
+
 
 	const [showMasterModal, setShowMasterModal] = useState(false);
 	const [masterModalItem, setMasterModalItem] = useState(null);
