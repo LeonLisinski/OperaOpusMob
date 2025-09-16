@@ -145,13 +145,21 @@ const DetailAzurNew = (props) => {
             parentIdValue['parentId'] = storeDocs.dstDataEdit[layoutItem.parentIdFieldKey];
         }
 
+        let jsonFormValues = null;
+        
+        console.log('storeDocs.dstDataEdit', storeDocs.dstDataEdit );
+
+        if (storeDocs.dstDataEdit) {
+            jsonFormValues = {jsonFormValues: JSON.stringify(storeDocs.dstDataEdit)};
+        }
 
         setSearchModalProps((prevState) => (
             {
                 ...searchModalPropsDefaults,
                 showModal: true,
                 ...layoutItem,
-                ...parentIdValue
+                ...parentIdValue,
+                ...jsonFormValues
             }
         )
         );
@@ -324,7 +332,7 @@ const DetailAzurNew = (props) => {
 
                 <IonContent className="searchForm ion-padding">
                     {renderForm()}
-                    <Search entity={searchModalProps.entity} showModal={searchModalProps.showModal} type={searchModalProps.type} onClick={onSearchModalConfirm} onHideModal={onHideModal} debaunce={searchModalProps.debaunce} parentId={searchModalProps.parentId} items={searchModalProps.searchItems}></Search>
+                    <Search entity={searchModalProps.entity} showModal={searchModalProps.showModal} type={searchModalProps.type} onClick={onSearchModalConfirm} onHideModal={onHideModal} debaunce={searchModalProps.debaunce} parentId={searchModalProps.parentId} items={searchModalProps.searchItems} jsonFormValues={searchModalProps.jsonFormValues}></Search>
                 </IonContent>
 
                 <IonFooter>
