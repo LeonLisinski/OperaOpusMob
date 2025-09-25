@@ -7,12 +7,21 @@ import Search from '../../../components/search/simple/search';
 
 import { getListItem, saveDGL, saveDoc, selectDocs, setDstDataEditReset, setDstDataEditValues } from '../store';
 
+import { v4 as uuidv4 } from "uuid";
+import SearchSer from '../../../components/search/SearchSer';
+// import SearchSer from '../../../components/search/searchser';
+
 
 const DetailAzurNew = (props) => {
     
     const dispatch = useDispatch()
     const router = useIonRouter();
     const modal = useRef(null);
+
+
+    const [artikl, setArtikl] = useState({ id: null, name: '...' });
+    const [skladiste, setSkladiste] = useState({ id: null, name: '...' });
+
 
     const storeDocs = useSelector(selectDocs);
 
@@ -32,7 +41,8 @@ const DetailAzurNew = (props) => {
         debaunce: 200,
         selectFieldKey: null,
         selectFieldText: null,
-        searchItems: null
+        searchItems: null,
+        jsonFormValues: null
     }
 
 
@@ -46,6 +56,14 @@ const DetailAzurNew = (props) => {
             selectFieldKey: null
         }
     );
+
+        const [searchSerModalProps, setSearchSerModalProps] = useState(
+        {
+            showModal: false,
+            selectFieldKey: null
+        }
+    );
+
 
 
     const [title, setTitle] = useState();
@@ -130,6 +148,15 @@ const DetailAzurNew = (props) => {
         })
     }
 
+        const onSearchModalSerijaConfirm = async (e) => {
+            var azurValue = {sifart: e.sifart, sifsklad: e.sifsklad, skladiste:e.skladiste, artikl: e.artikl, sifser: e.serija};
+
+
+            await dispatch(setDstDataEditValues(azurValue));
+            await setDataNew((prevState) => ({ ...prevState, ...azurValue }));
+            setSearchModalProps((prevState) => ({ ...prevState, showModal: false }));
+        }
+
 
     const getLayoutEditItems = () => {
         if (storeDocs.dstTip == 'rad') 
@@ -140,17 +167,18 @@ const DetailAzurNew = (props) => {
 
     const handleShowModal = (layoutItem) => {
 
+        console.log('layoutItem', layoutItem);
+
         var parentIdValue = {};
         if (layoutItem.parentIdFieldKey) {
             parentIdValue['parentId'] = storeDocs.dstDataEdit[layoutItem.parentIdFieldKey];
         }
 
         let jsonFormValues = null;
-        
-        console.log('storeDocs.dstDataEdit', storeDocs.dstDataEdit );
+
 
         if (storeDocs.dstDataEdit) {
-            jsonFormValues = {jsonFormValues: JSON.stringify(storeDocs.dstDataEdit)};
+            jsonFormValues = {jsonFormValues: storeDocs.dstDataEdit};
         }
 
         setSearchModalProps((prevState) => (
@@ -252,7 +280,7 @@ const DetailAzurNew = (props) => {
             return <div style={{ paddingBottom: 8 }}>
                 <IonLabel>{item.caption}:</IonLabel>
                 {item.type == 'date' && renderDateControl(item)}
-                {(item.type == 'simple' || item.type == 'advanced') && renderSearchControl(item)}
+                {(item.type == 'simple' || item.type == 'advanced' || item.type == 'serija') && renderSearchControl(item)}
                 {item.type == 'memo' && renderMemoControl(item)}
                 {item.type == 'text' && renderTextControl(item)}
 
@@ -261,21 +289,31 @@ const DetailAzurNew = (props) => {
     }
 
     const renderSearchControl = (item) => {
+
+        
+
         const value = storeDocs.dstDataEdit && storeDocs.dstDataEdit[item?.selectFieldText];
+        console.log('renderSearchControl', item, value);
         var fill = 'outline';
         if (value) 
             fill = 'solid';
+
 
         return <IonButton className='ion-text-wrap' onClick={() => handleShowModal(item)} expand="block" disabled={checkDisabledValue(item)}  fill={fill}>
             {storeDocs.dstDataEdit && storeDocs.dstDataEdit[item?.selectFieldText]}
         </IonButton>
     }
 
+    
+
+
+
     const renderDateControl = (item) => {
         const value = renderDateControlValue(item);
         var fill = 'outline';
         if (value) 
             fill = 'solid';
+
 
         return <IonButton mode="ios" className='ion-text-wrap' onClick={() => handleShowDateModal({ selectFieldKey: item.selectFieldKey, azurFieldKey: item.azurFieldKey })} expand="block" disabled={checkDisabledValue(item)} fill={fill}>
             {value}
@@ -332,7 +370,7 @@ const DetailAzurNew = (props) => {
 
                 <IonContent className="searchForm ion-padding">
                     {renderForm()}
-                    <Search entity={searchModalProps.entity} showModal={searchModalProps.showModal} type={searchModalProps.type} onClick={onSearchModalConfirm} onHideModal={onHideModal} debaunce={searchModalProps.debaunce} parentId={searchModalProps.parentId} items={searchModalProps.searchItems} jsonFormValues={searchModalProps.jsonFormValues}></Search>
+                    <Search entity={searchModalProps.entity} showModal={searchModalProps.showModal && searchModalProps.type != 'serija'} type={searchModalProps.type} onClick={onSearchModalConfirm} onHideModal={onHideModal} debaunce={searchModalProps.debaunce} parentId={searchModalProps.parentId} items={searchModalProps.searchItems} jsonFormValues={searchModalProps.jsonFormValues}></Search>
                 </IonContent>
 
                 <IonFooter>
@@ -345,6 +383,8 @@ const DetailAzurNew = (props) => {
             </IonModal>
 
             <DatePicker showModal={dateModalProps.showModal} onModalConfirm={onDateModalConfirm} onHideModal={onHideDateModal} ></DatePicker>
+
+            <SearchSer uuid={uuidv4()} showModal={searchModalProps.showModal && searchModalProps.type == 'serija'}  onClick={onSearchModalSerijaConfirm} type='advanced' onHideModal={onHideModal} debaunce={'200'}></SearchSer>
 
         </>
     );

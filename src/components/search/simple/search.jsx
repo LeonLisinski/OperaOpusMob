@@ -95,7 +95,7 @@ const Search = (props) => {
 				action: props.entity,
 				korIme: auth.user?.korime,
 				parentId: props.parentId,
-				jsonFormValues: props.jsonFormValues,
+				jsonFormValues: props.jsonFormValues && JSON.stringify(props.jsonFormValues),
 				search: search
 			};
 

@@ -7,6 +7,7 @@ import { OverlayEventDetail } from '@ionic/react/dist/types/components/react-com
 import { useSelector } from 'react-redux';
 import getData from '../../utils/dataHelper';
 import NoData from '../NoData';
+import { selectDocs } from '../../pages/dgl/store';
 
 
 
@@ -27,6 +28,8 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 		return state.auth;
 	});
 
+	const storeDocs = useSelector(selectDocs);	
+	
 
 	const [originalData, setOriginalData] = useState<any[]>([]);
 	const [searchData, setSearchData] = useState<any[]>([]);
@@ -49,17 +52,19 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 
 
 
+	console.log('props.jsonFormValues', props);
+
 
 	useEffect(() => {
 		setSearchData([]);
 
-		if (!props.data?.skladiste?.id) {
+		if (!storeDocs.dstDataEdit?.sifsklad) {
 			setCheckedSkladiste(false);
 		} else {
 			setCheckedSkladiste(true);
 		}
 
-		if (!props.data?.artikl?.id) {
+		if (!storeDocs.dstDataEdit?.sifart) {
 			setCheckedArtikl(false);
 		} else {
 			setCheckedArtikl(true);
@@ -81,7 +86,7 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 
 
 
-	const getSearchData = async (search) => {
+	const getSearchData = async (search: String) => {
 		setLoading(true);
 		try {
 
@@ -98,7 +103,7 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 
 	}
 
-	const getDataDefinition = (search) => {
+	const getDataDefinition = (search: String) => {
 		
 		let sifArtChecked = refArtikl?.current?.checked;
 		let sifSklChecked = refSkladiste?.current?.checked
@@ -110,14 +115,16 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 			sifSklChecked = checkedSkladiste;
 		}
 
+		console.log('getDataDefinition', sifArtChecked, sifSklChecked, storeDocs.dstDataEdit);
+
 
 		return {
 			queries: [{
 				query: 'spMob_DST_Ser',
 				params: {
 					action: 'get',
-					sifsklad: (sifSklChecked ? props.data?.skladiste?.id : null),
-					sifart: (sifArtChecked ? props.data?.artikl?.id : null),
+					sifsklad: (sifSklChecked ? storeDocs.dstDataEdit?.sifsklad : null),
+					sifart: (sifArtChecked ? storeDocs.dstDataEdit?.sifart : null),
 					search: search
 				},
 				commandType: 'sp'
@@ -218,18 +225,16 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 					</IonButtons>
 				</IonToolbar>
 				<IonToolbar >
-					{(props.data?.skladiste?.id || props.data?.artikl?.id) &&
-						<IonList>
-							{props.data?.skladiste?.id &&
+					{(storeDocs.dstDataEdit?.sifsklad || storeDocs.dstDataEdit?.sifart) &&
+						<IonList style={{paddingRight:10}}>
+							{storeDocs.dstDataEdit?.sifsklad &&
 								<IonItem>
-									<IonLabel>{props.data?.skladiste?.name}</IonLabel>
-									<IonToggle ref={refSkladiste} checked={checkedSkladiste} onIonChange={() => onCheckedSkladiste()}></IonToggle>
+									<IonToggle ref={refSkladiste} checked={checkedSkladiste} onIonChange={() => onCheckedSkladiste()}>{storeDocs.dstDataEdit?.skladiste}</IonToggle>
 								</IonItem>
 							}
-							{props.data?.artikl?.id &&
+							{storeDocs.dstDataEdit?.sifart &&
 								<IonItem>
-									<IonLabel>{props.data?.artikl?.name}</IonLabel>
-									<IonToggle ref={refArtikl} checked={checkedArtikl} onIonChange={onCheckedArtikl}></IonToggle>
+									<IonToggle ref={refArtikl} checked={checkedArtikl} onIonChange={onCheckedArtikl}>{storeDocs.dstDataEdit?.artikl}</IonToggle>
 								</IonItem>
 							}
 						</IonList>

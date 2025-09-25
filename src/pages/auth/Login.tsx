@@ -89,6 +89,7 @@ const Login: React.FC = () => {
 		modal.current?.dismiss();
 
 		const json = {
+			...state.auth,
 			serverpath: api,
 			db: db,
 			connection: null,
