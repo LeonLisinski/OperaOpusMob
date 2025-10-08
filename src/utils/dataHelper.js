@@ -139,7 +139,12 @@ export const getData = async (props, auth) => {
 		return data;
 
 	} catch (error) {
-		console.error(error);
+		// Ovo će ti razdvojiti mrežnu grešku od server-side greške
+		console.error('Fetch failed:', {
+			name: error?.name,
+			message: error?.message,
+			stack: error?.stack
+		});
 
 		throw error;
 	}
