@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Omogući sve sistemske certifikate i HTTPS -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+            <certificates src="@raw/sectigo_r46" /> 
+        </trust-anchors>
+    </base-config>
+
+    <!-- Eksplicitno dopusti tvoje domene
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">erp.svamplus.hr</domain>
+        <domain includeSubdomains="true">api.unitpick.com</domain>
+    </domain-config> -->
+</network-security-config>
