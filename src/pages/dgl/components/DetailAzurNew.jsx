@@ -9,6 +9,7 @@ import { getListItem, saveDGL, saveDoc, selectDocs, setDstDataEditReset, setDstD
 
 import { v4 as uuidv4 } from "uuid";
 import SearchSer from '../../../components/search/searchser';
+// import SearchSer from '../../../components/search/searchser';
 
 
 const DetailAzurNew = (props) => {
