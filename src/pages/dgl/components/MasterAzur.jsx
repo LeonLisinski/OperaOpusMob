@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSearchbar, IonText, IonTextarea, IonTitle, IonToolbar, useIonRouter, useIonAlert } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonFooter, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSearchbar, IonText, IonTextarea, IonTitle, IonToolbar, useIonRouter, useIonAlert, IonItemSliding, IonItemOptions, IonItemOption } from '@ionic/react';
 import moment from 'moment';
 import { createRef, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -87,23 +87,25 @@ const MasterAzur = (props) => {
         await dispatch(setItemDataEditValues(selectValue));
 
         var azurValue = {};
-
+        let values = {...dataNew};
 
         azurValue[searchModalProps.azurFieldKey] = e.id;
-        setDataNew((prevState) => ({ ...prevState, ...azurValue }));
+        values = {...values, ...azurValue};
 
+        console.log('onSearchModalConfirm azurValue', values);
 
         setSearchModalProps((prevState) => ({ ...prevState, showModal: false }));
 
-        searchModalProps.dependencies.map(async (dependency) => {
+        await searchModalProps.dependencies?.map(async (dependency) => {
             if (dependency.action == 'reset') {
+                
                 selectValue = {};
                 selectValue[dependency.selectFieldKey] = null;
                 selectValue[dependency.selectFieldText] = null;
                 await dispatch(setItemDataEditValues(selectValue));
                 azurValue = {};
                 azurValue[dependency.azurFieldKey] = null;
-                setDataNew((prevState) => ({ ...prevState, ...azurValue }));
+                values = {...values, ...azurValue};
             }
             else if (dependency.action == 'azur') {
                 selectValue = {};
@@ -111,14 +113,23 @@ const MasterAzur = (props) => {
                 selectValue[dependency.controlFieldText] = e[dependency.selectFieldText];
                 await dispatch(setItemDataEditValues(selectValue));
                 azurValue = {};
-                azurValue[dependency.controlAzurFieldKey] = e[dependency.azurFieldKey];;
-                setDataNew((prevState) => ({ ...prevState, ...azurValue }));
+                azurValue[dependency.controlAzurFieldKey] = e[dependency.azurFieldKey];
+                values = {...values, ...azurValue};
             }
         })
+
+        console.log('onSearchModalConfirm azurValueFinall', values);
+        setDataNew((prevState) => ({ ...prevState, ...values }));
     }
+    
 
 
     const handleShowModal = (layoutItem) => {
+
+
+        const layoutItemSpread = { ...layoutItem, ...layoutItem.search };
+
+        console.log("layoutItemSpread", layoutItemSpread);
 
         var parentIdValue = {};
         if (layoutItem.parentIdFieldKey) {
@@ -130,7 +141,7 @@ const MasterAzur = (props) => {
             {
                 ...searchModalPropsDefaults,
                 showModal: true,
-                ...layoutItem,
+                ...layoutItemSpread,
                 ...parentIdValue
             }
         )
@@ -208,7 +219,7 @@ const MasterAzur = (props) => {
         if (!props.item?.dglid) {
             router.push('/docs/dgltabs');
         }
-        
+
     }
 
     const renderForm = () => {
@@ -276,8 +287,23 @@ const MasterAzur = (props) => {
 
     const renderMemoControl = (item) => {
         const value = storeDocs.dataEdit && storeDocs.dataEdit[item?.selectFieldKey];
-        return <IonTextarea mode="ios" placeholder="..." autoGrow={true} value={value} style={{ border: '1px solid #ccc', minHeight: 150, whiteSpace: 'pre-wrap' }} onIonInput={(e) => handleTextChange(e, { selectFieldKey: item.selectFieldKey, azurFieldKey: item.azurFieldKey })} disabled={checkDisabledValue(item)}>
-        </IonTextarea>
+        return (
+
+
+            <IonItemSliding >
+                <IonItem className={`ion-no-padding`} button  >
+                    <IonTextarea mode="ios" placeholder="..." autoGrow={true} value={value} style={{ border: '1px solid #ccc', minHeight: 150, whiteSpace: 'pre-wrap' }} onIonInput={(e) => handleTextChange(e, { selectFieldKey: item.selectFieldKey, azurFieldKey: item.azurFieldKey })} disabled={checkDisabledValue(item)}>
+                    </IonTextarea>
+                </IonItem>
+                {item.search && 
+                <IonItemOptions side="end">
+                    <IonItemOption style={{ minWidth: 100 }} color="primary" onClick={() => handleShowModal(item)}>Odabir<br></br>teksta</IonItemOption>
+                </IonItemOptions>
+                }
+            </IonItemSliding>
+        )
+
+
     }
 
     const checkDisabledValue = (item) => {
@@ -329,7 +355,7 @@ const MasterAzur = (props) => {
 
                 <IonContent className="searchForm ion-padding">
                     {renderForm()}
-                    <Search entity={searchModalProps.entity} showModal={searchModalProps.showModal} type={searchModalProps.type} onClick={onSearchModalConfirm} onHideModal={onHideModal} debaunce={searchModalProps.debaunce} parentId={searchModalProps.parentId}></Search>
+                    <Search entity={searchModalProps.entity} showModal={searchModalProps.showModal} type={searchModalProps.type} onClick={onSearchModalConfirm} onHideModal={onHideModal} debaunce={searchModalProps.debaunce} parentId={searchModalProps.parentId} azurFieldKey={searchModalProps.azurFieldKey}></Search>
                 </IonContent>
 
                 <IonFooter>

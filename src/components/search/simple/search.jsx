@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux';
 
 const Search = (props) => {
 
+	console.log('Search props', props);
+
 	const auth = useSelector((state) => {
 		return state.auth;
 	});	
@@ -96,6 +98,7 @@ const Search = (props) => {
 				korIme: auth.user?.korime,
 				parentId: props.parentId,
 				jsonFormValues: props.jsonFormValues && JSON.stringify(props.jsonFormValues),
+				azurFieldKey: props.azurFieldKey,
 				search: search
 			};
 
