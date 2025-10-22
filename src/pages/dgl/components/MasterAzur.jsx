@@ -43,7 +43,6 @@ const MasterAzur = (props) => {
         }
     );
 
-
     const [title, setTitle] = useState('Unos novog dokumenta');
 
     useEffect(() => {
@@ -125,8 +124,6 @@ const MasterAzur = (props) => {
 
 
     const handleShowModal = (layoutItem) => {
-
-
         const layoutItemSpread = { ...layoutItem, ...layoutItem.search };
 
         console.log("layoutItemSpread", layoutItemSpread);
@@ -135,7 +132,6 @@ const MasterAzur = (props) => {
         if (layoutItem.parentIdFieldKey) {
             parentIdValue['parentId'] = storeDocs.dataEdit[layoutItem.parentIdFieldKey];
         }
-
 
         setSearchModalProps((prevState) => (
             {

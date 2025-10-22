@@ -62,7 +62,7 @@ const Search = (props) => {
 
 		//const target = ev.target as HTMLIonSearchbarElement;
 
-	}, [props.entity]);
+	}, [props.entity, props.azurFieldKey]);
 
 
 	useEffect(() => {
