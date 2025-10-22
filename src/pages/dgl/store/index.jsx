@@ -427,7 +427,9 @@ export const saveSignature = createAsyncThunk('docs/dgl/saveSignature', async (d
             dglid: dglid,
             signature: data.signature,
             signatureText: data.signatureText,
-            signatureTextField: layouts.properties.signatureTextAzurField
+            signatureTextField: layouts.properties.signatureTextAzurField,
+            signatureEmail: data.signatureEmail,
+            signatureEmailField: layouts.properties.signatureEmailAzurField,
         },
         commandType: 'sp'
     }]

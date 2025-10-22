@@ -28,6 +28,7 @@ const Tab4 = () => {
 
 	const signPad = useRef(null)
 	const refIme = useRef(null)
+	const refEmail = useRef(null)
 
 	const [pathText, setPathText] = useState('nedefinirano');
 	const [uriPath, setUriPath] = useState('nedefinirano');
@@ -56,7 +57,8 @@ const Tab4 = () => {
 	const onClickSpremi = async () => {
 		const signature = signPad.current.getTrimmedCanvas().toDataURL("image/png");
 		const signatureText = refIme.current.value;
-		await dispatch(saveSignature({signature: signature, signatureText: signatureText}));
+		const signatureEmail = refEmail.current.value;
+		await dispatch(saveSignature({signature: signature, signatureText: signatureText, signatureEmail: signatureEmail}));
 		createAndOpenPdf();
 	}
 
@@ -76,6 +78,14 @@ const Tab4 = () => {
 			if (layouts.properties?.testEmail) {
 				mailTo = layouts.properties?.testEmail;
 			}
+
+
+			const signatureEmail = refEmail.current.value;
+
+			if (signatureEmail.Trim() != '') {
+				mailTo += `;${signatureEmail}`;
+			}
+			
 
 			
 			let mailSubject = `RADNI NALOG - ${dgl['broj radnog naloga']}`;
@@ -217,6 +227,11 @@ const Tab4 = () => {
 						<div style={{ paddingTop: 15 }}>
 							<IonItem>
 								<IonInput placeholder="Ime i prezime" value={dgl[layouts.properties?.signatureTextSelectField]} ref={refIme}></IonInput>
+							</IonItem>
+						</div>
+						<div style={{ paddingTop: 15 }}>
+							<IonItem>
+								<IonInput placeholder="Email" value={dgl[layouts.properties?.signatureEmailSelectField]} ref={refEmail}></IonInput>
 							</IonItem>
 						</div>
 					</>
