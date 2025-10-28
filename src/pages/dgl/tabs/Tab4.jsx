@@ -149,7 +149,7 @@ const Tab4 = () => {
 			const data = await getBase64StringReport();
 
 			if (data && layouts.properties.signatureOpenPdf == true) {
-				alert("1");
+				
 				await Filesystem.writeFile({
 					directory: Directory.Documents,
 					path: 'opera/test.pdf',
