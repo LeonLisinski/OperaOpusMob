@@ -1,5 +1,5 @@
 import { IonAlert, IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSpinner, IonText, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
-import { arrowBack } from 'ionicons/icons';
+import { arrowBack, mail } from 'ionicons/icons';
 import { memo, useRef, useState } from 'react';
 
 
@@ -32,6 +32,8 @@ const Tab4 = () => {
 
 	const [pathText, setPathText] = useState('nedefinirano');
 	const [uriPath, setUriPath] = useState('nedefinirano');
+
+	const [emailTo, setEmaiTo] = useState('');
 
 	const [message, setMessage] = useState("");
 	const [messageHeader, setMessageHeader] = useState("...");
@@ -75,16 +77,22 @@ const Tab4 = () => {
 
 			let mailTo = dgl.kontaktemail;
 
+
 			if (layouts.properties?.testEmail) {
 				mailTo = layouts.properties?.testEmail;
 			}
 
+			const signatureEmailText = refEmail.current.value;
 
-			const signatureEmail = refEmail.current.value;
+			setEmaiTo(signatureEmailText);
 
-			if (signatureEmail.Trim() != '') {
-				mailTo += `;${signatureEmail}`;
+			if (signatureEmailText && signatureEmailText.trim() != '') {
+				mailTo += `;${signatureEmailText}`;
 			}
+			
+
+			
+			
 			
 
 			
@@ -110,6 +118,7 @@ const Tab4 = () => {
 			u prilogu kopija ovjerenog radnog naloga za izvršene usluge.
 			`;
 
+			
 			const data = await getReport({ reportName: layouts.properties?.reportName, mailTo:mailTo, mailSubject: mailSubject, mailBody: mailBody, parameters: parameters}, auth, 'mobile').catch(err => {
 				setMessage(err);
 				setIserror(true);
@@ -136,10 +145,11 @@ const Tab4 = () => {
 	const createAndOpenPdf = async () => {
 		try {
 			setLoading(true);
+			
 			const data = await getBase64StringReport();
 
-
 			if (data && layouts.properties.signatureOpenPdf == true) {
+				alert("1");
 				await Filesystem.writeFile({
 					directory: Directory.Documents,
 					path: 'opera/test.pdf',
@@ -231,7 +241,7 @@ const Tab4 = () => {
 						</div>
 						<div style={{ paddingTop: 15 }}>
 							<IonItem>
-								<IonInput placeholder="Email" value={dgl[layouts.properties?.signatureEmailSelectField]} ref={refEmail}></IonInput>
+								<IonInput placeholder="Email" value={emailTo || dgl[layouts.properties?.signatureEmailSelectField]} ref={refEmail}></IonInput>
 							</IonItem>
 						</div>
 					</>
