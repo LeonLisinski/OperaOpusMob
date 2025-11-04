@@ -129,7 +129,7 @@ const Tab3 = () => {
 
 
     const renderList = () => {
-
+        console.log("renderList", list);
         return (
             <IonList>
                 {list && list.map((item, i) => {

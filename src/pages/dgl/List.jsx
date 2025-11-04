@@ -1,7 +1,7 @@
 import {
 	IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem,
 	IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonRefresher, IonRefresherContent, IonSearchbar, IonSpinner, IonTitle, IonToolbar,
-	useIonRouter
+	useIonRouter, useIonViewWillEnter
 } from '@ionic/react';
 import { createRef, memo, useEffect, useRef, useState } from 'react';
 
@@ -10,7 +10,7 @@ import { createRef, memo, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getDocsLayout, getFilterDefaults, getList, getListItem, getSettings, getStatuses, selectDocs, setSearchText, setSifDv } from './store';
-import { add, search, options, documentTextOutline, closeCircle } from 'ionicons/icons';
+import { add, search, options, documentTextOutline, closeCircle, trailSignSharp, pencilOutline } from 'ionicons/icons';
 import moment from 'moment';
 import DglFilter from './components/DglFilter';
 import MasterAzur from './components/MasterAzur';
@@ -37,6 +37,7 @@ const DglList = (props) => {
 	//const list = useSelector(selectList);
 
 	const pageRef = useRef(null);
+	const isInitialLoadRef = useRef(true);
 
 	const [showSearchbar, setShowSearchbar] = useState(false);
 	const [showFilterModal, setShowFilterModal] = useState(false);
@@ -55,8 +56,19 @@ const DglList = (props) => {
 			return;
 		getFilterText();
 		populateData();
-
+		// Mark that initial load is complete once filter is initialized
+		if (isInitialLoadRef.current) {
+			isInitialLoadRef.current = false;
+		}
 	}, [filter]);
+
+	useIonViewWillEnter(() => {
+		// Refresh list when returning to this page, but only if filter is initialized
+		// and it's not the initial load (to avoid double refresh)
+		if (filter.statuses && !isInitialLoadRef.current) {
+			populateData();
+		}
+	});
 
 	useEffect(() => {
         setTimeout(() => {
@@ -160,6 +172,13 @@ const DglList = (props) => {
 								})
 							}
 							<div style={{ position: 'absolute', top: 0, left: 5, color: '#333', fontSize: 10 }}>{i + 1}.</div>
+
+								{item.iconcomment &&
+									<IonIcon style={{position:'absolute', top:10, right:50}} icon={documentTextOutline}></IonIcon>
+								}
+								{item.iconsignature &&
+									<IonIcon style={{position:'absolute', top:10, right:20}} icon={pencilOutline}></IonIcon>
+								}
 							
 						</IonLabel>
 					</IonItem>
