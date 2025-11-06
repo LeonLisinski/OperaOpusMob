@@ -1,9 +1,12 @@
 import { Device } from '@capacitor/device';
 import { IonContent, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonPage, IonToggle } from '@ionic/react';
-import { codeOutline, colorFilterOutline, lockClosedOutline, phonePortraitOutline, refresh, refreshOutline, server, serverOutline } from 'ionicons/icons';
+import { build, codeOutline, colorFilterOutline, lockClosedOutline, phonePortraitOutline, refresh, refreshOutline, server, serverOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../../../components/Header';
+
+import buildInfo from "./../../../build-info.json";
+
 
 
 const TabPostavke: React.FC = () => {
@@ -43,6 +46,15 @@ const TabPostavke: React.FC = () => {
       <Header title='Kontrolni centar - postavke'></Header>
       <IonContent fullscreen>
         <IonItemGroup>
+          <IonItemDivider color={'light'}>
+            <IonIcon slot='start' icon={build}></IonIcon> 
+            <IonLabel>Verzija:</IonLabel>
+          </IonItemDivider>
+          <IonItem>
+            <IonLabel className="ion-text-wrap">
+              <strong><p>{buildInfo.version} | Build: {buildInfo.buildDate}</p></strong>
+            </IonLabel>
+          </IonItem>
           <IonItemDivider color={'light'}>
             <IonIcon slot='start' icon={serverOutline}></IonIcon> 
             <IonLabel>Konekcija:</IonLabel>

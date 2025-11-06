@@ -8,7 +8,7 @@ import Search from '../../../components/search/simple/search';
 import { getListItem, saveDGL, saveDoc, selectDocs, setDstDataEditReset, setDstDataEditValues } from '../store';
 
 import { v4 as uuidv4 } from "uuid";
-import SearchSer from '../../../components/search/SearchSer';
+import SearchSer from '../../../components/search/searchser';
 
 
 const DetailAzurNew = (props) => {
