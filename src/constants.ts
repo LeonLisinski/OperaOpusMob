@@ -1,6 +1,5 @@
 export const SITE_PREFIX = "/erp";
 
-export const APP_VERSION = "2.0.5"
 export const SERVICE_DOMAIN = 'https://erp.svamplus.hr/testapi/api';
 
 export const SERVICE_CORE_DOMAIN = 'https://erp.svamplus.hr/testapi/api';

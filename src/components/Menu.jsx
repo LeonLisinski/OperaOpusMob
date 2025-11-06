@@ -19,7 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../pages/auth/store';
 import { addIcons } from 'ionicons';
 import { selectApp } from '../pages/core/cc/store';
-import { APP_VERSION } from '../constants';
+
+import buildInfo from "../build-info.json";
 
 
 
@@ -125,7 +126,7 @@ const Menu = () => {
         <IonMenu contentId="main" type="overlay" disabled={!user}>
           <div style={{ background: '#cce1da', borderBottom: '2px solid #39655d', textAlign: 'center', paddingTop: 20, paddingBottom: 15 }}>
             <img src={'assets/svamplus.svg'} style={{width:'70%', maxWidth:250}}></img>
-            <div style={{position: 'absolute', top:4, right:4, fontSize:12, color: '#39655d'}}><i>{APP_VERSION}</i></div>
+            <div style={{position: 'absolute', top:4, right:4, fontSize:12, color: '#39655d'}}><i>{buildInfo?.version}</i></div>
           </div>
           
           <IonContent>

@@ -9,7 +9,6 @@ import UnlockApp from './components/UnlockApp';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../auth/store';
 import { getMenu, selectApp } from './store';
-// import { APP_VERSION } from '../../../constants';
 
 import buildInfo from "./../../../build-info.json";
 
