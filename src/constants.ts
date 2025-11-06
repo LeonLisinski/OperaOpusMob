@@ -1,8 +1,7 @@
 export const SITE_PREFIX = "/erp";
 
-
-//export const SERVICE_DOMAIN = 'http://testoperaweb/testapi2019/api';
-export const SERVICE_DOMAIN = 'http://localhost:42238/api';
+export const APP_VERSION = "2.0.5"
+export const SERVICE_DOMAIN = 'https://erp.svamplus.hr/testapi/api';
 
 export const SERVICE_CORE_DOMAIN = 'https://erp.svamplus.hr/testapi/api';
 
@@ -11,5 +10,5 @@ export const SERVICE_CORE_DOMAIN = 'https://erp.svamplus.hr/testapi/api';
 // export const DATABASE = 'ooMEDIVA_20230405_mr';
 
 //export const SERVICE_DOMAIN = 'https://erp.mfm.hr/service/api';
-export const SERVER = 'MIDASQL';
-export const DATABASE = 'ooMIDA';
+export const SERVER = '';
+export const DATABASE = '';
