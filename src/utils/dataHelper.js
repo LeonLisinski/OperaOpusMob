@@ -347,7 +347,6 @@ export const getReport = async (props, auth, type) => {
 }
 
 export const saveAttachments = async (props, auth, type) => {
-	console.log('saveAttachments', props, auth);
 
     const { parameters } = props;
     try {

@@ -32,7 +32,6 @@ const TabStavke = () => {
 
 
     const list = useSelector((state) => {
-        console.log('params.tip', params.tip)
         return state.gen.datadet.filter(x => x.tip == params.tip);
 
     });
@@ -40,7 +39,6 @@ const TabStavke = () => {
 
 
 	useEffect(() => {
-        console.log('ppppp', params.tip);
 		dispatch(setDstTip(params.tip));
 	}, [params.tip]);
 
@@ -186,8 +184,6 @@ const TabStavke = () => {
 	}
 
 	const getItemValue = (layoutItem, item, index) => {
-
-        console.log('getItemValue', layoutItem, layoutItem["field"])
 
 		let value = item[layoutItem["field"]];
 		if (!value)

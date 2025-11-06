@@ -62,8 +62,6 @@ export const copyRNfromUpit = createAsyncThunk('servis/radninalozi/getgla', asyn
 
     const data = await getData({ queries }, auth);
 
-    console.log('copyRNfromUpit', data);
-
     dispatch(getListItem(data[0]));
 
 

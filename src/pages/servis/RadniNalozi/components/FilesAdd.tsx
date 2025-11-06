@@ -33,8 +33,6 @@ const FilesAdd = (props) => {
 
 
   const openFile = async (photo) => {
-    console.log('openFile', photo);
-
      // 6. In case the file did already exists -> we retrieve it
 
      let file = null;
@@ -43,15 +41,12 @@ const FilesAdd = (props) => {
       directory: Directory.Cache,
     })
       .then((savedFile) => {
-        console.log(savedFile);
         return savedFile.uri
       })
       .catch((error) => {
-        console.error(error)
         throw new Error('Cannot save/open the file')
       })
 
-      console.log('file', file);
       await FileOpener.openFile({
         path: file,
       });
@@ -62,15 +57,12 @@ const FilesAdd = (props) => {
         directory: Directory.Data,
       })
         .then((savedFile) => {
-          console.log(savedFile);
           return savedFile.uri
         })
         .catch((error) => {
-          console.error(error)
           throw new Error('Cannot save/open the file')
         })
 
-        console.log('file', file);
           await FileOpener.openFile({
             path: file,
           });
@@ -81,14 +73,11 @@ const FilesAdd = (props) => {
           directory: Directory.External,
         })
           .then((savedFile) => {
-            console.log(savedFile);
             return savedFile.uri
           })
           .catch((error) => {
-            console.error(error)
             throw new Error('Cannot save/open the file')
           })
-          console.log('file', file);
           await FileOpener.openFile({
             path: file,
           });          
@@ -99,14 +88,11 @@ const FilesAdd = (props) => {
             directory: Directory.ExternalStorage,
           })
             .then((savedFile) => {
-              console.log(savedFile);
               return savedFile.uri
             })
             .catch((error) => {
-              console.error(error)
               throw new Error('Cannot save/open the file')
             })
-            console.log('file', file);
             await FileOpener.openFile({
               path: file,
             });
@@ -116,14 +102,11 @@ const FilesAdd = (props) => {
               directory: Directory.Library,
             })
               .then((savedFile) => {
-                console.log(savedFile);
                 return savedFile.uri
               })
               .catch((error) => {
-                console.error(error)
                 throw new Error('Cannot save/open the file')
               })
-              console.log('file', file);
               await FileOpener.openFile({
                 path: file,
               });
@@ -133,14 +116,11 @@ const FilesAdd = (props) => {
                 directory: Directory.Documents,
               })
                 .then((savedFile) => {
-                  console.log(savedFile);
                   return savedFile.uri
                 })
                 .catch((error) => {
-                  console.error(error)
                   throw new Error('Cannot save/open the file')
                 })
-                console.log('file', file);
                 await FileOpener.openFile({
                   path: file,
                 });
@@ -154,9 +134,6 @@ const FilesAdd = (props) => {
   //     readData: true
   //   });
 
-  //   console.log('result', result);
-
-  //   console.log('base64FromPath', base64FromPath(result.files[0].path))
   // };
 
   return (

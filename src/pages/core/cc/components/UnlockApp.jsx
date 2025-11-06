@@ -39,12 +39,6 @@ const UnlockApp = (props) => {
 
 
 	const onClickOk = async (e) => {
-		// const d = await getStorageUnlocked();
-		// console.log(d);
-		// const data = JSON.parse(d);
-		// console.log(data);
-		// return
-
 		const pin = codeRef.current.value;
 		const id = await Device.getId();
 
@@ -71,8 +65,6 @@ const UnlockApp = (props) => {
 
 
 			if (data) {
-				console.log('data', data);
-
 				await dispatch(unlockApp(data));
 				await setStorageUnlocked(data);
 				props.onHideModal(e);

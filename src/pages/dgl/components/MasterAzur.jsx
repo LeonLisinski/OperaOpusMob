@@ -91,8 +91,6 @@ const MasterAzur = (props) => {
         azurValue[searchModalProps.azurFieldKey] = e.id;
         values = {...values, ...azurValue};
 
-        console.log('onSearchModalConfirm azurValue', values);
-
         setSearchModalProps((prevState) => ({ ...prevState, showModal: false }));
 
         await searchModalProps.dependencies?.map(async (dependency) => {
@@ -117,7 +115,6 @@ const MasterAzur = (props) => {
             }
         })
 
-        console.log('onSearchModalConfirm azurValueFinall', values);
         setDataNew((prevState) => ({ ...prevState, ...values }));
     }
     
@@ -125,8 +122,6 @@ const MasterAzur = (props) => {
 
     const handleShowModal = (layoutItem) => {
         const layoutItemSpread = { ...layoutItem, ...layoutItem.search };
-
-        console.log("layoutItemSpread", layoutItemSpread);
 
         var parentIdValue = {};
         if (layoutItem.parentIdFieldKey) {
@@ -207,7 +202,6 @@ const MasterAzur = (props) => {
             modal.current?.dismiss();
 
         } catch (ex) {
-            console.log(ex);
         }
 
         props.onHideModal(e);

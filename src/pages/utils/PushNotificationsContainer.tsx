@@ -27,15 +27,12 @@ export default function PushNotificationsContainer() {
     },[])
     
     const register = () => {
-        console.log('Initializing HomePage');
-
         // Register with Apple / Google to receive push via APNS/FCM
         PushNotifications.register();
 
         // On success, we should be able to receive notifications
         PushNotifications.addListener('registration',
             (token: Token) => {
-                console.log("token", token);
                 showToast('Push registration success');
             }
         );

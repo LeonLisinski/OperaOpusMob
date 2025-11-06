@@ -60,7 +60,6 @@ const RadniNaloziFilter = (props) => {
 
   const toggleStatus = (e, item) => {
     const statusItem = {...item, ...{checked: e.detail.checked} }
-    console.log("statusItem",statusItem);
     dispatch(setFilterTempStatuses(statusItem));
   }
 

@@ -60,12 +60,10 @@ const DglFilter = (props) => {
 
   const toggleStatus = (e, item) => {
     const statusItem = {...item, ...{checked: e.detail.checked} }
-    console.log("statusItem",statusItem);
     dispatch(setFilterTempStatuses(statusItem));
   }
 
   const onChangeSamoMoje = (e) => {
-    console.log('eeee', e);
     dispatch(setFilterTempValues({samomoje: e.detail.checked}));
   }
 

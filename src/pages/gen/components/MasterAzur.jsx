@@ -199,7 +199,7 @@ const MasterAzur = (props) => {
             modal.current?.dismiss();
 
         } catch (ex) {
-            console.log(ex);
+
         }
 
         props.onHideModal(e);
