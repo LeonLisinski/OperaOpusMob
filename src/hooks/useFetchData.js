@@ -10,8 +10,6 @@ export const useFetchData = () => {
 		return state.auth;
 	});
 
-	console.log('api', auth);
-
 	const [data, setData] = useState(null);
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(true);

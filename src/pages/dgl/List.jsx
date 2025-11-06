@@ -143,7 +143,6 @@ const DglList = (props) => {
 
 	const onItemClick = async (e, item) => {
 		e.preventDefault();
-		console.log('item', item)
 		await dispatch(getListItem(item));
 		ionRouter.push('/docs/dgltabs');
 	}

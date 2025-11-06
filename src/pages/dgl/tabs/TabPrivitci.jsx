@@ -52,7 +52,6 @@ const TabPrivitci = () => {
   const list = useSelector((state) => state.docs.privitci);
 
   const onItemClick = async (e, item) => {
-    console.log('item', item)
     const responseDispachData = await dispatch(getPrivitak(item.id));
     const responseData = responseDispachData.payload;
     await Filesystem.writeFile({

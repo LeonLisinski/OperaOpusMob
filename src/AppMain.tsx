@@ -53,7 +53,7 @@ const AppMain: React.FC = () => {
   }, []);
 
   App.addListener('appUrlOpen', data => {
-    console.log('App opened with URL:', data);
+    
   });
 
   async function checkRememberMe() {
@@ -119,7 +119,7 @@ const AppMain: React.FC = () => {
 
   const getUserStorage = async () => {
     const ret = await Preferences.get({ key: 'user' });
-    const data = JSON.parse(ret.value);
+    const data = ret.value ? JSON.parse(ret.value) : null;
     return data;
   }
 

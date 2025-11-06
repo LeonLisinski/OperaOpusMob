@@ -210,7 +210,6 @@ export const dnevniIzvjestajSlice = createSlice({
 export const { changeValue, setItemData, setFilter, setFilterTemp, setApplyFilters, setFilterTempValues, setSearchList } = dnevniIzvjestajSlice.actions
 
 export const selectList = ({ servis }) => {
-    //console.log('selectlist', servis.dnevniIzvjestaj?.list);
     return servis.dnevniIzvjestaj?.list
 }
 

@@ -72,10 +72,8 @@ const TabPrivitci = () => {
   const list = useSelector((state: any) => state.servis.radniNalozi?.privitci);
 
   const onItemClick = async (e, item: any) => {
-    console.log('item', item);
     const responseDispachData = await dispatch(getPrivitak(item.id));
     const responseData = responseDispachData.payload;
-    console.log('responseData', responseData);
     await Filesystem.writeFile({
       directory: Directory.Documents,
       path: `opera/${responseData.FileName}`,
@@ -159,9 +157,6 @@ const TabPrivitci = () => {
   };
 
   // const openFile = async (photo) => {
-  //   console.log('photo3', photo);
-
-
   //   await FileOpener.openFile({
   //     path: photo.filepath,
   //   });
@@ -177,7 +172,7 @@ const TabPrivitci = () => {
 
   //   //   await FileOpener.open(fileOpenerOptions);
   //   // } catch (e) {
-  //   //   console.log('Error opening file', e);
+  //   //   // Handle error opening file if needed
   //   // }
 
   //   // await FileOpener.openFile({
@@ -186,22 +181,15 @@ const TabPrivitci = () => {
   // };
 
   // const openFile2 = async (photo) => {
-  //   console.log('photo3', photo);
-
-
   //   await FileOpener.openFile({
   //     path: 'content://data/user/0/com.opera.mobile/files/Pictures/JPEG_20240502_144734_2128035145779355120.jpg'
   //   });
   // };
 
   // const openFile3 = async (photo) => {
-  //   console.log('photo3', photo);
-
   //   const uriResult = await Filesystem.getUri({
   //     path: 'file:///data/user/0/com.opera.mobile/files/Pictures/JPEG_20240502_144734_2128035145779355120.jpg'
   //   });
-
-  //   console.log('uriResult',uriResult);
 
   //   await FileOpener.openFile({
   //     path: uriResult.uri
@@ -274,9 +262,7 @@ const TabPrivitci = () => {
   //     multiple: true,
   //   });
 
-  //   console.log('result', result);
-
-  //   console.log(base64FromPath(result.files[0].path))
+  //   // Handle result if needed
   // };
   
   // const pickVideos = async () => {
@@ -290,28 +276,16 @@ const TabPrivitci = () => {
       readData: true
     });
 
-    console.log('appendFileToFormData', result);
-  
-    // const formData = new FormData();
-
     const parameters = {
       dglid: data.dglid,
       files: result.files
     }
 
-    console.log('appendFileToFormData', parameters);
-    
-    // console.log(1);
-
-
     await saveAttachments({parameters: parameters}, auth);
     populateList();
 
 
-    // console.log('appendFileToFormData', file);
-
     // if (file.blob) {
-    //   console.log('file.blob', file.blob);
     //   const rawFile = new File(file.blob, file.name, {
     //     type: file.mimeType,
     //   });

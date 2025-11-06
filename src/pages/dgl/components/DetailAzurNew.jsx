@@ -168,8 +168,6 @@ const DetailAzurNew = (props) => {
 
     const handleShowModal = (layoutItem) => {
 
-        console.log('layoutItem', layoutItem);
-
         var parentIdValue = {};
         if (layoutItem.parentIdFieldKey) {
             parentIdValue['parentId'] = storeDocs.dstDataEdit[layoutItem.parentIdFieldKey];
@@ -260,7 +258,6 @@ const DetailAzurNew = (props) => {
             }
             modal.current?.dismiss();
         } catch (ex) {
-            console.log(ex);
         }
 
         
@@ -294,7 +291,6 @@ const DetailAzurNew = (props) => {
         
 
         const value = storeDocs.dstDataEdit && storeDocs.dstDataEdit[item?.selectFieldText];
-        console.log('renderSearchControl', item, value);
         var fill = 'outline';
         if (value) 
             fill = 'solid';

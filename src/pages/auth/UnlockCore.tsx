@@ -80,8 +80,6 @@ const UnlockCore: React.FC = () => {
 			});
 
 
-			console.log('UNLOCK JSON', json);
-
 			if (json) {
 				await setStorageAuth(json);
 				await dispatch(setApi(json));

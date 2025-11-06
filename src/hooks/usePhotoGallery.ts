@@ -82,7 +82,6 @@ export function usePhotoGallery() {
     });
 
     const newFiles:UserPhoto[] = [...photos, ...files];
-    console.log('array', photos, files, newFiles);
 
     setPhotos(newFiles);
   };
@@ -106,13 +105,6 @@ export function usePhotoGallery() {
       directory: Directory.ExternalStorage
     });
     
-    // console.log('fileInfo', {
-    //   path: fileName,
-    //   data: base64Data,
-    //   directory: Directory.ExternalStorage
-    // });
-    console.log('savedFile', savedFile);
-
     if (isPlatform('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
       // Details: https://ionicframework.com/docs/building/webview#file-protocol

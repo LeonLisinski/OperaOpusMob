@@ -10,8 +10,6 @@ import { useSelector } from 'react-redux';
 
 const Search = (props) => {
 
-	console.log('Search props', props);
-
 	const auth = useSelector((state) => {
 		return state.auth;
 	});	
@@ -181,7 +179,6 @@ const Search = (props) => {
 
 	
     const onClickProvjeriStanje = async(e, item, index) => {
-		console.log('item', item);
 
 
 		const queries = [{
@@ -193,8 +190,6 @@ const Search = (props) => {
 		}]
 	
 		const data = await getData({ queries }, auth);
-
-		console.log('data', data);
 
 		setStanjeArtiklaData(data);
 

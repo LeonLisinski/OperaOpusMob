@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSearchbar, IonSpinner, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
+﻿import { IonBackButton, IonButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonMenuButton, IonModal, IonPage, IonSearchbar, IonSpinner, IonTitle, IonToggle, IonToolbar } from '@ionic/react';
 import { createRef, useEffect, useRef, useState } from 'react';
 
 
@@ -34,7 +34,7 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 	const [originalData, setOriginalData] = useState<any[]>([]);
 	const [searchData, setSearchData] = useState<any[]>([]);
 
-	const [placeholder, setPlaceholder] = useState<string>('Tražilica (minimalno 2 znaka)');
+	const [placeholder, setPlaceholder] = useState<string>('TraĹľilica (minimalno 2 znaka)');
 
 	const modal = useRef<HTMLIonModalElement>(null);
 	const searchRef = useRef<HTMLIonModalElement>(null);
@@ -50,9 +50,6 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 	const [checkedSkladiste, setCheckedSkladiste] = useState(true);
 
 
-
-
-	console.log('props.jsonFormValues', props);
 
 
 	useEffect(() => {
@@ -114,8 +111,6 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 		if (sifSklChecked == undefined) {
 			sifSklChecked = checkedSkladiste;
 		}
-
-		console.log('getDataDefinition', sifArtChecked, sifSklChecked, storeDocs.dstDataEdit);
 
 
 		return {
@@ -204,10 +199,10 @@ const SearchSer: React.FC<ContainerProps> = (props) => {
 				{searchData.map((x, i) => {
 					return <IonItem button key={i} onClick={() => onClick(x)}>
 						<IonLabel>
-							<p><span style={{ color: '#cccccc' }}>Uređaj:</span> {x.serija}</p>
+							<p><span style={{ color: '#cccccc' }}>UreÄ‘aj:</span> {x.serija}</p>
 							<p>{x.artikl}</p>
-							<p><span style={{ color: '#cccccc' }}>Skladište:</span> {x.skladiste}</p>
-							<p><span style={{ color: '#cccccc' }}>Kol. rezervirano / raspoloživo:</span> {x.rezervirano} / {x.raspolozivo}</p>
+							<p><span style={{ color: '#cccccc' }}>SkladiĹˇte:</span> {x.skladiste}</p>
+							<p><span style={{ color: '#cccccc' }}>Kol. rezervirano / raspoloĹľivo:</span> {x.rezervirano} / {x.raspolozivo}</p>
 						</IonLabel>
 					</IonItem>
 				})}

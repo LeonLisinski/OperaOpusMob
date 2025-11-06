@@ -19,7 +19,6 @@ const createReducer = (asyncReducers) => (state, action) => {
 	Reset the redux store when user logged out
 	 */
 
-  //console.log('actionType', action.type);
   if (action.type === 'auth/user/userLoggedOut/fulfilled') {
     //state = undefined;
   }
