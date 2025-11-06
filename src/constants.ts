@@ -1,6 +1,6 @@
 export const SITE_PREFIX = "/erp";
 
-export const APP_VERSION = "1.6"
+
 //export const SERVICE_DOMAIN = 'http://testoperaweb/testapi2019/api';
 export const SERVICE_DOMAIN = 'http://localhost:42238/api';
 
