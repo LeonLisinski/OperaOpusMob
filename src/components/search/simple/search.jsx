@@ -60,7 +60,7 @@ const Search = (props) => {
 
 		//const target = ev.target as HTMLIonSearchbarElement;
 
-	}, [props.entity]);
+	}, [props.entity, props.azurFieldKey]);
 
 
 	useEffect(() => {
@@ -96,6 +96,7 @@ const Search = (props) => {
 				korIme: auth.user?.korime,
 				parentId: props.parentId,
 				jsonFormValues: props.jsonFormValues && JSON.stringify(props.jsonFormValues),
+				azurFieldKey: props.azurFieldKey,
 				search: search
 			};
 
@@ -178,7 +179,6 @@ const Search = (props) => {
 
 	
     const onClickProvjeriStanje = async(e, item, index) => {
-		console.log('item', item);
 
 
 		const queries = [{
@@ -190,8 +190,6 @@ const Search = (props) => {
 		}]
 	
 		const data = await getData({ queries }, auth);
-
-		console.log('data', data);
 
 		setStanjeArtiklaData(data);
 

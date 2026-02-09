@@ -1,6 +1,6 @@
 import { IonAlert, IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonPage, IonRow, IonSpinner, IonText, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
-import { arrowBack } from 'ionicons/icons';
-import { memo, useRef, useState } from 'react';
+import { arrowBack, mail } from 'ionicons/icons';
+import { memo, useEffect, useRef, useState } from 'react';
 
 
 
@@ -19,7 +19,7 @@ import { getReport } from '../../../utils/dataHelper';
 
 
 const Tab4 = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const auth = useSelector((state) => state.auth);
 	const dgl = useSelector((state) => state.docs.data);
 	const sifdv = useSelector((state) => state.docs.sifdv);
@@ -27,10 +27,9 @@ const Tab4 = () => {
 	const layouts = useSelector((state) => state.docs.layouts);
 
 	const signPad = useRef(null)
-	const refIme = useRef(null)
 
-	const [pathText, setPathText] = useState('nedefinirano');
-	const [uriPath, setUriPath] = useState('nedefinirano');
+	const [signatureName, setSignatureName] = useState('');
+	const [signatureEmail, setSignatureEmail] = useState('');
 
 	const [message, setMessage] = useState("");
 	const [messageHeader, setMessageHeader] = useState("...");
@@ -39,7 +38,7 @@ const Tab4 = () => {
 	const [loading, setLoading] = useState(false);
 
 	const router = useIonRouter();
-	const goBack = () => {		
+	const goBack = () => {
 		router.push(`/docs/dgl/${sifdv}`, 'none');
 	}
 
@@ -49,21 +48,39 @@ const Tab4 = () => {
 	});
 
 
+	useEffect(() => {
+		// initialize signature fields from dgl/layouts when available
+		const nameField = layouts?.properties?.signatureTextSelectField;
+		const emailField = layouts?.properties?.signatureEmailSelectField;
+		const name = signatureName || dgl?.[nameField] || '';
+		const email = signatureEmail || dgl?.[emailField] || '';
+		setSignatureName(name);
+		setSignatureEmail(email);
+		//if (email) setEmaiTo(email);
+	}, [dgl, layouts]);
+
+
+
+
 	const onClickClear = () => {
 		signPad.current.clear();
 	}
 
 	const onClickSpremi = async () => {
+		if (!signPad.current) {
+			return;
+		}
 		const signature = signPad.current.getTrimmedCanvas().toDataURL("image/png");
-		const signatureText = refIme.current.value;
-		await dispatch(saveSignature({signature: signature, signatureText: signatureText}));
+		const signatureText = signatureName;
+		const signatureEmailValue = signatureEmail;
+		await dispatch(saveSignature({ signature, signatureText, signatureEmail: signatureEmailValue }));
 		createAndOpenPdf();
 	}
 
 
 	const getBase64StringReport = async () => {
 		try {
-			const ime = refIme.current.value;
+			const ime = signatureName;
 			const parameters = {
 				"id": dgl.dglid,
 				"dglid": dgl.dglid,
@@ -73,11 +90,20 @@ const Tab4 = () => {
 
 			let mailTo = dgl.kontaktemail;
 
+
 			if (layouts.properties?.testEmail) {
 				mailTo = layouts.properties?.testEmail;
 			}
 
-			
+			const signatureEmailText = signatureEmail;
+
+			//setEmaiTo(signatureEmailText);
+
+			if (signatureEmailText && signatureEmailText.trim() != '') {
+				mailTo += `;${signatureEmailText}`;
+			}
+
+
 			let mailSubject = `RADNI NALOG - ${dgl['broj radnog naloga']}`;
 			if (dgl['nazivobjekta']) {
 				mailSubject += ' - ' + dgl['nazivobjekta'];
@@ -100,7 +126,8 @@ const Tab4 = () => {
 			u prilogu kopija ovjerenog radnog naloga za izvršene usluge.
 			`;
 
-			const data = await getReport({ reportName: layouts.properties?.reportName, mailTo:mailTo, mailSubject: mailSubject, mailBody: mailBody, parameters: parameters}, auth, 'mobile').catch(err => {
+
+			const data = await getReport({ reportName: layouts.properties?.reportName, mailTo: mailTo, mailSubject: mailSubject, mailBody: mailBody, parameters: parameters }, auth, 'mobile').catch(err => {
 				setMessage(err);
 				setIserror(true);
 				setLoading(false);
@@ -108,7 +135,7 @@ const Tab4 = () => {
 			);
 			if (data) {
 				setLoading(false);
-				return data;	
+				return data;
 			}
 
 
@@ -126,10 +153,11 @@ const Tab4 = () => {
 	const createAndOpenPdf = async () => {
 		try {
 			setLoading(true);
+
 			const data = await getBase64StringReport();
 
-
 			if (data && layouts.properties.signatureOpenPdf == true) {
+
 				await Filesystem.writeFile({
 					directory: Directory.Documents,
 					path: 'opera/test.pdf',
@@ -216,7 +244,24 @@ const Tab4 = () => {
 						</IonGrid>
 						<div style={{ paddingTop: 15 }}>
 							<IonItem>
-								<IonInput placeholder="Ime i prezime" value={dgl[layouts.properties?.signatureTextSelectField]} ref={refIme}></IonInput>
+								{/* <IonInput placeholder="Ime i prezime" value={dgl[layouts.properties?.signatureTextSelectField]} ref={refIme}></IonInput> */}
+								<IonInput placeholder="Ime i prezime" value={signatureName} onIonInput={(e) => {
+									if (e.detail?.value !== undefined) {
+										setSignatureName(e.detail.value);
+									}
+								}}></IonInput>
+
+							</IonItem>
+						</div>
+						<div style={{ paddingTop: 15 }}>
+							<IonItem>
+								{/* <IonInput placeholder="Email" value={emailTo || dgl[layouts.properties?.signatureEmailSelectField]} ref={refEmail}></IonInput> */}
+								<IonInput placeholder="Email" value={signatureEmail} onIonInput={(e) => {
+									if (e.detail?.value !== undefined) {
+										setSignatureEmail(e.detail.value);
+									}
+								}}></IonInput>
+
 							</IonItem>
 						</div>
 					</>

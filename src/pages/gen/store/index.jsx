@@ -187,7 +187,6 @@ export const setSearchText = createAsyncThunk('gen/searchText', async (text, { d
     const filteredData = originalData.filter(x => {
         let value = false;
         searchFields.map(field => {
-            console.log('searchFields', searchFields);
             if (x[field.toLowerCase()] && x[field.toLowerCase()].toLowerCase().replace('č', 'c').replace('ć', 'c').replace('š', 's').replace('đ', 'd').replace('ž', 'z').includes(text)) {
                 value = true;
             }
@@ -274,7 +273,6 @@ export const saveGla = createAsyncThunk('gen/saveGla', async (saveData, { dispat
         },
         commandType: 'sp'
     }]
-    console.log('aaa', queries);
 
     const data = await getData({ queries }, auth);
 

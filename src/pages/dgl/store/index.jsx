@@ -77,8 +77,6 @@ export const getFilterDefaults = createAsyncThunk('docs/dgl/getFilterDefaults', 
     const auth = getState()?.auth;
     const docs = getState().docs;
     
-    console.log('strukturafilter', docs);  
-    
     const query = docs.layouts.queries.dgl.filterdefaults;
 
     const queries = [{
@@ -142,12 +140,9 @@ export const setSearchText = createAsyncThunk('docs/dgl/searchText', async (text
 
     text = text.toLowerCase().replace('č', 'c').replace('ć', 'c').replace('š', 's').replace('đ', 'd').replace('ž', 'z');
 
-    console.log(originalData);
-
     const filteredData = originalData.filter(x => {
         let value = false;
         searchFields.map(field => {
-            console.log('searchFields', searchFields);
             if (x[field.toLowerCase()] && x[field.toLowerCase()].toLowerCase().replace('č', 'c').replace('ć', 'c').replace('š', 's').replace('đ', 'd').replace('ž', 'z').includes(text)) {
                 value = true;
             }
@@ -427,7 +422,9 @@ export const saveSignature = createAsyncThunk('docs/dgl/saveSignature', async (d
             dglid: dglid,
             signature: data.signature,
             signatureText: data.signatureText,
-            signatureTextField: layouts.properties.signatureTextAzurField
+            signatureTextField: layouts.properties.signatureTextAzurField,
+            signatureEmail: data.signatureEmail,
+            signatureEmailField: layouts.properties.signatureEmailAzurField,
         },
         commandType: 'sp'
     }]
@@ -647,7 +644,6 @@ export const docsSlice = createSlice({
                 state.error = null;
             })    
             .addCase(saveDoc.rejected, (state, action) => {
-                console.log('saveDoc.rejected');
                 state.loading = false;
                 state.error = action.error.message;
             })   

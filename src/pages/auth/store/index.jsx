@@ -36,7 +36,6 @@ export const authSlice = createSlice({
         },
         setUser: (state, action) => {
             const data = action.payload;
-            console.log('setUser', action.payload)
             state.user = data.user && data.user[0];
             state.connection = data.connection;
         },

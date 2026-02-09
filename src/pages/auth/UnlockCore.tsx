@@ -10,7 +10,7 @@ import { getUnlock } from '../../utils/dataHelper';
 import { setApi } from './store';
 import { Device, DeviceId } from '@capacitor/device';
 import { useFetchData } from '../../hooks/useFetchData';
-import { APP_VERSION } from '../../constants';
+import buildInfo from "./../../build-info.json";
 
 
 
@@ -80,8 +80,6 @@ const UnlockCore: React.FC = () => {
 			});
 
 
-			console.log('UNLOCK JSON', json);
-
 			if (json) {
 				await setStorageAuth(json);
 				await dispatch(setApi(json));
@@ -146,7 +144,7 @@ const UnlockCore: React.FC = () => {
 						<img src={'assets/operaopus.svg'} width={220} style={{ width: 220, opacity: 1 }}></img>
 
 						<div className='header-version'>
-							verzija: {APP_VERSION}
+							verzija: {buildInfo.version}
 						</div>
 					</div>
 

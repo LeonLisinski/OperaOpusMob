@@ -9,7 +9,8 @@ import UnlockApp from './components/UnlockApp';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../../auth/store';
 import { getMenu, selectApp } from './store';
-import { APP_VERSION } from '../../../constants';
+
+import buildInfo from "./../../../build-info.json";
 
 const TabAplikacije = () => {
   const router = useIonRouter();
@@ -177,7 +178,7 @@ const TabAplikacije = () => {
             <img src={'assets/operaopus.svg'} width={220} style={{ width: 220, opacity: 1 }}></img>
 
             <div className='header-version'>
-              v. {APP_VERSION}
+              v. {buildInfo.version}
             </div>
           </div>
 

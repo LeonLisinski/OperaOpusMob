@@ -60,9 +60,6 @@ const DetailAzur = (props) => {
       kolicina: formKolicina
     }
 
-    console.log('formData', formData);
-    //return;
-
     await dispatch(saveDoc({ formData: formData }));
     modal.current?.dismiss();
   }

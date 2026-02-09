@@ -129,7 +129,6 @@ const Tab3 = () => {
 
 
     const renderList = () => {
-
         return (
             <IonList>
                 {list && list.map((item, i) => {
@@ -194,8 +193,6 @@ const Tab3 = () => {
 	}
 
 	const getItemValue = (layoutItem, item, index) => {
-
-        console.log('getItemValue', layoutItem, layoutItem["field"])
 
 		let value = item[layoutItem["field"]];
 		if (!value)

@@ -106,8 +106,6 @@ export const ccSlice = createSlice({
                     item.items.push({title: 'Moduli', items: menus});
                 })
 
-                console.log('dataApps', dataApps);
-
                 state.unlocked && state.unlocked.map(item => {
                     var foundIndex = dataApps.findIndex(x => x.code == item.code);
                     if (foundIndex >= 0) {
