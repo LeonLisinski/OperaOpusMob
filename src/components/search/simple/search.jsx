@@ -115,6 +115,7 @@ const Search = (props) => {
 				}]
 			}
 		}
+		return { queries: [] };
 	}
 
 

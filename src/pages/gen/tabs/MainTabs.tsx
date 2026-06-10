@@ -39,19 +39,6 @@ const GenMainTabs: React.FC<GenMainTabsProps> = () => {
           <IonIcon icon={layers} />
           <IonLabel>Akcije</IonLabel>
         </IonTabButton>
-        {/* <IonTabButton tab="arhiva" href="/gen/tabs/tab3/stavke">
-          <IonIcon icon={list} />
-          <IonLabel>Stavke</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="rad" href="/gen/tabs/tab3/rad">
-          <IonIcon icon={time} />
-          <IonLabel>Rad</IonLabel>
-        </IonTabButton>        
-        <IonTabButton tab="privitci" href="/gen/tabs/tabPrivitci">
-          <IonIcon icon={attach} />
-          <IonLabel>Privitci</IonLabel>
-        </IonTabButton> */}
-        
       </IonTabBar>
     </IonTabs>
   );

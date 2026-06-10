@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
-import { getMode } from '@ionic/core';
-import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon, IonSegment, IonSegmentButton, IonDatetime, IonModal, IonToggle } from '@ionic/react';
-import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons';
+import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon, IonSegment, IonSegmentButton, IonToggle } from '@ionic/react';
 
 import './DglFilter.css'
 import { useDispatch, useSelector } from 'react-redux';

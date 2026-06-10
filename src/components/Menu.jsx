@@ -13,7 +13,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { calendar, calendarOutline, reader, readerOutline, home, homeOutline, build, briefcase, person, bulb, cube, play, appsSharp } from 'ionicons/icons';
+import { home, homeOutline, build, briefcase, person, bulb, cube, play } from 'ionicons/icons';
 import './Menu.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../pages/auth/store';
@@ -22,22 +22,6 @@ import { selectApp } from '../pages/core/cc/store';
 
 import buildInfo from "../build-info.json";
 
-
-
-const appPages = [
-  {
-    title: 'Dnevni izvještaj',
-    url: '/servis/dnevniizvjestaj',
-    iosIcon: calendarOutline,
-    mdIcon: calendar
-  },
-  {
-    title: 'Radni nalozi',
-    url: '/servis/radninalozi',
-    iosIcon: readerOutline,
-    mdIcon: reader
-  }
-];
 
 // const apps = [
 //   {

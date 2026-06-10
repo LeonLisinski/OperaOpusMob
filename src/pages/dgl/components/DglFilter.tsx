@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
-import { getMode } from '@ionic/core';
 import { IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonList, IonListHeader, IonItem, IonLabel, IonCheckbox, IonFooter, IonIcon, IonSegment, IonSegmentButton, IonDatetime, IonModal, IonToggle } from '@ionic/react';
-import { logoAngular, call, document, logoIonic, hammer, restaurant, cog, colorPalette, construct, compass } from 'ionicons/icons';
 
 import './DglFilter.css'
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,8 +23,8 @@ const DglFilter = (props) => {
   const [modalDateControl, setModalDateControl] = useState(null);
   const [modalDateValue, setModalDateValue] = useState(null);
 
-  const [filterKey, setFilterKey] = useState(null);
-
+  const [filterKey, setFilterKey] = useState<any>(null);
+  
   useEffect(() => {
 		dispatch(setFilterTemp(null))
 	}, []);

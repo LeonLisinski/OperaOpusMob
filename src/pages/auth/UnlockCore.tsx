@@ -1,8 +1,8 @@
 import { IonAlert, IonButton, IonCol, IonContent, IonFab, IonFabButton, IonFooter, IonGrid, IonIcon, IonInput, IonInputPasswordToggle, IonItem, IonLabel, IonPage, IonRefresher, IonRefresherContent, IonRow, IonSpinner, IonToast, IonToolbar, RefresherEventDetail, useIonRouter } from '@ionic/react';
-import { cube, briefcase, person, build, bulb, play, lockClosedOutline, exit, power, lockClosed, ellipsisVerticalCircleOutline } from 'ionicons/icons';
+import { lockClosedOutline } from 'ionicons/icons';
 
 import './UnlockCore.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../../components/Header';
 import { Preferences } from '@capacitor/preferences';
 import { useDispatch } from 'react-redux';
@@ -11,24 +11,31 @@ import { setApi } from './store';
 import { Device, DeviceId } from '@capacitor/device';
 import { useFetchData } from '../../hooks/useFetchData';
 import buildInfo from "./../../build-info.json";
-
+import SvamLoad from '../../components/Spinner/SvamLoad';
 
 
 const UnlockCore: React.FC = () => {
 	const router = useIonRouter();
 	const dispatch = useDispatch();
 
-	
-
-	const { fetchData } = useFetchData();
-
-
-
 	const [loading, setLoading] = useState(false);
 	const [showToast, setShowToast] = useState(false);
 	const [password, setPassword] = useState<string>("");
 	const [message, setMessage] = useState<string>("");
 	const [iserror, setIserror] = useState<boolean>(false);
+	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	useEffect(() => {
+		const checkDarkMode = () => {
+			setIsDarkMode(document.documentElement.classList.contains('ion-palette-dark'));
+		};
+		checkDarkMode();
+
+		const observer = new MutationObserver(checkDarkMode);
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+		return () => observer.disconnect();
+	}, []);
 
 	const handleRefresh = (event: CustomEvent<RefresherEventDetail>) => {
 		setTimeout(() => {
@@ -75,52 +82,34 @@ const UnlockCore: React.FC = () => {
 			const json = await getUnlock({ queries }).catch(e => {
 				setMessage(e);
 				setIserror(true);
-	
-				setLoading(false);
+
+				setTimeout(() => {
+					setLoading(false);
+				}, 4000);
 			});
 
 
 			if (json) {
 				await setStorageAuth(json);
 				await dispatch(setApi(json));
-				setLoading(false);
+				setTimeout(() => {
+					setLoading(false);
+				}, 4000);
 				router.push('/login', 'none');
 			}
 
 		} catch (error) {
-			setLoading(false);
+			setTimeout(() => {
+				setLoading(false);
+			}, 4000);
 			setMessage(error);
 			setIserror(true);
 		}
 
-		// try {
-		// 	setLoading(true);
-		// 	const json = await getUnlock({ queries }).catch((e) => {
-		// 		setMessage(e);
-		// 		setIserror(true);
-		// 		setLoading(false);
-		// 		return;
-		// 	});
-		// 	if (json) {
-		// 		await setStorageAuth(json);
-		// 		await dispatch(setApi(json));
-		// 		setLoading(false);
-		// 		router.push('/login', 'none');
-		// 	}
-
-			
-		// 	//router.push('/cc/aplikacije');
-		// } catch (error) {
-		// 	setLoading(false);
-		// 	setMessage(error);
-		// 	setIserror(true);
-		// }
-
-
 
 	};
 
-	
+
 	const setStorageAuth = async (json) => {
 		await Preferences.set({
 			key: 'auth',
@@ -132,6 +121,7 @@ const UnlockCore: React.FC = () => {
 
 	return (
 		<IonPage className='svam-header unlock-container page-core-applications'>
+			{loading && <SvamLoad startLoading={loading} />}
 			{/* <Header title='Kontrolni centar - aplikacije'></Header> */}
 			<IonContent fullscreen className='ion-content'>
 				<IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
@@ -155,7 +145,7 @@ const UnlockCore: React.FC = () => {
 							<IonRow>
 								<IonCol style={{ textAlign: 'center' }}>
 									<IonIcon
-										style={{ fontSize: "80px", color: "#39655d" }}
+										style={{ fontSize: "80px", color: isDarkMode ? "#2a9d84" : "#39655d" }}
 										icon={lockClosedOutline}
 									/>
 								</IonCol>
@@ -166,7 +156,7 @@ const UnlockCore: React.FC = () => {
 										<IonLabel position="floating" style={{ color: '#969696' }}> Šifra za otključavanje aplikacije:</IonLabel>
 										<br></br>
 										<IonInput
-											style={{ fontSize: 30, height:50}}
+											style={{ fontSize: 30, height: 50 }}
 											type="password"
 											value={password}
 											onIonInput={(e) => setPassword(e.detail.value!)}
@@ -203,7 +193,8 @@ const UnlockCore: React.FC = () => {
 				<IonToolbar className='ion-text-center'>
 					<div style={{ padding: 12 }}>
 						<IonButton onClick={onClickOk} expand='block' color={'dark'} fill={'solid'} disabled={loading == true}>
-							{loading && <><IonSpinner></IonSpinner>&nbsp;&nbsp;</>}
+							{/* dodat svam spinner */}
+							{/* {loading && <><IonSpinner></IonSpinner>&nbsp;&nbsp;</>} */}
 							Otključaj
 						</IonButton>
 					</div>

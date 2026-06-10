@@ -4,6 +4,8 @@ import { build, codeOutline, colorFilterOutline, lockClosedOutline, phonePortrai
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Header from '../../../components/Header';
+import { moon } from 'ionicons/icons';
+import './TabPostavke.scss';
 
 import buildInfo from "./../../../build-info.json";
 
@@ -15,18 +17,35 @@ const TabPostavke: React.FC = () => {
   const connection = auth?.connection;
 
   const [deviceId, setDeviceId] = useState('...');
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const styles = {
-    container: `
-      margin: 0 auto;
-      height: 300px;
-      `,
-    sign: `
-      width: 100%;
-      height: 100%;
-      `
+
+  //ovo pribacit na login ekran 
+  useEffect(() => {
+    const getDarkModePreference = async () => {
+      const saved = localStorage.getItem('darkMode');
+      const enabled = saved ? JSON.parse(saved) : false;
+      setIsDarkMode(enabled);
+      applyDarkMode(enabled);
+    };
+
+    getDarkModePreference();
+  }, []);
+
+  const applyDarkMode = (enabled: boolean) => {
+    if (enabled) {
+      document.documentElement.classList.add('ion-palette-dark');
+    } else {
+      document.documentElement.classList.remove('ion-palette-dark');
+    }
   };
 
+  const handleDarkModeChange = (e: any) => {
+    const enabled = e.detail.checked;
+    setIsDarkMode(enabled);
+    localStorage.setItem('darkMode', JSON.stringify(enabled));
+    applyDarkMode(enabled);
+  };
 
   useEffect(() => {
 
@@ -34,7 +53,7 @@ const TabPostavke: React.FC = () => {
         const device = await Device.getId();
         setDeviceId(device.uuid);
       }
-      
+
       getDeviceId();
 
   }, [])
@@ -46,8 +65,8 @@ const TabPostavke: React.FC = () => {
       <Header title='Kontrolni centar - postavke'></Header>
       <IonContent fullscreen>
         <IonItemGroup>
-          <IonItemDivider color={'light'}>
-            <IonIcon slot='start' icon={build}></IonIcon> 
+          <IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
+            <IonIcon slot='start' icon={build}></IonIcon>
             <IonLabel>Verzija:</IonLabel>
           </IonItemDivider>
           <IonItem>
@@ -55,8 +74,8 @@ const TabPostavke: React.FC = () => {
               <strong><p>{buildInfo.version} | Build: {buildInfo.buildDate}</p></strong>
             </IonLabel>
           </IonItem>
-          <IonItemDivider color={'light'}>
-            <IonIcon slot='start' icon={serverOutline}></IonIcon> 
+          <IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
+            <IonIcon slot='start' icon={serverOutline}></IonIcon>
             <IonLabel>Konekcija:</IonLabel>
           </IonItemDivider>
           <IonItem>
@@ -77,8 +96,8 @@ const TabPostavke: React.FC = () => {
               <strong><p>{auth?.api}</p></strong>
             </IonLabel>
           </IonItem>
-          <IonItemDivider color={'light'}>
-            <IonIcon slot='start' icon={phonePortraitOutline}></IonIcon> 
+          <IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
+            <IonIcon slot='start' icon={phonePortraitOutline}></IonIcon>
             <IonLabel>Uređaj:</IonLabel>
           </IonItemDivider>
           <IonItem lines={'none'}>
@@ -87,8 +106,8 @@ const TabPostavke: React.FC = () => {
               <strong><p>{deviceId}</p></strong>
             </IonLabel>
           </IonItem>
-          <IonItemDivider color={'light'}>
-            <IonIcon slot='start' icon={refreshOutline}></IonIcon> 
+          <IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
+            <IonIcon slot='start' icon={refreshOutline}></IonIcon>
             <IonLabel>Reset </IonLabel>
           </IonItemDivider>
           <IonItem detail={true}>
@@ -98,17 +117,18 @@ const TabPostavke: React.FC = () => {
             <IonLabel>Resetiraj sve postavke</IonLabel>
           </IonItem>
           
-          <IonItemDivider color={'light'}>
-            <IonIcon slot='start' icon={colorFilterOutline}></IonIcon> 
-            <IonLabel>Izgled <span style={{ color: '#aaa' }}><i>(u izradi)</i></span>:</IonLabel>
+          <IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
+            <IonIcon slot='start' icon={colorFilterOutline}></IonIcon>
+            <IonLabel>Izgled <span style={{ color: isDarkMode ? '#888' : '#aaa' }}></span></IonLabel>
           </IonItemDivider>
           <IonItem lines={'none'}>
+            <IonIcon slot="start" icon={moon} className="component-icon component-icon-dark" />
             <IonLabel>Dark mode</IonLabel>
-            <IonToggle slot="end" color="dark" ></IonToggle>
+            <IonToggle slot="end" checked={isDarkMode} onIonChange={handleDarkModeChange}></IonToggle>
           </IonItem>
-          <IonItemDivider color={'light'}>
-            <IonIcon slot='start' icon={lockClosedOutline}></IonIcon> 
-            <IonLabel>Sigurnost <span style={{ color: '#aaa' }}><i>(u izradi)</i></span>:</IonLabel>
+          <IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
+            <IonIcon slot='start' icon={lockClosedOutline}></IonIcon>
+            <IonLabel>Sigurnost <span style={{ color: isDarkMode ? '#888' : '#aaa' }}><i>(u izradi)</i></span>:</IonLabel>
           </IonItemDivider>
           <IonItem>
             <IonLabel>Zapamti prijavu</IonLabel>

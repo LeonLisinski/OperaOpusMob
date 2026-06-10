@@ -1,6 +1,6 @@
 import { IonContent, IonSpinner } from '@ionic/react';
-import { CSSTransition } from 'react-transition-group';
 import './SplashScreen.css';
+import SvamLoad from './Spinner/SvamLoad';
 
 
 const SplashScreen: React.FC = () => {
@@ -19,6 +19,7 @@ const SplashScreen: React.FC = () => {
 
         <div style={{ backgroundColor: '#39655d', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <IonSpinner className='spinner-splash' name='lines' color="light" style={{ fontSize: 40 }} />
+          {/* <SvamLoad startLoading={true} /> */}
         </div>
       </IonContent>
     // </CSSTransition>

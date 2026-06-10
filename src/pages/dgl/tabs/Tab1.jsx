@@ -3,7 +3,6 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 
 
-
 import _ from 'lodash';
 
 import './Tab1.css';
@@ -31,6 +30,20 @@ const Tab1 = (props) => {
 
 	var isHTML = RegExp.prototype.test.bind(/(<([^>]+)>)/i);
 
+	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	useEffect(() => {
+		const checkDarkMode = () => {
+			setIsDarkMode(document.documentElement.classList.contains('ion-palette-dark'));
+		};
+		checkDarkMode();
+
+		const observer = new MutationObserver(checkDarkMode);
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+		return () => observer.disconnect();
+	}, []);
+
 
 	const getInfoText = (text) => {
 		if (text) {
@@ -45,7 +58,7 @@ const Tab1 = (props) => {
 	}
 
 	const goBack = () => {
-		    
+
 		router.push(`/docs/dgl/${root.sifdv}`, 'none');
 		//router.push(`/docs/dgl/${root.sifdv}`, 'none');
 	}
@@ -78,7 +91,7 @@ const Tab1 = (props) => {
 		}
 
 		return <IonItemGroup>
-			<IonItemDivider color={'light'}>
+			<IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
 				<IonLabel>{item.caption}</IonLabel>
 			</IonItemDivider>
 			{renderGroupItems(item)}
@@ -91,41 +104,41 @@ const Tab1 = (props) => {
 			return renderGroupItem(item, index);
 		})
 	}
-	const renderGroupItem = (item, index) => { 
+	const renderGroupItem = (item, index) => {
 
 		if (item.visiblefield && listItem[item.visiblefield] == false) {
 			return null;
 		}
 
 		return <IonItem lines={item.lines == false && 'none'} key={index}>
-				<IonLabel className="ion-text-wrap">
-					{item.caption && <p>{item.caption}</p>}
-					{renderGroupItemValue(item)}
-					{/* <p className={item.class}>{listItem[item.field]}</p> */}
-				</IonLabel>
-			</IonItem>
+			<IonLabel className="ion-text-wrap">
+				{item.caption && <p>{item.caption}</p>}
+				{renderGroupItemValue(item)}
+				{/* <p className={item.class}>{listItem[item.field]}</p> */}
+			</IonLabel>
+		</IonItem>
 	}
 
 	const renderGroupItemValue = (item) => {
 		var value = listItem[item.field];
 
-		
+
 		if (item.visiblefield && listItem[item.visiblefield] == false) {
 			return null;
 		}
-		
+
 		if (!value) {
 			value = getInfoText(value);
-			
+
 		} else {
 			if (item.type == 'date' && item.format) {
 				value = moment(value).format(item.format);
 			}
 			else if (item.type == 'multiline') {
-			 	value = <div className={item.class} dangerouslySetInnerHTML={{ __html: value?.replace('\n', "<br>") }}></div>
+				value = <div className={item.class} dangerouslySetInnerHTML={{ __html: value?.replace('\n', "<br>") }}></div>
 			}
 			else if (item.type == 'url') {
-				value=<a target="_blank" href={value}>{item.urlcaption}</a>
+				value = <a target="_blank" href={value}>{item.urlcaption}</a>
 			}
 		}
 
@@ -136,7 +149,7 @@ const Tab1 = (props) => {
 			return <h2 className={item.class}>{value}</h2>
 		}
 
-		
+
 	}
 
 
@@ -158,36 +171,36 @@ const Tab1 = (props) => {
 
 			<IonContent fullscreen >
 				<div id="tab1">
-				<IonHeader collapse="condense">
-					<IonToolbar>
-						<IonTitle size="small">
-							<TabsTitle />
-						</IonTitle>
-					</IonToolbar>
-				</IonHeader>
+					<IonHeader collapse="condense">
+						<IonToolbar>
+							<IonTitle size="small">
+								<TabsTitle />
+							</IonTitle>
+						</IonToolbar>
+					</IonHeader>
 
-				{renderLayout()}
-				
-				
+					{renderLayout()}
+
+
 					<>
 						{listItem?.finishable &&
 							<div style={{ padding: 10 }}>
 								<IonButton expand='full' color='dark' onClick={(e) => onCloseClick(e)}>ZAVRŠI</IonButton>
 							</div>
 						}
-						
 
-						
+
+
 						<MasterAzur showModal={showMasterModal} item={masterModalItem} onHideModal={onHideMasterModal}></MasterAzur>
 					</>
-					</div>
-					{listItem?.editable &&
-							<IonFab horizontal='end' vertical='bottom' slot="fixed">
-								<IonFabButton onClick={(e) => onEditClick(e)} >
-									<IonIcon icon={create} />
-								</IonFabButton>
-							</IonFab>
-						}
+				</div>
+				{listItem?.editable &&
+					<IonFab horizontal='end' vertical='bottom' slot="fixed">
+						<IonFabButton onClick={(e) => onEditClick(e)} >
+							<IonIcon icon={create} />
+						</IonFabButton>
+					</IonFab>
+				}
 			</IonContent>
 		</IonPage>
 	);

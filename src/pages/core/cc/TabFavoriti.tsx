@@ -1,5 +1,4 @@
 import { IonContent, IonIcon, IonPage } from '@ionic/react';
-import { eyeOffOutline } from 'ionicons/icons';
 import Header from '../../../components/Header';
 import NoData from '../../../components/NoData';
 

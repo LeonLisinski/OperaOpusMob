@@ -15,7 +15,7 @@ import {
 import { calendarOutline, readerOutline } from "ionicons/icons";
 
 import "./Modules.scss";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { addIcons } from "ionicons";
@@ -27,9 +27,22 @@ const Modules: React.FC = (props) => {
   const dispatch = useDispatch();
 
   const [showToast, setShowToast] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const app = useSelector((state: any) => state.core.cc.selectedApp);
   const database = useSelector((state: any) => state.auth.db);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('ion-palette-dark'));
+    };
+    checkDarkMode();
+
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
 
   addIcons({
     calendar: calendarOutline,
@@ -61,8 +74,8 @@ const Modules: React.FC = (props) => {
             onClick={() => onModuleClick(module)}
             style={{paddingRight:8}}
           >
-            <IonIcon slot="start" name={module.icon} style={{color: '#39655d'}} />
-            <IonLabel><p style={{color: 'black', fontSize:15}}>{module.title}</p></IonLabel>
+            <IonIcon slot="start" name={module.icon} style={{color: isDarkMode ? '#2a9d84' : '#39655d'}} />
+            <IonLabel><p style={{color: isDarkMode ? '#ffffff' : 'black', fontSize:15}}>{module.title}</p></IonLabel>
           </IonItem>
         );
         //});
@@ -86,7 +99,7 @@ const Modules: React.FC = (props) => {
             {app.items.map((group, i) => {
               return (
                 <div key={i}>
-                  <IonListHeader style={{ background: "#f3f3f3" }}>
+                  <IonListHeader style={{ background: isDarkMode ? "#2a2a2a" : "#f3f3f3", color: isDarkMode ? "#ffffff" : "#000000" }}>
                     {group.title}
                   </IonListHeader>
                   {renderModules(group)}

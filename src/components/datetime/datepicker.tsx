@@ -17,7 +17,7 @@ interface ContainerProps {
 const DatePicker: React.FC<ContainerProps> = (props) => {
 
   const modal = useRef<HTMLIonModalElement>(null);
-  
+
   const [dataValue, setDataValue] = useState(props.value);
 
 
@@ -26,7 +26,7 @@ const DatePicker: React.FC<ContainerProps> = (props) => {
   }
 
   const onIonChange = (e: any) => {
-    
+
     if (!e.detail.value)
       return;
 
@@ -47,14 +47,15 @@ const DatePicker: React.FC<ContainerProps> = (props) => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-          <IonDatetime
-              presentation='date'
-              doneText="Potvrdi"
-              cancelText='Odustani'
-              size="cover"
-              onIonChange={(e) => onIonChange(e)}
-              showDefaultButtons={true}
-          ></IonDatetime>
+        <IonDatetime
+          locale="hr-HR"
+          presentation='date'
+          doneText="Potvrdi"
+          cancelText='Odustani'
+          size="cover"
+          onIonChange={(e) => onIonChange(e)}
+          showDefaultButtons={true}
+        ></IonDatetime>
       </IonContent>
 
     </IonModal>

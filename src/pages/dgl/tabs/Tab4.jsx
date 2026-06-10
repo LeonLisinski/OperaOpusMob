@@ -90,6 +90,7 @@ const Tab4 = () => {
 
 			let mailTo = dgl.kontaktemail;
 
+			console.log('mailTo1', mailTo)
 
 			if (layouts.properties?.testEmail) {
 				mailTo = layouts.properties?.testEmail;
@@ -98,28 +99,18 @@ const Tab4 = () => {
 			const signatureEmailText = signatureEmail;
 
 			//setEmaiTo(signatureEmailText);
+			console.log('mailToSignature', signatureEmailText)
 
-			if (signatureEmailText && signatureEmailText.trim() != '') {
+			if (signatureEmailText && signatureEmailText.trim() != '' && mailTo != undefined) {
 				mailTo += `;${signatureEmailText}`;
+			} else if (signatureEmailText && signatureEmailText.trim() != '') {
+				mailTo = signatureEmailText;
 			}
-
 
 			let mailSubject = `RADNI NALOG - ${dgl['broj radnog naloga']}`;
 			if (dgl['nazivobjekta']) {
 				mailSubject += ' - ' + dgl['nazivobjekta'];
 			}
-			// const mailBody = `Poštovani, 
-			// 	<br><br>
-			// 	u prilogu kopija ovjerenog radnog naloga za izvršene usluge.
-			// 	<br><br>
-			// 	Lp, 
-			// 	<br><br>
-			// 	ZAŠTITA JUKIĆ d.o.o.<br>
-			// 	KOPRIVNIČKA 121, KUNOVEC BREG<br>
-			// 	48000 KOPRIVNICA<br>
-			// 	OIB: 93544633496
-			// 	`;
-
 
 			const mailBody = `Poštovani, 
 			<br><br>

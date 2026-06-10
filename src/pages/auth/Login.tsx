@@ -1,5 +1,5 @@
 import { IonButtons, IonContent, IonHeader, IonInputPasswordToggle, IonModal, IonPage, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { IonGrid, IonRow, IonCol } from '@ionic/react';
 import { personCircle } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
@@ -25,18 +25,51 @@ const Login: React.FC = () => {
 	const inputAuthApi = useRef<HTMLIonInputElement>(null);
 	const inputAuthDb = useRef<HTMLIonInputElement>(null);
 
+	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [username, setUsername] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
+	const [iserror, setIserror] = useState<boolean>(false);
+	const [message, setMessage] = useState<string>("");
 
-	const history = useHistory();
+
 	const dispatch = useDispatch();
 	const { fetchData } = useFetchData();
 	const router = useIonRouter();
 
 	const state = useSelector((state): any => state);
 
-	const [username, setUsername] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
-	const [iserror, setIserror] = useState<boolean>(false);
-	const [message, setMessage] = useState<string>("");
+	useEffect(() => {
+		const checkDarkMode = () => {
+			setIsDarkMode(document.documentElement.classList.contains('ion-palette-dark'));
+		};
+		checkDarkMode();
+
+		const observer = new MutationObserver(checkDarkMode);
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+		return () => observer.disconnect();
+	}, []);
+
+	const applyDarkMode = (enabled: boolean) => {
+		if (enabled) {
+			document.documentElement.classList.add('ion-palette-dark');
+		} else {
+			document.documentElement.classList.remove('ion-palette-dark');
+		}
+	};
+
+	useEffect(() => {
+		const getDarkModePreference = async () => {
+			const saved = localStorage.getItem('darkMode');
+			const enabled = saved ? JSON.parse(saved) : false;
+			setIsDarkMode(enabled);
+			applyDarkMode(enabled);
+		};
+
+		getDarkModePreference();
+	}, []);
+
+
 	const handleLogin = async () => {
 		if (!username) {
 			setMessage("Unesite ispravno korisničko ime");
@@ -131,7 +164,7 @@ const Login: React.FC = () => {
 					<IonRow>
 						<IonCol>
 							<IonIcon
-								style={{ fontSize: "100px", color: "#39655d" }}
+								style={{ fontSize: "100px", color: isDarkMode ? "#2a9d84" : "#39655d" }}
 								icon={personCircle}
 							/>
 						</IonCol>

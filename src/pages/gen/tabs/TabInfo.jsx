@@ -26,6 +26,20 @@ const TabInfo = (props) => {
 	const [showMasterModal, setShowMasterModal] = useState(false);
 	const [masterModalItem, setMasterModalItem] = useState(null);
 
+	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	useEffect(() => {
+		const checkDarkMode = () => {
+			setIsDarkMode(document.documentElement.classList.contains('ion-palette-dark'));
+		};
+		checkDarkMode();
+
+		const observer = new MutationObserver(checkDarkMode);
+		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+		return () => observer.disconnect();
+	}, []);
+
 	var isHTML = RegExp.prototype.test.bind(/(<([^>]+)>)/i);
 
 
@@ -72,7 +86,7 @@ const TabInfo = (props) => {
 		}
 
 		return <IonItemGroup>
-			<IonItemDivider color={'light'}>
+			<IonItemDivider color={isDarkMode ? 'dark' : 'light'}>
 				<IonLabel>{item.caption}</IonLabel>
 			</IonItemDivider>
 			{renderGroupItems(item)}
