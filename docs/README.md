@@ -2,6 +2,8 @@
 
 Razvojna i projektna dokumentacija migracije mobilnog klijenta OperaOpus ERP-a (SvamPlus) s Ionic/Capacitor aplikacije na Expo/React Native.
 
+**Online verzija:** https://leonlisinski.github.io/OperaOpusMob/
+
 Ionic aplikacija (`src/`) je postojeća produkcijska referenca. Expo aplikacija je ciljana zamjena koja se razvija ravnopravno za Android i iOS.
 
 ## Najvažniji dokumenti
