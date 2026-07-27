@@ -1,0 +1,33 @@
+[
+	{
+		"type": "simple",
+		"caption": "Skladište",
+		"entity": "skladiste",
+		"debaunce": 200,
+		"selectFieldKey": "sifsklad",
+		"selectFieldText": "skladiste",
+		"azurFieldKey": "sifsklad"
+	},	
+	{
+		"type": "advanced",
+		"caption": "Artikl",
+		"entity": "artikl-izd",
+		"debaunce": 500,
+		"selectFieldKey": "sifart",
+		"selectFieldText": "artikl",
+		"azurFieldKey": "sifart"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis artikla",
+		"selectFieldKey": "opis artikla",
+		"azurFieldKey": "opisartikla"
+	},
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Količina",
+		"selectFieldKey": "kolicina",
+		"azurFieldKey": "kol"
+	}
+]

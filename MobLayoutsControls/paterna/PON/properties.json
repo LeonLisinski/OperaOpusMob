@@ -1,0 +1,8 @@
+{
+  "reportName": "rptSRNgrad_ArtGrp",
+  "signatureTextSelectField": "napomena2",
+  "signatureTextAzurField": "napomena2",
+  "signatureOpenPdf": true,
+  "dglallownew": true,
+  "testEmail": "marko.radicev@svamplus.hr"
+}

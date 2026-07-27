@@ -1,0 +1,27 @@
+[
+	{
+		"type": "simple",
+		"caption": "Artikl",
+		"entity": "artikl",
+		"debaunce": 200,
+		"selectFieldKey": "sifart",
+		"selectFieldText": "artikl",
+		"azurFieldKey": "sifart"
+	},
+	{
+		"type": "simple",
+		"caption": "Radnik",
+		"entity": "osobe",
+		"debaunce": 200,
+		"selectFieldKey": "sifosobe",
+		"selectFieldText": "radnik",
+		"azurFieldKey": "dstsifosobe"
+	},
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Sati rada",
+		"selectFieldKey": "sati rada",
+		"azurFieldKey": "posto1"
+	}
+]

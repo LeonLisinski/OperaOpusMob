@@ -1,0 +1,7 @@
+{
+  "reportName": "rptSRNgrad_ArtGrp",
+  "signatureTextSelectField": "napomena9",
+  "signatureTextAzurField": "napomena9",
+  "testEmail": "jasa.vukovic@svamplus.hr",
+  "signatureOpenPdf": true
+  }

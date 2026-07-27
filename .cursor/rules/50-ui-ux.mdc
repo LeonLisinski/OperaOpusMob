@@ -1,0 +1,63 @@
+---
+description: UI/UX standardi za Opera Mobile — vizualni identitet, jezik sučelja, ponašanje na terenu
+globs: expo/**/components/**,expo/**/screens/**,expo/**/theme/**,expo/**/app/**,src/**/*.{css,scss}
+alwaysApply: false
+---
+
+# UI/UX standardi
+
+## Vizualni identitet
+
+OperaOpus/SvamPlus identitet se zadržava. Postojeće boje iz Ionic aplikacije:
+
+| Namjena | Vrijednost | Gdje se danas koristi |
+|---|---|---|
+| Primarna (brand) | `#39655d` | ikone, naslovi, `TabProfil`, `Menu` |
+| Primarna, dark mode | `#2a9d84` | isti elementi uz `ion-palette-dark` |
+| Pozadina izbornika | `#cce1da` | `Menu.jsx` |
+| Zaglavlje profila, dark | `#2a4d47` | `TabProfil.tsx` |
+| Zaglavlje liste | `#f3f3f3` / dark `#2a2a2a` | `Modules.tsx`, `TabInfo.jsx` |
+
+**Ne kopiraj postojeći pristup.** U Ionicu je `#39655d` hardkodiran inline u 15 datoteka, a `--ion-color-primary` je ostao Ionic default (`#3880ff`). U `expo/` boje idu isključivo kroz centralne tokene; hex vrijednost se ne piše u komponenti.
+
+Logotipi: `public/assets/operaopus.svg`, `public/assets/svamplus.svg`.
+
+## Dark mode
+
+Obavezan. Danas se stanje čuva u `localStorage.darkMode` i primjenjuje klasom `ion-palette-dark`, a komponente ga čitaju kroz `MutationObserver` — taj obrazac se **ne** prenosi. U Expu se koristi jedan izvor teme, bez promatranja DOM-a.
+
+## Jezik sučelja
+
+Hrvatski, uključujući dijakritiku. Terminologija se preuzima iz postojeće aplikacije doslovno: *Kontrolni centar*, *Aplikacije*, *Moduli*, *Otključaj*, *Prijava*, *Odjava*, *Radni nalog*, *Stavke*, *Privitci*, *Potpis*, *Postavke*.
+
+Nazivi polja u formama dolaze iz `caption` u JSON layoutu — ne prevode se i ne prepisuju u kodu.
+
+## Ponašanje na terenu
+
+Korisnik je serviser: rukavice, sunce, loša mreža, jedna ruka.
+
+- Ciljevi dodira najmanje 44×44 pt.
+- Svaka radnja koja zove API ima vidljivo stanje učitavanja i stanje greške; greška je na hrvatskom i kaže što učiniti.
+- Prazna lista prikazuje poruku, ne prazan ekran (`NoData` ekvivalent).
+- Duge liste su virtualizirane.
+- Destruktivne radnje (brisanje stavke, zatvaranje naloga) traže potvrdu.
+
+## Konzistentnost
+
+Isti tip ekrana izgleda isto u svim modulima. Lista, detalj, forma i stavke dolaze iz zajedničkih komponenata koje čitaju layout — ne iz kopija po modulu.
+
+## Light/dark od početka (trajno pravilo)
+
+Light je zadani i primarni vizualni smjer (`expo/src/theme/index.ts`), ali svaka nova komponenta/ekran mora koristiti semantic theme tokene (ne direktne boje) tako da dodavanje dark toggle-a kasnije ne zahtijeva redizajn. Svaka nova površina, tekst, border, status i interaction state treba token u oba scheme-a iz `colors.ts`.
+
+## Keyboard-aware i responsive UX (trajno pravilo)
+
+Svaki ekran s unosom koristi `Screen` s `scroll`/`keyboardAvoiding` propovima (`expo/src/components/Screen.tsx`) umjesto dupliciranja `KeyboardAvoidingView`/`ScrollView` logike po ekranu. Aktivno polje i CTA gumb moraju ostati dohvatljivi dok je tipkovnica otvorena, na Androidu i iOS-u, na različitim veličinama ekrana i uz povećani font.
+
+## `operaweb/` je strogo read-only referenca (trajno pravilo)
+
+`operaweb/` (web Opera ERP) služi isključivo za proučavanje naprednijih JSON-driven config obrazaca (`opera-definitions/`). Ne mijenja se, ne kopira se doslovno, i njegov desktop grid/property-panel UX se ne prenosi na mobilne ekrane — mobilni prikaz je uvijek kartice/sekcije, ne grid.
+
+## JSON konfigurabilnost se širi oprezno (trajno pravilo)
+
+Sadržaj liste, polja detalja/forme, redoslijed, grupiranje, vidljivost i mapping na SP idu kroz JSON gdje je to sigurno (v. `expo/src/features/documents/layoutContract.ts` kao primjer tolerantne validacije — nepoznato polje se ignorira uz dev log, ne ruši ekran). Navigacija, sigurnost, podržani tipovi kontrola, validacija i accessibility ostaju u kodu. Konfiguracija nikad ne smije proizvesti neupotrebljiv mobilni UI bez razumnog defaulta.

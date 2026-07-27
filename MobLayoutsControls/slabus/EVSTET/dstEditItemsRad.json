@@ -1,0 +1,29 @@
+[
+	{
+		"type": "simple",
+		"caption": "Osoba",
+		"entity": "radnik",
+		"debaunce": 200,
+		"selectFieldKey": "dstsifosobe",
+		"selectFieldText": "radnik",
+		"azurFieldKey": "dstsifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Sati rada",
+		"selectFieldKey": "sati rada"
+	},	
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Stvarni sati rada",
+		"selectFieldKey": "korekcija sati",
+		"azurFieldKey": "posto1"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena",
+		"azurFieldKey": "opisartikla"
+	}	
+]

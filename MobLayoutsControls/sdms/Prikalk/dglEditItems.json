@@ -1,0 +1,38 @@
+[
+	{
+		"type": "simple",
+		"caption": "Gradilište",
+		"entity": "ugovor",
+		"debaunce": 200,
+		"selectFieldKey": "sifpred",
+		"selectFieldText": "ugovor",
+		"azurFieldKey": "sifpred"
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 200,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "date",
+		"caption": "Datum dostavnice",
+		"selectFieldKey": "datum dostavnice",
+		"azurFieldKey": "datumopcije"
+	},
+	{
+		"type": "text",
+		"caption": "Broj dostavnice",
+		"selectFieldKey": "broj dostavnice",
+		"azurFieldKey": "eksternibroj"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena",
+		"azurFieldKey": "napomena1"
+	}
+]

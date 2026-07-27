@@ -1,0 +1,25 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj dokumenta"
+			},
+			{
+				"field": "datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"fields": [
+			{
+				"field": "partner"
+			}
+		],
+		"class": "item-bold",
+		"classmain" : "two-lines"
+	}
+	
+]

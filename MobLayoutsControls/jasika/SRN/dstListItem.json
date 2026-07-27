@@ -1,0 +1,67 @@
+[
+	{
+		"label": "Skladište",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "LOT/ser.br.",
+		"fields": [
+			{
+				"field": "serija"
+			}
+		]
+	},	
+	{
+		"label": "Kataloški broj",
+		"fields": [
+			{
+				"field": "kat broj"
+			}
+		]
+	},	
+	{
+		"label": "Opis arikla",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"label": "Vrsta",
+		"fields": [
+			{
+				"field": "vrsta"
+			}
+		]
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			}
+		]
+	},
+	{
+		"label": "Stvarni (h)",
+		"fields": [
+			{
+				"field": "sati"
+			}
+		]
+	}	
+]

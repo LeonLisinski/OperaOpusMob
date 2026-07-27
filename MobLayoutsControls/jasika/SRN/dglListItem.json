@@ -1,0 +1,43 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj radnog naloga"
+			},
+			{
+				"field": "datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"classmain": "three-lines",
+		"fields": [
+			{
+				"field": "partner"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Mjesto servisa",
+		"classmain": "three-lines",
+		"fields": [
+			{
+				"field": "mjesto servisa"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Izradio",
+		"fields": [
+			{
+				"field": "izradio"
+			}
+		]
+	}
+]

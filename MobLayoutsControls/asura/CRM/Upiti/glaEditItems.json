@@ -1,0 +1,99 @@
+[{
+        "type": "advanced",
+        "caption": "Partner",
+        "entity": "cp",
+        "debaunce": 500,
+        "selectFieldKey": "cpid",
+        "selectFieldText": "partner",
+        "azurFieldKey": "cpid"
+    }, 
+	{
+	"type": "advanced",
+	"caption": "Nositelj",
+	"entity": "nositelj",
+	"debaunce": 500,
+	"selectFieldKey": "sifpred",
+	"selectFieldText": "nositelj",
+	"azurFieldKey": "sifpred",
+    }, 
+	{
+        "type": "simple",
+        "caption": "Objekt",
+        "entity": "objekt",
+        "debaunce": 200,
+        "selectFieldKey": "id",
+        "selectFieldText": "objekt",
+        "azurFieldKey": "wbsid"
+    }, 
+	{
+        "type": "advanced",
+        "caption": "Artikl",
+        "entity": "artikl",
+        "debaunce": 500,
+        "selectFieldKey": "sifart",
+        "selectFieldText": "artikl",
+        "azurFieldKey": "sifart"
+    }, 
+	{
+        "type": "simple",
+        "caption": "Zadužena osoba",
+        "entity": "zaduzena osoba",
+        "debaunce": 200,
+        "selectFieldKey": "cozaduzenid",
+        "selectFieldText": "zaduzena osoba",
+        "azurFieldKey": "cozaduzenid"
+    }, 
+	{
+        "type": "date",
+        "caption": "Planirani datum početka",
+        "selectFieldKey": "planirani datum pocetka",
+        "azurFieldKey": "datSerPlan"
+    }, {
+        "type": "date",
+        "caption": "Planirani datum zatvaranja",
+        "selectFieldKey": "planirani datum zatvaranja",
+        "azurFieldKey": "DatZatvPlan"
+    }, {
+		"type": "date",
+        "caption": "Datum dospijeća",
+        "selectFieldKey": "datum dospijeca",
+        "azurFieldKey": "DatDosp"
+	}, {
+        "type": "simple",
+        "caption": "Prioritet",
+        "entity": "cpri",
+        "debaunce": 200,
+        "selectFieldKey": "cpriid",
+        "selectFieldText": "prioritet",
+        "azurFieldKey": "cpriid"
+    }, {
+        "type": "simple",
+        "caption": "Status",
+        "entity": "status",
+        "debaunce": 200,
+        "selectFieldKey": "cstatid",
+        "selectFieldText": "status",
+        "azurFieldKey": "cstatid"
+    }, {
+        "type": "simple",
+        "caption": "Mjesto troška",
+        "entity": "mjesta-troska",
+        "debaunce": 200,
+        "selectFieldKey": "sifmjtr",
+        "selectFieldText": "mjesto troska",
+        "azurFieldKey": "sifmjtr"
+    }, {
+        "type": "simple",
+        "caption": "Vrsta posla",
+        "entity": "vrste-posla",
+        "debaunce": 200,
+        "selectFieldKey": "sifvrsteposla",
+        "selectFieldText": "vrsta posla",
+        "azurFieldKey": "sifvrsteposla"
+    }, {
+        "type": "memo",
+        "caption": "Opis",
+        "selectFieldKey": "opis",
+        "azurFieldKey": "opis"
+    }
+]

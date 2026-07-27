@@ -1,0 +1,49 @@
+---
+description: Arhitektonske granice postojeće Ionic aplikacije i ciljne Expo aplikacije
+globs: src/**/*.{ts,tsx,js,jsx},expo/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Arhitektura i Expo migracija
+
+## Postojeće stanje (`src/`) — što je referenca, a što nije
+
+Referenca je **poslovno ponašanje**, ne struktura koda. Ovi obrasci se ne prenose u `expo/`:
+
+| Obrazac u `src/` | Zašto se ne prenosi |
+|---|---|
+| Tri paralelna modula (`servis`, `dgl`, `gen`, 7 855 LOC) | Ista logika na tri mjesta |
+| Tenant imena u zajedničkom kodu (`spMob_ZJUKIC_DST_Azur` u tri store-a) | Tenant logika pripada layoutu ili SP-u |
+| `checkRememberMe` u `AppMain.tsx` vraća JSX iz async HOC-a | Nestandardan bootstrap |
+| `useFetchData` guta greške bez re-throwa | Poziv dobije `undefined` umjesto greške |
+| Redux se ne resetira na odjavu (`rootReducer.ts`) | Podaci prethodnog korisnika ostaju u memoriji |
+| Brand boja `#39655d` hardkodirana u 15 datoteka | Nema centralnih tokena |
+
+Kad naiđeš na jedan od njih: **prijavi, ne popravljaj usput** (pravilo 10, točka 7).
+
+## Ciljno slojevanje u `expo/`
+
+```
+screen        prikaz + korisnička interakcija, bez poslovnih pravila
+  ↓ hook      orkestracija ekrana, lokalno stanje
+  ↓ store     dijeljeno stanje (auth, aktivni modul, layout)
+  ↓ service   poslovna operacija (npr. "spremi dokument")
+  ↓ api       transport: envelope, greške, autorizacija
+```
+
+Pravila sloja:
+
+- Komponenta ne poziva `fetch` ni API klijent izravno.
+- `service` ne zna za React; `api` ne zna za poslovni pojam.
+- **Nijedan sloj ne smije sadržavati `if (tenant === ...)` ni ime tenanta u identifikatoru.** Razlike po tenantu rješavaju se JSON layoutom ili SP-om — v. pravilo 30.
+- Generički modul-engine čita layout; ne postoji zaseban ekran po `sifdv`.
+
+## Migracija — obavezno
+
+1. Prije pisanja Expo koda pročitaj Ionic izvor iste funkcionalnosti i zapiši **što točno radi**, uključujući rubne slučajeve.
+2. Migrira se **vertikalna cjelina** (ekran → state → service → API → layout), ne pojedinačna komponenta.
+3. Ionic implementacija ostaje netaknuta dok parnost nije potvrđena.
+4. Ne prevodi se `IonItem` → `View` mehanički. Prenosi se poslovni flow.
+5. Svaka migrirana cjelina mora imati opisan rollback (što se vraća ako pukne).
+
+Postupak migracije: skill `migrate-expo-feature`.

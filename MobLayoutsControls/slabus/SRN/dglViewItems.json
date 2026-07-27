@@ -1,0 +1,28 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "datum dokumenta",
+				"caption": "Datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "dglsifart",
+				"caption": "Registracija",
+				"class": "item-bold"
+			},
+			{
+				"field": "napomena5",
+				"caption": "Opis kvara",
+				"type": "multiline"
+			},
+			{
+				"field": "napomena6",
+				"caption": "Opis popravka",
+				"type": "multiline"
+			}
+		]
+	}
+]

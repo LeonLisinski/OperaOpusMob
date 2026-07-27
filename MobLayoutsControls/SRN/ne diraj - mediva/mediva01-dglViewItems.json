@@ -1,0 +1,103 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold",
+				"caption": "Broj radnog naloga"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+		
+			{
+				"field": "narudzbenica",
+				"caption": "Narudžbenica"
+			},
+			{
+				"field": "opis",
+				"caption": "Opis"
+			},
+			{
+				"field": "vrste posla",
+				"caption": "Vrsta posla",
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."			
+			}
+		]
+	},
+		{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "mjesto servisa",
+				"caption": "Mjesto servisa"
+			},
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "adresa objekta",
+				"caption": "Adresa partnera"
+			},
+			{
+				"field": "kontakt",
+				"caption": "Kontakt osoba"
+			},
+			{
+				"field": "brojevitelefona",
+				"caption": "Mob/Tel partnera"
+			},
+			]
+	},
+		{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "napomena7",
+				"caption": "Opis kvara"
+			},
+						{
+				"field": "napomena8",
+				"caption": "Napomena servisera"
+
+			},
+			{
+				"field": "operativna procedura",
+				"caption": "Detalji uređaja"
+			},
+
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "vodipredmetsifosobe",
+				"caption": "Serviser"
+			},
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			}
+		]
+	}
+]

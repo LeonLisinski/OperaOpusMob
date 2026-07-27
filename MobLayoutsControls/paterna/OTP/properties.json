@@ -1,0 +1,8 @@
+{
+  "reportName": "rptOTP2",
+  "signatureTextSelectField": "napomena2",
+  "signatureTextAzurField": "napomena2",
+  "signatureOpenPdf": true,
+  "dglallownew": true,
+  "testEmail": "andrija.podravec@svamplus.hr"
+}

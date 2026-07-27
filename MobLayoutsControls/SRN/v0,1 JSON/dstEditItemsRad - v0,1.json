@@ -1,0 +1,15 @@
+[
+	{
+		"type": "memo",
+		"caption": "Opis",
+		"selectFieldKey": "opis artikla",
+		"azurFieldKey": "OpisArtikla"
+	},
+	{
+		"type": "text",
+		"caption": "Sati rada",
+		"selectFieldKey": "kolicina",
+		"azurFieldKey": "kol",
+		"inputType": "text"
+	}
+]

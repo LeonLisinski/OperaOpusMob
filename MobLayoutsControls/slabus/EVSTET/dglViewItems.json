@@ -1,0 +1,23 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "datum dokumenta",
+				"caption": "Datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "dglsifart",
+				"caption": "Registracija",
+				"class": "item-bold"
+			},
+			{
+				"field": "napomena6",
+				"caption": "Opis štete",
+				"type": "multiline"
+			}
+		]
+	}
+]

@@ -1,0 +1,54 @@
+[
+	{
+		"label": "Sa Skladišta",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Na skladište",
+		"fields": [
+			{
+				"field": "skladiste2"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Opis arikla",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			},
+			{	
+				"field": "jmj"
+			}
+		]
+	},
+	{
+		"label": "Komentar",
+		"fields": [
+			{
+				"field": "komentar"
+			}
+		]
+	}
+]

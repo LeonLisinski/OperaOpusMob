@@ -1,0 +1,37 @@
+[
+	{
+		"label": "Skladište",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		]
+	},
+	{
+		"label": "Narudžba",
+		"fields": [
+			{
+				"field": "narudzba"
+			}
+		]
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			},
+			{
+				"field": "sifjmj"
+			}
+		]
+	}
+]

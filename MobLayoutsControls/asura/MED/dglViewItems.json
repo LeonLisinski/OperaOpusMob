@@ -1,0 +1,29 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "datum dokumenta",
+				"caption": "Datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "skladiste1",
+				"caption": "Sa skladišta"
+			},
+			{
+				"field": "skladiste2",
+				"caption": "Na skladište"
+			},
+			{
+				"field": "napomena5",
+				"caption": "Napomena"
+			}			
+		]
+	}
+]

@@ -1,0 +1,26 @@
+[
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		]
+	},
+	{
+		"label": "Napomena",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"label": "Sati rada",
+		"fields": [
+			{
+				"field": "sati rada"
+			}
+		]
+	}
+]

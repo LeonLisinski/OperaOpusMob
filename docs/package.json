@@ -1,0 +1,16 @@
+{
+  "name": "opera-mobile-docs",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Statična HTML dokumentacija za Opera Mobile projekt (VitePress). Izolirano od Ionic i Expo aplikacije.",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build"
+  },
+  "devDependencies": {
+    "mermaid": "^11.16.0",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17"
+  }
+}

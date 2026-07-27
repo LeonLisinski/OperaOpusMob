@@ -1,0 +1,51 @@
+[
+	{
+		"label": "Skladište",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Opis artikla",
+		"fields": [
+			{
+				"field": "opisartikla"
+			}
+		],
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			}
+		]
+	},
+	{
+		"label": "Serija",
+		"fields": [
+			{
+				"field": "sifser"
+			}
+		]
+	},
+	{
+		"label": "Napomena",
+		"fields": [
+			{
+				"field": "napomena"
+			}
+		]
+	}
+]

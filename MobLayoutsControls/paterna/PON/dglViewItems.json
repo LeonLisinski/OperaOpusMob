@@ -1,0 +1,76 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj dokumenta",
+				"class": "item-bold",
+				"caption": "Broj ponude"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status ponude"
+			},
+			{
+				"field": "eksterni broj",
+				"caption": "Eksterni broj"
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum dokumenta",
+				"caption": "Datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},			
+			{
+				"field": "datum placanja",
+				"caption": "Datum dospijeća",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			}
+		]
+	},
+	{
+		"caption": "Partner",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			}
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "napomena2",
+				"caption": "Napomena2"
+			},
+			{
+				"field": "napomena3",
+				"caption": "Napomena3"
+			},
+			{
+				"field": "napomena5",
+				"caption": "Interna napomena"
+			}			
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			},
+			{
+				"field": "komercijalist",
+				"caption": "Komercijalist"
+			}
+		]
+	}
+]

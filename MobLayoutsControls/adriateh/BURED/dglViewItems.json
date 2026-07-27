@@ -1,0 +1,100 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "brojdokumenta",
+				"class": "item-bold",
+				"caption": "Broj naloga"
+			},
+			{
+				"field": "datumdokumenta",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datumplacanja",
+				"caption": "Datum računa",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datumopcije",
+				"caption": "Datum montaže",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "eksternibroj",
+				"caption": "Račun broj",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Uređaj",
+		"items": [
+			
+			{
+				"field": "uredaj",
+				"caption": "Šifra artikla"	
+			},			
+			{
+				"field": "dglserbr",
+				"caption": "Serijski broj",	
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Kupac",
+		"items": [
+			{
+				"field": "partner_sif_naz"
+			},
+			{
+				"field": "podruznica",
+				"caption": "Podružnica"
+			},
+			{
+				"field": "drzava",
+				"caption": "Država"
+			},
+			{
+				"field": "",
+				"caption": "Zadužena osoba",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Projekt",
+		"items": [
+			{
+				"field": "dglprojekt"
+			}			
+		]
+	},
+	{
+		"caption": "Korisnik",
+		"items": [
+			{
+				"field": "korisnik"
+			}			
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "napomena5",
+				"caption": "Napomena"
+			},
+			{
+				"field": "napomena6",
+				"caption": "Model i broj boxeva"
+			}
+		]
+	}
+]

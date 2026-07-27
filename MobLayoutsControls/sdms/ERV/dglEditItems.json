@@ -1,0 +1,17 @@
+[
+	{
+		"type": "simple",
+		"caption": "Ugovor",
+		"entity": "ugovor",
+		"debaunce": 200,
+		"selectFieldKey": "sifpred",
+		"selectFieldText": "ugovor",
+		"azurFieldKey": "sifpred"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena",
+		"azurFieldKey": "napomena7"
+	}
+]

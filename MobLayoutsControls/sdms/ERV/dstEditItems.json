@@ -1,0 +1,37 @@
+[
+	{
+		"type": "simple",
+		"caption": "Osoba",
+		"entity": "radnik",
+		"debaunce": 200,
+		"selectFieldKey": "dstsifosobe",
+		"selectFieldText": "radnik",
+		"azurFieldKey": "dstsifosobe",
+		"dependencies": [
+			{
+				"controlFieldKey": "kol",
+				"controlFieldText": "sati rada",
+				"controlAzurFieldKey": "kol",
+				"selectFieldKey": "defaultsati",
+				"selectFieldText": "defaultsati",
+				"azurFieldKey": "defaultsati",
+				"action": "azur"
+			}
+		]
+	},
+	{	
+		"type": "simple",
+		"caption": "Sati rada",
+		"entity": "sati",
+		"debaunce": 200,
+		"selectFieldKey": "kol",
+		"selectFieldText": "sati rada",
+		"azurFieldKey": "kol",
+	},		
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena",
+		"azurFieldKey": "opisartikla"
+	}	
+]

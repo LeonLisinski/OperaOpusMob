@@ -1,0 +1,160 @@
+[
+	{
+		"type": "date",
+		"caption": "Datum izvršenja",
+		"selectFieldKey": "datum izvrsenja",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "simple",
+		"caption": "Vrsta posla",
+		"entity": "vrsteposla",
+		"debaunce": 200,
+		"selectFieldKey": "sifvrsteposla",
+		"selectFieldText": "vrste posla",
+		"azurFieldKey": "sifvrsteposla"
+	},
+	{
+		"type": "advanced",
+		"caption": "Ugovor",
+		"entity": "ugovor",
+		"debaunce": 500,
+		"selectFieldKey": "sifpred",
+		"selectFieldText": "ugovor",
+		"azurFieldKey": "sifpred",
+		"dependencies": [
+			{
+				"controlFieldKey": "sifpartnera",
+				"controlFieldText": "partner",
+				"controlAzurFieldKey": "sifpartnera",
+				"selectFieldKey": "sifpartnera",
+				"selectFieldText": "nazpartnera",
+				"azurFieldKey": "sifpartnera",
+				"action": "azur"
+			},
+			{
+				"selectFieldKey": "dodadresaid",
+				"selectFieldText": "objekt",
+				"azurFieldKey": "dodadresaid",
+				"action": "reset"
+			},
+			{
+				"selectFieldKey": "narukesifosobe",
+				"selectFieldText": "kontakt",
+				"azurFieldKey": "narukesifosobe",
+				"action": "reset"
+			}
+		]
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 500,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera",
+		"dependencies": [
+			{
+				"selectFieldKey": "dodadresaid",
+				"selectFieldText": "objekt",
+				"azurFieldKey": "dodadresaid",
+				"action": "reset"
+			},
+			{
+				"selectFieldKey": "narukesifosobe",
+				"selectFieldText": "kontakt",
+				"azurFieldKey": "narukesifosobe",
+				"action": "reset"
+			}
+		]	
+	},
+	{
+		"type": "simple",
+		"caption": "Objekt",
+		"entity": "podruznica",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "dodadresaid",
+		"selectFieldText": "objekt",
+		"azurFieldKey": "dodadresaid"
+	},
+	{
+		"type": "simple",
+		"caption": "Kontakt osoba",
+		"entity": "narucitelj",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "narukesifosobe",
+		"selectFieldText": "kontakt",
+		"azurFieldKey": "narukesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Kontakt (ručni unos)",
+		"selectFieldKey": "kontakt rucni unos",
+		"azurFieldKey": "napomena4"
+	},
+	{
+		"type": "simple",
+		"caption": "Serviser",
+		"entity": "serviser",
+		"debaunce": 200,
+		"selectFieldKey": "poduzecesifosobe",
+		"selectFieldText": "serviser",
+		"azurFieldKey": "poduzecesifosobe"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena voditelja",
+		"selectFieldKey": "napomena voditelja",
+		"azurFieldKey": "napomena12",
+		"search": {
+			"type": "simple",
+			"entity": "napomena12",
+			"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Interna napomena",
+		"selectFieldKey": "interna napomena",
+		"azurFieldKey": "napomena9",
+		"search": {
+			"type": "simple",
+			"entity": "napomena9",
+			"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Izvedeni radovi (vidi kupac)",
+		"selectFieldKey": "napomena servisera",
+		"azurFieldKey": "napomena8",
+		"search": {
+			"type": "simple",
+			"entity": "napomena8",
+			"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Dodatni zahtjevi (vidi kupac)",
+		"selectFieldKey": "dodatni zahtjevi",
+		"azurFieldKey": "napomena6",
+		"search": {
+			"type": "simple",
+			"entity": "napomena6",
+			"debaunce": 200
+		}
+	}
+]

@@ -1,0 +1,129 @@
+[
+	{
+		"type": "date",
+		"caption": "Datum dokumenta",
+		"selectFieldKey": "datum dokumenta",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "date",
+		"caption": "Datum događaja",
+		"selectFieldKey": "datumisporuke",
+		"azurFieldKey": "datumisporuke"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis štete",
+		"selectFieldKey": "napomena6",
+		"azurFieldKey": "napomena6"
+	},
+	{
+		"type": "date",
+		"caption": "Datum prijave osiguranju",
+		"selectFieldKey": "datumopcije",
+		"azurFieldKey": "datumopcije"
+	},
+	{
+		"type": "advanced",
+		"caption": "Artikl",
+		"entity": "artikl",
+		"debaunce": 200,
+		"selectFieldKey": "dglsifart",
+		"selectFieldText": "dglart",
+		"azurFieldKey": "dglsifart",
+		"searchItems": ["nazart", "sifart"]
+	},
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "nazstatusa",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "simple",
+		"caption": "Prijavitelj",
+		"entity": "djelatnik",
+		"debaunce": 200,
+		"selectFieldKey": "poduzecesifosobe",
+		"selectFieldText": "poduzeceosoba",
+		"azurFieldKey": "poduzecesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Osiguranje pokriće",
+		"selectFieldKey": "oznacen",
+		"azurFieldKey": "oznacen"
+	},
+	{
+		"type": "text",
+		"caption": "Prijava osiguranju",
+		"selectFieldKey": "oznacen2",
+		"azurFieldKey": "oznacen2"
+	},
+	{
+		"type": "text",
+		"caption": "Lokacija",
+		"selectFieldKey": "napomena1",
+		"azurFieldKey": "napomena1"
+	},
+	{
+		"type": "text",
+		"caption": "Radni nalog IDS",
+		"selectFieldKey": "napomena2",
+		"azurFieldKey": "napomena2"
+	},
+	{
+		"type": "text",
+		"caption": "Počinitelj",
+		"selectFieldKey": "napomena3",
+		"azurFieldKey": "napomena3"
+	},
+	{
+		"type": "simple",
+		"caption": "Vrsta posla",
+		"entity": "vrsteposla",
+		"debaunce": 200,
+		"selectFieldKey": "sifvrsteposla",
+		"selectFieldText": "vrposla",
+		"azurFieldKey": "sifvrsteposla"
+	},
+	{
+		"type": "text",
+		"caption": "Poslan zahtjev",
+		"selectFieldKey": "napomena4",
+		"azurFieldKey": "napomena4"
+	},
+	{
+		"type": "text",
+		"caption": "Uslikana šteta",
+		"selectFieldKey": "napomena5",
+		"azurFieldKey": "napomena5"
+	},
+	{
+		"type": "text",
+		"caption": "Izvid štete",
+		"selectFieldKey": "napomena8",
+		"azurFieldKey": "napomena8"
+	},
+	{
+		"type": "text",
+		"caption": "Uslikan popravak",
+		"selectFieldKey": "napomena9",
+		"azurFieldKey": "napomena9"
+	},
+	{
+		"type": "text",
+		"caption": "Polica osiguranja",
+		"selectFieldKey": "napomena10",
+		"azurFieldKey": "napomena10"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena7",
+		"azurFieldKey": "napomena7"
+	}
+]

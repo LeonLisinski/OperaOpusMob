@@ -1,0 +1,47 @@
+{
+  "dgl": {
+    "list": {
+      "sp": "spMob_Adriateh_DGL_Query",
+      "params": {
+        "action": "get"
+      }
+    },
+	"filterdefaults": {
+      "sp": "spMob_Adriateh_DGL_Query",
+      "params": {
+        "action": "getFilterDefaults"
+      }
+    },
+    "statusi": {
+      "sp": "spMob_Adriateh_DGL_Query",
+      "params": {
+        "action": "getStatusi"
+      }
+    },
+    "prilozi": {
+      "sp": "spMob_Adriateh_DGL_Query",
+      "params": {
+        "action": "getPrilozi"
+      }
+    },
+	"sifarnici": {
+		"sp": "spMob_DGL_Sifarnici"
+	}
+  },
+  "dst": {
+    "list": {
+      "sp": "spMob_Adriateh_DST_Query",
+      "params": {
+        "action": "get"
+      }
+    }
+  },
+  "core": {
+    "settings": {
+      "sp": "spMob_Adriateh_Settings_Query",
+      "params": {
+        "action": "get"
+      }
+    }
+  }  
+}

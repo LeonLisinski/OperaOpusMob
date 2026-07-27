@@ -1,0 +1,100 @@
+[
+	{
+		"type": "date",
+		"caption": "Datum izvršenja",
+		"selectFieldKey": "datumisporuke",
+		"azurFieldKey": "datumisporuke"
+	},
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "nazstatusa",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "simple",
+		"caption": "Vrsta servisa",
+		"entity": "vrstaservisa",
+		"debaunce": 200,
+		"selectFieldKey": "napomena",
+		"selectFieldText": "napomena12",
+		"azurFieldKey": "napomena12"
+	},
+	{
+		"type": "simple",
+		"caption": "Tip servisa",
+		"entity": "tipservisa",
+		"debaunce": 200,
+		"selectFieldKey": "sifvrsteposla",
+		"selectFieldText": "nazvrsteposla",
+		"azurFieldKey": "sifvrsteposla"
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner_sif_naz",
+		"debaunce": 400,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner_sif_naz",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "simple",
+		"caption": "Mjesto servisa",
+		"entity": "podruznica",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "dodadresaid",
+		"selectFieldText": "partner_dod_adresa_mjesto",
+		"azurFieldKey": "dodadresaid"
+	},
+	{
+		"type": "simple",
+		"caption": "Servis nraučio",
+		"entity": "narucitelj",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "sifosobe",
+		"selectFieldText": "narucitelj",
+		"azurFieldKey": "narukesifosobe"
+	},
+	{
+		"type": "advanced",
+		"caption": "Serviser",
+		"entity": "serviser",
+		"debaunce": 400,
+		"selectFieldKey": "sifosobe",
+		"selectFieldText": "serviser",
+		"azurFieldKey": "poduzeceSifOsobe"
+	},
+	{
+		"type": "advanced",
+		"caption": "Serviser 2",
+		"entity": "serviser2",
+		"debaunce": 400,
+		"selectFieldKey": "sifosobe",
+		"selectFieldText": "serviser2",
+		"azurFieldKey": "poduzeceSifOsobe2"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis kvara",
+		"selectFieldKey": "napomena6",
+		"azurFieldKey": "napomena6"
+	},
+	{
+		"type": "memo",
+		"caption": "Zapisnik o izvršenim radovima",
+		"selectFieldKey": "napomena7",
+		"azurFieldKey": "napomena7"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena servisera",
+		"selectFieldKey": "napomena4",
+		"azurFieldKey": "napomena4"
+	}
+]

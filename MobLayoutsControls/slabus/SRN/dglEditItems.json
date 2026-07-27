@@ -1,0 +1,122 @@
+[
+	{
+		"type": "date",
+		"caption": "Datum otvaranja",
+		"selectFieldKey": "datumopcije",
+		"azurFieldKey": "datumopcije"
+	},
+	{
+		"type": "date",
+		"caption": "Datum servisa",
+		"selectFieldKey": "datum dokumenta",
+		"azurFieldKey": "datum dokumenta"
+	},
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "nazstatusa",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "text",
+		"caption": "Registracija",
+		"selectFieldKey": "napomena8",
+		"azurFieldKey": "napomena8"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis popravka",
+		"selectFieldKey": "napomena6",
+		"azurFieldKey": "napomena6"
+	},
+	{
+		"type": "text",
+		"caption": "Opis kvara",
+		"selectFieldKey": "napomena5",
+		"azurFieldKey": "napomena5"
+	},
+	{
+		"type": "text",
+		"caption": "Broj narudžbe",
+		"selectFieldKey": "eksternibroj",
+		"azurFieldKey": "eksternibroj"
+	},
+	{
+		"type": "simple",
+		"caption": "Serviser",
+		"entity": "djelatnik",
+		"debaunce": 200,
+		"selectFieldKey": "vodipredmetsifosobe",
+		"selectFieldText": "vodipredmetosoba",
+		"azurFieldKey": "vodipredmetsifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Brojčanik",
+		"selectFieldKey": "napomena4",
+		"azurFieldKey": "napomena4"
+	},
+	{
+		"type": "text",
+		"caption": "Vrijeme rada",
+		"selectFieldKey": "napomena1",
+		"azurFieldKey": "napomena1"
+	},
+	{
+		"type": "simple",
+		"caption": "Mjesto troška",
+		"entity": "mjestotroska",
+		"debaunce": 200,
+		"selectFieldKey": "sifmjtr",
+		"selectFieldText": "mjtr",
+		"azurFieldKey": "sifmjtr"
+	},
+	{
+		"type": "advanced",
+		"caption": "Vozilo",
+		"entity": "artikl",
+		"debaunce": 200,
+		"selectFieldKey": "dglsifart",
+		"selectFieldText": "dglart",
+		"azurFieldKey": "dglsifart",
+		"searchItems": ["nazart", "sifart"]
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 400,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "simple",
+		"caption": "Mjesto servisa",
+		"entity": "podruznica",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "dodadresaid",
+		"selectFieldText": "naz2partnera",
+		"azurFieldKey": "dodadresaid"
+	},
+	{
+		"type": "simple",
+		"caption": "Na ruke",
+		"entity": "narucitelj",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "narukesifosobe",
+		"selectFieldText": "narukeosoba",
+		"azurFieldKey": "narukesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Kontakt",
+		"selectFieldKey": "napomena2",
+		"azurFieldKey": "napomena2"
+	}
+]

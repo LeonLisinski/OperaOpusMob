@@ -1,0 +1,24 @@
+[
+	{
+		"type": "simple",
+		"caption": "Artikl",
+		"entity": "artikl-voz",
+		"debaunce": 200,
+		"selectFieldKey": "sifart",
+		"selectFieldText": "artikl",
+		"azurFieldKey": "sifart"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis",
+		"selectFieldKey": "opis artikla",
+		"azurFieldKey": "opis artikla"
+	},
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Sati rada",
+		"selectFieldKey": "sati rada",
+		"azurFieldKey": "posto1"
+	}
+]

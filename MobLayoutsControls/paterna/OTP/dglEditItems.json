@@ -1,0 +1,65 @@
+[
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "date",
+		"caption": "Datum dokumenta",
+		"selectFieldKey": "datum dokumenta",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "date",
+		"caption": "Datum dospijeća",
+		"selectFieldKey": "datum placanja",
+		"azurFieldKey": "datumplacanja"
+	},
+	{
+		"type": "text",
+		"caption": "Eksterni broj",
+		"selectFieldKey": "eksterni broj",
+		"azurFieldKey": "eksternibroj"
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 400,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "simple",
+		"caption": "Komercijalist",
+		"entity": "komercijalist",
+		"debaunce": 200,
+		"selectFieldKey": "sifosobe",
+		"selectFieldText": "komercijalist",
+		"azurFieldKey": "VodiPredmetSifOsobe"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena (N2)",
+		"selectFieldKey": "napomena2",
+		"azurFieldKey": "napomena2"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena (N3)",
+		"selectFieldKey": "napomena3",
+		"azurFieldKey": "napomena3"
+	},
+	{
+		"type": "memo",
+		"caption": "Interna napomena (N5)",
+		"selectFieldKey": "napomena5",
+		"azurFieldKey": "napomena5"
+	}
+]

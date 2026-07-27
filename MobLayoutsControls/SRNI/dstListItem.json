@@ -1,0 +1,72 @@
+[
+	{
+		"label": "Skladište",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Opis artikla",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			},
+			{
+				"field": "kontrolna kolicina"
+			}
+		]
+	},
+	{
+		"label": "Tip",
+		"fields": [
+			{
+				"field": "komentar"
+			}
+		]
+	},
+	{
+		"label": "Zapis o kvalif.",
+		"fields": [
+			{
+				"field": "opis2"
+			}
+		]
+	},
+	{
+		"label": "Serviser",
+		"fields": [
+			{
+				"field": "radnik"
+			}
+		]
+	},
+	{
+		"label": "Datum",
+		"fields": [
+			{
+				"field": "datum rada",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			}
+		]
+	}
+]

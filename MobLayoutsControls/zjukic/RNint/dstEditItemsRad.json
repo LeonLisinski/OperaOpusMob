@@ -1,0 +1,40 @@
+[
+	{
+		"type": "memo",
+		"caption": "Komentar (Interno - ne vidi kupac)",
+		"selectFieldKey": "komentar",
+		"azurFieldKey": "opis2"
+	},
+	{
+		"type": "date",
+		"caption": "Datum rada",
+		"selectFieldKey": "datum rada",
+		"azurFieldKey": "dstdatum"
+	},
+	{
+		"type": "text",
+		"caption": "Sati rada",
+		"selectFieldKey": "sati rada",
+		"azurFieldKey": "dstdatum2temp",
+		"placeholder": "HHmm",
+		"inputType": "number"
+	},
+	{
+		"type": "simple",
+		"caption": "Terenski dodatak",
+		"entity": "dst_vrste",
+		"debaunce": 300,
+		"selectFieldKey": "sifdstvrste",
+		"selectFieldText": "terenski dodatak",
+		"azurFieldKey": "sifdstvrste"
+	},
+	{
+		"type": "simple",
+		"caption": "Vozilo",
+		"entity": "vozilo-jukic",
+		"debaunce": 300,
+		"selectFieldKey": "zagkssifart",
+		"selectFieldText": "vozilo",
+		"azurFieldKey": "zagkssifart"
+	}	
+]

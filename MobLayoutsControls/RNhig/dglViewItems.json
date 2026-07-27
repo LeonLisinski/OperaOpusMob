@@ -1,0 +1,149 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "ugovor",
+				"caption": "Nositelj",
+				"class": "item-bold"
+			},
+			{
+				"field": "mjesto troska",
+				"caption": "Mjesto troška"
+			},
+			{
+				"field": "vrste posla",
+				"caption": "Vrsta posla",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."			
+			},
+			{
+				"field": "datum izvrsenja od",
+				"caption": "Period izvršenja OD",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum izvrsenja do",
+				"caption": "Period izvršenja DO",
+				"type": "date",
+				"format": "DD.MM.YYYY.",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "objekt1",
+				"caption": "Objekt"
+			},
+			{	"field" : "vanjski partner",
+				"caption" : "Vanjski partner",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Osobe",
+		"items": [
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			},
+			{
+				"field": "nalogodavatelj",
+				"caption": "Nalogodavatelj"
+			},
+			{
+				"field" : "serviser",
+				"caption": "Serviser",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Vezani dokumenti",
+		"items": [
+			{
+				"field": "br. crm upita",
+				"caption": "Br. CRM upita"
+			},
+			{
+				"field": "broj ponude",
+				"caption": "Broj ponude"
+			},
+			{
+				"field": "br. narudzbe",
+				"caption": "Narudžbenica"
+			},
+			{
+				"field": "po number",
+				"caption": "PO number"
+			},
+			{
+				"field": "br. narudzbe kupca",
+				"caption": "Br. narudzbe kupca",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "zakupac/lokacija",
+				"caption": "Zakupac/lokacija"
+			},
+						{
+				"field": "opis vrste usluge",
+				"caption": "Opis vrste usluge"
+			},
+			{
+				"field": "opis kvara/usluge",
+				"caption": "Opis kvara"
+			},
+			{
+				"field": "napomena servisera",
+				"caption": "Napomena servisera"
+			},
+			{	
+				"field": "napomena voditelja",
+				"caption": "Napomena voditelja"
+			},
+			{
+				"field": "interna napomena",
+				"caption": "Interna napomena"
+			}
+		]
+	}
+]

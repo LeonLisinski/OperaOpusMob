@@ -1,0 +1,51 @@
+[
+	{
+		"label": "Skladište",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Opis arikla",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			}
+		]
+	},
+	{
+		"label": "Trenutna količina",
+		"fields": [
+			{
+				"field": "kolicina2"
+			}
+		]
+	},
+	{
+		"label": "Komentar",
+		"fields": [
+			{
+				"field": "komentar"
+			}
+		]
+	}
+]

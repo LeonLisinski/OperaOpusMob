@@ -1,0 +1,60 @@
+[
+	{
+		"type": "simple",
+		"caption": "Skladište",
+		"entity": "skladiste",
+		"debaunce": 200,
+		"selectFieldKey": "sifsklad",
+		"selectFieldText": "skladiste",
+		"azurFieldKey": "sifsklad"
+	},
+	{
+		"type": "advanced",
+		"caption": "Artikl",
+		"entity": "artikl",
+		"debaunce": 500,
+		"parentIdFieldKey": "sifsklad",
+		"selectFieldKey": "sifart",
+		"selectFieldText": "artikl",
+		"azurFieldKey": "sifart",
+		"searchItems": ["nazart", "sifart"]
+	},
+	{
+		"type": "simple",
+		"caption": "LOT/ser.br.",
+		"entity": "lot",
+		"debaunce": 200,
+		"selectFieldKey": "sifser",
+		"selectFieldText": "serija",
+		"azurFieldKey": "sifser"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis artikla",
+		"selectFieldKey": "opis artikla",
+		"azurFieldKey": "opisartikla"
+	},
+	{
+		"type": "simple",
+		"caption": "Vrsta",
+		"entity": "vrstastavke",
+		"debaunce": 200,
+		"selectFieldKey": "sifdstvrste",
+		"selectFieldText": "vrsta",
+		"azurFieldKey": "sifdstvrste"
+	},
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Količina",
+		"selectFieldKey": "kolicina",
+		"azurFieldKey": "kol"
+	},
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Stvarni (h)",
+		"selectFieldKey": "sati",
+		"azurFieldKey": "posto10"
+	}
+]

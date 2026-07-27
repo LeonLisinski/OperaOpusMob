@@ -1,0 +1,42 @@
+[
+	{
+		"fields": [
+			{
+				"field": "brojdokumenta"
+			},
+			{
+				"field": "datumdokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"fields": [
+			{
+				"field": "partner_sif_naz"
+			}
+		],
+		"class": "item-bold",
+		"classmain" : "two-lines"
+	},
+	{
+		"label": "Uređaj",
+		"fields": [
+			{
+				"field": "uredaj"
+			}
+		],
+		"classmain" : "two-lines"
+	},
+	{
+		"label": "Serijski broj",
+		"fields": [
+			{
+				"field": "dglserbr"
+			}
+		]
+	}
+]

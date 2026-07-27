@@ -1,0 +1,49 @@
+---
+description: Definition of Done za Opera Mobile — kriteriji prihvaćanja, testovi i obavezan dokumentacijski utjecaj. Koristiti pri zatvaranju zadatka, pisanju testova ili procjeni je li promjena spremna.
+globs: **/*.test.{ts,tsx,js,jsx},expo/**/__tests__/**,cypress/**,docs/**/*.md
+alwaysApply: false
+---
+
+# Definition of Done
+
+Promjena nije gotova dok sve niže navedeno nije zadovoljeno ili eksplicitno označeno kao neprimjenjivo uz obrazloženje.
+
+## 1. Funkcionalnost
+
+- [ ] Kriteriji prihvaćanja iz plana su zadovoljeni i provjereni, ne pretpostavljeni.
+- [ ] Kod migracije: ponašanje je usporedno s Ionic referencom (`src/`) i razlike su namjerne i zapisane.
+- [ ] Navedeni regresijski rizici su provjereni u `servis`, `dgl`, `gen` i pogođenim tenant varijantama.
+
+## 2. Testovi
+
+Razmjer testiranja prati rizik, ne veličinu diffa.
+
+| Sloj | Što se testira |
+|---|---|
+| `api` | oblik envelope-a, mapiranje greške, `table1/table2` |
+| `service` | poslovno pravilo, rubni slučajevi |
+| layout engine | svih 5 tipova kontrola, `visiblefield`, nedostajuće polje |
+| ekran | glavni flow korisnika |
+
+- [ ] Nova poslovna logika ima test.
+- [ ] Popravak buga ima test koji bi pao prije popravka.
+- [ ] Layout promjena ima provjeru protiv stvarnih datoteka iz `MobLayoutsControls/`, uključujući tenant varijantu.
+
+## 3. Dokumentacijski utjecaj
+
+Dokumentacija je dio Definition of Done. Struktura `docs/technical/` i `docs/user/` **još nije kreirana** — do tada se dokumentacijski utjecaj **zapisuje u plan zadatka** u `.cursor/plans/`, a ne izostavlja.
+
+Svaki plan i svaka završena promjena mora odgovoriti:
+
+- [ ] Mijenja li se tehničko ponašanje? Koje stranice će trebati ažurirati.
+- [ ] Mijenja li se korisnički flow? Koji korisnički zadatak je pogođen.
+- [ ] Treba li screenshot? (samo za stabilan, stvarno postojeći ekran)
+- [ ] Treba li zapisati arhitektonsku odluku?
+
+Kad dokumentacija zaživi, vrijedi dodatno: ažurirati samo pogođene dijelove, ukloniti zastarjelo, provjeriti interne linkove, potvrditi da tehnička i korisnička dokumentacija nisu kontradiktorne.
+
+## 4. Zabrane
+
+- Ne tvrdi da je dokumentacija ažurirana ako nije uspoređena sa stvarnom implementacijom.
+- Ne dokumentiraj nedovršenu funkcionalnost kao da postoji. Označi status ili izostavi.
+- Ne mijenjaj dokumentaciju ako promjena nema utjecaja na ponašanje ili održavanje.

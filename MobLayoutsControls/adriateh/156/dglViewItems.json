@@ -1,0 +1,129 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold",
+				"caption": "Broj naloga"
+			},
+			{
+				"field": "nazstatusa",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "nazvrsteposla",
+				"caption": "Vrsta garancije",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datumdokumenta",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},			
+			{
+				"field": "datumisporuke",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY.",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Artikl",
+		"items": [
+			{
+				"field": "uredaj"
+			},			
+			{
+				"field": "dglserbr",
+				"caption": "Serijski broj",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "partner_adresa_mjesto",
+				"caption": "Adresa partnera"
+			},
+			{
+				"field": "partner_dod_adresa_mjesto",
+				"caption": "Mjesto servisa"
+			},
+			{
+				"field": "narucitelj",
+				"caption": "Servis naručio",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "napomena6",
+				"caption": "Opis kvara"
+			},
+			{
+				"field": "napomena7",
+				"caption": "Zapisnik o izvršenim radovima"
+			},
+			{
+				"field": "napomena4",
+				"caption": "Napomena servisera"
+			},
+			{
+				"field": "vrsta servisa",
+				"caption": "Vrsta servisa"
+			},
+			{
+				"field": "jamstveni rok",
+				"caption": "Jamstveni rok"
+			},
+			{
+				"field": "prioritet",
+				"caption": "prioritet",
+				"lines": false
+			}		
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "serviser",
+				"caption": "Serviser"
+			},
+			{
+				"field": "serviser2",
+				"caption": "Serviser 2"
+			},
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			},
+			{
+				"field": "napomena3",
+				"caption": "Preuzeo"
+			},
+			{
+				"field": "email rucno",
+				"caption": "Email (ručni unos)"
+			}
+		]
+	}
+]

@@ -1,0 +1,31 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj radnog naloga"
+			},
+			{
+				"field": "datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Sa skladišta",
+		"fields": [
+			{
+				"field": "saskladiste"
+			}
+		]
+	},
+	{
+		"label": "Na skladište",
+		"fields": [
+			{
+				"field": "naskladiste"
+			}
+		]
+	}	
+]

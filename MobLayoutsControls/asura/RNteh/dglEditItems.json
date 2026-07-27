@@ -1,0 +1,17 @@
+[
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status_tehnicar",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena servisera",
+		"selectFieldKey": "napomena servisera",
+		"azurFieldKey": "napomena8"
+	}
+]

@@ -1,0 +1,25 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj dokumenta"
+			},
+			{
+				"field": "datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Ugovor",
+		"classmain": "three-lines",
+		"fields": [
+			{
+				"field": "ugovor"
+			}
+		],
+		"class": "item-bold"
+	}
+]

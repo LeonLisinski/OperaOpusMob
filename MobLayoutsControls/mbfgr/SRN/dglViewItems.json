@@ -1,0 +1,93 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "vrste posla",
+				"caption": "Vrsta posla",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."			
+			}
+		]
+	},
+		{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "mjesto servisa",
+				"caption": "Mjesto servisa"
+			},
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "adresa objekta",
+				"caption": "Adresa partnera"
+			},
+			{
+				"field": "kontakt",
+				"caption": "Kontakt osoba"
+			},
+			{
+				"field": "brojevitelefona",
+				"caption": "Mob/Tel partnera"
+			},
+			]
+	},
+		{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "napomena7",
+				"caption": "Opis kvara"
+			},
+						{
+				"field": "napomena3",
+				"caption": "Napomena servisera"
+			},
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "serviser",
+				"caption": "Serviser"
+			},
+
+			{
+				"field": "komercijalist",
+				"caption": "Komercijalist"
+			},
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			}
+		]
+	}
+]

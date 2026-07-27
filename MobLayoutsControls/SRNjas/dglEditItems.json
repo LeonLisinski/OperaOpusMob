@@ -1,0 +1,62 @@
+[
+	{
+		"type": "date",
+		"caption": "Datum otpreme",
+		"selectFieldKey": "datum izvrsenja",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis kvara",
+		"selectFieldKey": "napomena7",
+		"azurFieldKey": "napomena7"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena servisera",
+		"selectFieldKey": "napomena3",
+		"azurFieldKey": "napomena3"
+	},
+	{
+		"type": "memo",
+		"caption": "Interna napomena",
+		"selectFieldKey": "napomena12",
+		"azurFieldKey": "napomena12"
+	},
+	{
+		"type": "simple",
+		"caption": "Serviser",
+		"entity": "serviser",
+		"debaunce": 200,
+		"selectFieldKey": "poduzecesifosobe",
+		"selectFieldText": "serviser",
+		"azurFieldKey": "poduzecesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Ovjerio",
+		"selectFieldKey": "napomena2",
+		"azurFieldKey": "napomena2"
+	},
+	{
+		"type": "text",
+		"caption": "Radni sati",
+		"selectFieldKey": "napomena5",
+		"azurFieldKey": "napomena5"
+	},
+	{
+		"type": "memo",
+		"caption": "Duljina puta",
+		"selectFieldKey": "napomena6",
+		"azurFieldKey": "napomena6"
+	}
+]

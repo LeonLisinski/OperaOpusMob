@@ -1,0 +1,71 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."			
+			},
+			{
+				"field": "datum period",
+				"caption": "Period izvršenja OD - DO"
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "objekt1",
+				"caption": "Objekt"
+			}
+		]
+	},
+	{
+		"caption": "Osobe",
+		"items": [
+			{
+				"field": "nalogodavatelj",
+				"caption": "Nalogodavatelj"
+			},
+			{
+				"field" : "serviser",
+				"caption": "Serviser",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "opis kvara/usluge",
+				"caption": "Opis kvara"
+			},
+			{
+				"field": "napomena servisera",
+				"caption": "Napomena servisera"
+			},
+			{	
+				"field": "napomena voditelja",
+				"caption": "Napomena voditelja"
+			}			
+		]
+	}
+]

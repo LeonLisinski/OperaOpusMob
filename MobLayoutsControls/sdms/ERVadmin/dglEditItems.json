@@ -1,0 +1,37 @@
+[
+	{
+		"type": "simple",
+		"caption": "Ugovor",
+		"entity": "ugovor",
+		"debaunce": 200,
+		"selectFieldKey": "sifpred",
+		"selectFieldText": "ugovor",
+		"azurFieldKey": "sifpred",
+		"dependencies": [
+				{
+						"controlFieldKey": "sifmjtr",
+						"controlFieldText": "odjel",
+						"controlAzurFieldKey": "sifmjtr",
+						"selectFieldKey": "sifmjtr",
+						"selectFieldText": "nazmjtr",
+						"azurFieldKey": "sifmjtr",
+						"action": "azur"
+				}
+			]
+	},
+	{
+		"type": "advanced",
+		"caption": "Odjel",
+		"entity": "odjel",
+		"debaunce": 200,
+		"selectFieldKey": "sifmjtr",
+		"selectFieldText": "odjel",
+		"azurFieldKey": "sifmjtr"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena",
+		"azurFieldKey": "napomena1"
+	}
+]

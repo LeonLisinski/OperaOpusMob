@@ -1,0 +1,35 @@
+[
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Napomena",
+		"fields": [
+			{
+				"field": "napomena"
+			}
+		]
+	},
+	{
+		"label": "Radnik",
+		"fields": [
+			{
+				"field": "radnik"
+			}
+		]
+	},
+		{
+		"label": "Sati rada",
+		"fields": [
+			{
+				"field": "sati rada"
+			}
+		]
+	}
+]

@@ -1,0 +1,31 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj dokumenta",
+				"caption": "Broj dokumenta",
+				"class": "item-bold"
+			},
+			{
+				"field": "datum dokumenta",
+				"caption": "Datum dokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "ugovor",
+				"caption": "Broj ugovora",
+				"class": "item-bold"
+			},
+			{
+				"field": "odjel",
+				"caption": "Odjel"
+			},
+			{
+				"field": "napomena",
+				"caption": "Napomena"
+			}
+		]
+	}
+]

@@ -1,0 +1,26 @@
+[
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		]
+	},
+	{
+		"label": "Radnik",
+		"fields": [
+			{
+				"field": "radnik"
+			}
+		]
+	},
+	{
+		"label": "Sati rada",
+		"fields": [
+			{
+				"field": "sati rada"
+			}
+		]
+	}
+]

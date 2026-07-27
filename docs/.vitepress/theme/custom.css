@@ -1,0 +1,128 @@
+/**
+ * SvamPlus tema za Opera Mobile dokumentaciju.
+ * Prilagođava VitePress default temu preko službenih CSS varijabli --vp-*.
+ * Namjerno suzdržano: bez animacija, bez dodatnih layout komponenti.
+ */
+
+:root {
+  /* Brand — svijetli način rada */
+  --vp-c-brand-1: #496c60;
+  --vp-c-brand-2: #3a564d;
+  --vp-c-brand-3: #2e453d;
+  --vp-c-brand-soft: rgba(73, 108, 96, 0.12);
+
+  /* Vrlo svijetla zelena podloga za kartice, oznake i istaknute blokove */
+  --sp-soft-bg: #e7ede9;
+  --sp-soft-bg-strong: #dbe6e0;
+  --sp-soft-border: #c4d6cd;
+}
+
+.dark {
+  /* Brand — tamni način rada, posvjetljeno radi kontrasta na tamnoj podlozi */
+  --vp-c-brand-1: #7dbba4;
+  --vp-c-brand-2: #93c9b4;
+  --vp-c-brand-3: #63a88f;
+  --vp-c-brand-soft: rgba(125, 187, 164, 0.16);
+
+  --sp-soft-bg: #1c2523;
+  --sp-soft-bg-strong: #223029;
+  --sp-soft-border: #2d3d36;
+}
+
+/* Linkovi i aktivni elementi unutar sadržaja */
+.vp-doc a {
+  color: var(--vp-c-brand-1);
+  text-decoration-color: var(--vp-c-brand-soft);
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
+}
+
+/* Aktivna stavka u sidebaru — dodatno istaknuta mekom pozadinom */
+.VPSidebarItem.is-active > .item .text {
+  color: var(--vp-c-brand-1) !important;
+  font-weight: 600;
+}
+
+.VPSidebarItem.is-active > .item {
+  background-color: var(--vp-c-brand-soft);
+  border-radius: 6px;
+}
+
+/* Aktivna stavka u gornjoj navigaciji */
+.VPNavBarMenuLink.active {
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* "Tip" istaknuti blok koristi brand boju umjesto zadane */
+.vp-doc .custom-block.tip {
+  border-color: var(--vp-c-brand-1);
+  background-color: var(--sp-soft-bg);
+}
+
+.vp-doc .custom-block.tip .custom-block-title {
+  color: var(--vp-c-brand-2);
+}
+
+.dark .vp-doc .custom-block.tip .custom-block-title {
+  color: var(--vp-c-brand-1);
+}
+
+/* Oznake (badge) u brand tonu */
+.vp-doc .VPBadge.tip,
+.VPBadge.tip {
+  border-color: var(--sp-soft-border);
+  color: var(--vp-c-brand-2);
+  background-color: var(--sp-soft-bg);
+}
+
+.dark .vp-doc .VPBadge.tip,
+.dark .VPBadge.tip {
+  color: var(--vp-c-brand-1);
+}
+
+/* Tablice — čitljivost i jasne granice */
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
+
+.vp-doc th {
+  background-color: var(--sp-soft-bg);
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc tr:nth-child(2n) {
+  background-color: var(--vp-c-bg-soft);
+}
+
+/* Inline kod — mekša, brand-svjesna podloga */
+.vp-doc :not(pre) > code {
+  background-color: var(--sp-soft-bg);
+  border-radius: 4px;
+}
+
+/* Mermaid dijagrami — čitljiv okvir u oba načina rada */
+.mermaid {
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--sp-soft-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+/* Footer — suzdržan prikaz SvamPlus oznake */
+.VPFooter .message,
+.VPFooter .copyright {
+  color: var(--vp-c-text-2);
+}
+
+/* Responzivnost: sidebar/tablice na manjim ekranima */
+@media (max-width: 767px) {
+  .vp-doc table {
+    display: block;
+    overflow-x: auto;
+  }
+}

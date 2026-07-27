@@ -1,0 +1,91 @@
+[
+	{
+		"type": "date",
+		"caption": "Datum dokumenta",
+		"selectFieldKey": "datum izvrsenja",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "text",
+		"caption": "Broj ponude",
+		"selectFieldKey": "broj ponude",
+		"azurFieldKey": "napomena1"
+	},	
+	{
+		"type": "text",
+		"caption": "Broj narudžbe od kupca",
+		"selectFieldKey": "br. narudzbe kupca",
+		"azurFieldKey": "eksternibroj"
+	},		
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 500,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "simple",
+		"caption": "Podružnica",
+		"entity": "podruznica",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "dodadresaid",
+		"selectFieldText": "objekt",
+		"azurFieldKey": "dodadresaid"
+	},
+	{
+		"type": "simple",
+		"caption": "Kontakt osoba",
+		"entity": "narucitelj",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "narukesifosobe",
+		"selectFieldText": "kontakt",
+		"azurFieldKey": "narukesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Kontakt osoba (ručni unos)",
+		"selectFieldKey": "kontakt rucni unos",
+		"azurFieldKey": "napomena4"
+	},
+	{
+		"type": "simple",
+		"caption": "Komercijalist",
+		"entity": "komercijalist",
+		"debaunce": 200,
+		"selectFieldKey": "vodipredmetsifosobe",
+		"selectFieldText": "projekt vodi",
+		"azurFieldKey": "vodipredmetsifosobe"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena prije",
+		"selectFieldKey": "napomena prije",
+		"azurFieldKey": "napomena5"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena poslije",
+		"selectFieldKey": "napomena poslije",
+		"azurFieldKey": "napomena6"
+	},
+	{
+		"type": "memo",
+		"caption": "Interna napomena",
+		"selectFieldKey": "interna napomena",
+		"azurFieldKey": "napomena12"
+	}
+]

@@ -1,0 +1,104 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner",
+				"class": "item-bold"
+			},
+			{
+				"field": "sifranazivugovora",
+				"caption": "Nositelj"
+			},
+			{
+				"field": "objekt",
+				"caption": "Objekt"
+			},
+			{
+				"field": "adresaobjekta",
+				"caption": "Adresa partnera"
+			},
+			{
+				"field": "tip",
+				"caption": "Tip"
+			},
+			{
+				"field": "status",
+				"caption": "Status",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Osobe",
+		"items": [
+			{
+				"field": "zaduzenaosoba",
+				"caption": "Zadužena osoba:",
+				"class": "item-bold"
+			},
+{
+				"field": "kreiraoosoba",
+				"caption": "Kreator:"
+			},
+			{
+				"field": "nalogodavateljosoba",
+				"caption": "Nalogodavatelj:"
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datotv",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datzatv",
+				"caption": "Datum zatvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "kreiraodat",
+				"caption": "Datum kreiranja upita",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datserplan",
+				"caption": "Planirani datum početka",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datdosp",
+				"caption": "Planirani datum završetka",
+				"type": "date",
+				"format": "DD.MM.YYYY.",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "nazart",
+				"caption": "Artikl"
+			},
+			{
+				"field": "mjestotroska",
+				"caption": "Mjesto troška"
+			},
+			{
+				"field": "nazvrsteposla",
+				"caption": "Vrsta posla"
+			}
+		]
+	}
+]

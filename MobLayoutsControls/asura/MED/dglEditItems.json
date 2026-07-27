@@ -1,0 +1,33 @@
+[
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena5",
+		"azurFieldKey": "napomena5"
+	},
+	{
+		"type": "simple",
+		"caption": "Sa skladišta",
+		"entity": "skladiste",
+		"selectFieldKey": "sifsklad",
+		"selectFieldText": "skladiste1",
+		"azurFieldKey": "sifsklad"
+	},
+	{
+		"type": "simple",
+		"caption": "Na skladište",
+		"entity": "skladiste",
+		"selectFieldKey": "sifsklad2",
+		"selectFieldText": "skladiste2",
+		"azurFieldKey": "sifsklad2"
+	}
+]

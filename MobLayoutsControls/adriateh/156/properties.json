@@ -1,0 +1,10 @@
+{
+  "reportName": "rptSRN156",
+  "signatureTextSelectField": "kontaktime",
+  "signatureTextAzurField": "napomena3",
+  "signatureEmailAzurField": "napomena11",
+  "signatureEmailSelectField": "email rucno",	
+  "signatureOpenPdf": true,
+  "dglallownew": true,
+  "signatureSecondary": true 
+}

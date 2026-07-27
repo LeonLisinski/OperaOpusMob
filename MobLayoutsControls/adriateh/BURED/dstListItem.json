@@ -1,0 +1,56 @@
+[
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Serija",
+		"fields": [
+			{
+				"field": "sifser"
+			}
+		]
+	},
+	{
+		"label": "Opis artikla",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"label": "Projekt",
+		"fields": [
+			{
+				"field": "wbs"
+			}
+		]
+	},
+	{
+		"label": "Datum isteka garancije",
+		"fields": [
+			{
+				"field": "datum isteka",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			}
+		]
+	},
+	{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kolicina"
+			},
+			{	
+				"field": "jmj"
+			}
+		]
+	}
+]

@@ -1,0 +1,10 @@
+{
+  "reportName": "rptSRN_JASIKA",
+  "signatureTextSelectField": "servisnaruciorucno",
+  "signatureTextAzurField": "napomena3",
+  "signatureEmailAzurField": "napomena11",
+  "signatureEmailSelectField": "kontaktemailrucno",
+  "signatureOpenPdf": true,
+  "dglallownew": true,
+  "signatureSecondary": true   
+}

@@ -1,0 +1,176 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "ugovor",
+				"caption": "Predmet",
+				"class": "item-bold"
+			},
+			{
+				"field": "vrste posla",
+				"caption": "Vrsta posla",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."			
+			}
+		]
+	},
+	{
+		"caption": "Uređaj",
+		"items": [
+			{
+				"field": "dglsifart",
+				"caption": "Uređaj"
+			},
+			{
+				"field": "dglnazart",
+				"caption": "Naziv uređaja"		
+			},
+			{
+				"field": "brojsasije",
+				"caption": "Serijski br."		
+			},
+			{
+				"field": "dglserbr",
+				"caption": "Ser. ručno"		
+			},
+			{
+				"field": "napomena8",
+				"caption": "Provjera ispravnosti"		
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "napomena9",
+				"caption": "Mjesto popravka"
+			},
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "adresa objekta",
+				"caption": "Adresa partnera"
+			},
+			{
+				"field": "pdanazpartnera",
+				"caption": "Odjel"
+			},
+			{
+				"field": "kontakt",
+				"caption": "Kontakt osoba"
+			},
+			{
+				"field": "brojevitelefona",
+				"caption": "Mob/Tel partnera"
+			},
+			{
+				"field": "www",
+				"urlcaption": "Lokacija na mapi",
+				"caption": "Lokacija",
+				"type": "url",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Vezani dokumenti",
+		"items": [
+			{
+				"field": "eksternibroj",
+				"caption": "Narudžbenica"
+			},
+			{
+				"field": "opis",
+				"caption": "Ponuda"
+			},
+			{
+				"field": "datumisporuke",
+				"caption": "Datum ponude",
+				"type": "date",
+				"format": "DD.MM.YYYY."	
+			},
+			{
+				"field": "napomena11",
+				"caption": "Otpremnica"
+			}
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "napomena7",
+				"caption": "Opis kvara"
+			},
+						{
+				"field": "napomena3",
+				"caption": "Napomena servisera"
+			},
+			{
+				"field": "napomena1",
+				"caption": "Br.zap.zapr. uređaja"
+			},
+			{
+				"field": "napomena4",
+				"caption": "Mail od"
+			},
+			{	
+				"field": "napomena2",
+				"caption": "Ovjerio"
+			},
+			{
+				"field": "napomena12",
+				"caption": "Interna napomena"
+			}
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "napomena5",
+				"caption": "Radni sati"
+			},
+						{
+				"field": "napomena6",
+				"caption": "Duljina puta"
+			},
+			{
+				"field": "serviser",
+				"caption": "Serviser"
+			},
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			}
+		]
+	}
+]

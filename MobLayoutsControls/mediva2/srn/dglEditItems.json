@@ -1,0 +1,100 @@
+[
+	{
+		"type": "advanced",
+		"caption": "Uređaj",
+		"entity": "artikl-uredaj",
+		"debaunce": 500,
+		"selectFieldKey": "dglsifart",
+		"selectFieldText": "uredaj",
+		"azurFieldKey": "dglsifart"
+	},
+	{
+		"type": "simple",
+		"caption": "Serviser",
+		"entity": "serviser",
+		"selectFieldKey": "vodipredmetsifosobe",
+		"selectFieldText": "serviser",
+		"azurFieldKey": "vodipredmetsifosobe"
+	},
+	{
+		"type": "simple",
+		"caption": "Vrsta posla",
+		"entity": "vrsteposla",
+		"debaunce": 200,
+		"selectFieldKey": "sifvrsteposla",
+		"selectFieldText": "vrsta posla",
+		"azurFieldKey": "sifvrsteposla"
+	},
+	{
+		"type": "simple",
+		"caption": "Nalogodavatelj",
+		"entity": "nalogodavatelj",
+		"selectFieldKey": "poduzecesifosobe",
+		"selectFieldText": "nalogodavatelj",
+		"azurFieldKey": "poduzecesifosobe"
+	},
+	{
+		"type": "date",
+		"caption": "Datum izvršenja",
+		"selectFieldKey": "datum izvrsenja",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 500,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "simple",
+		"caption": "Mjesto servisa",
+		"entity": "podruznica",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "dodadresaid",
+		"selectFieldText": "mjesto servisa",
+		"azurFieldKey": "dodadresaid"
+	},
+	{
+		"type": "simple",
+		"caption": "Servis naručio",
+		"entity": "narucitelj",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "narukesifosobe",
+		"selectFieldText": "servis narucio",
+		"azurFieldKey": "narukesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Narudžbenica",
+		"selectFieldKey": "eksternibroj",
+		"azurFieldKey": "eksternibroj"
+	},
+	{
+		"type": "text",
+		"caption": "Ponuda",
+		"selectFieldKey": "opis",
+		"azurFieldKey": "opis"
+	},
+	{
+		"type": "memo",
+		"caption": "Opis kvara test",
+		"selectFieldKey": "napomena7",
+		"azurFieldKey": "napomena7",
+		"search": {
+			"type": "simple",
+			"entity": "napomena",
+			"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena servisera",
+		"selectFieldKey": "napomena8",
+		"azurFieldKey": "napomena8"
+	}
+]

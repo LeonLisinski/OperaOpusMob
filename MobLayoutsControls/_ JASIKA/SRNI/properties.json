@@ -1,0 +1,6 @@
+{
+  "reportName": "rptSRNI",
+  "signatureTextSelectField": "napomena2",
+  "signatureTextAzurField": "napomena2",
+  "signatureOpenPdf": true
+}

@@ -1,0 +1,7 @@
+{
+  "reportName": "rptSRN_samoKOL",
+  "signatureTextSelectField": "kontakt rucni unos",
+  "signatureTextAzurField": "napomena4",
+  "signatureEmailSelectField": "kontaktemail",	
+  "signatureOpenPdf": true
+}

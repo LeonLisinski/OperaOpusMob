@@ -1,0 +1,52 @@
+[
+	{
+		"type": "simple",
+		"caption": "Skladište",
+		"entity": "skladiste",
+		"debaunce": 200,
+		"selectFieldKey": "sifsklad",
+		"selectFieldText": "skladiste",
+		"azurFieldKey": "sifsklad"
+	},
+	{
+		"type": "advanced",
+		"caption": "Artikl",
+		"entity": "artikl-jukic",
+		"debaunce": 500,
+		"parentIdFieldKey": "sifsklad",
+		"selectFieldKey": "sifart",
+		"selectFieldText": "artikl",
+		"azurFieldKey": "sifart",
+		"searchItems": ["nazart", "opis"]
+	},
+	{
+		"type": "memo",
+		"caption": "Opis artikla",
+		"selectFieldKey": "opis artikla",
+		"azurFieldKey": "opisartikla"
+	},
+	{
+		"type": "text",
+		"caption": "Količina",
+		"selectFieldKey": "kolicina",
+		"azurFieldKey": "kol"
+	},
+	{
+		"type": "memo",
+		"caption": "Tip",
+		"selectFieldKey": "komentar",
+		"azurFieldKey": "opis1"
+	},
+	{
+		"type": "memo",
+		"caption": "Zapis o kvalif.",
+		"selectFieldKey": "opis2",
+		"azurFieldKey": "opis2"
+	},
+	{
+		"type": "date",
+		"caption": "Datum",
+		"selectFieldKey": "datum rada",
+		"azurFieldKey": "dstdatum"
+	}
+]

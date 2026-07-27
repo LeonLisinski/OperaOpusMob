@@ -1,0 +1,67 @@
+[
+	{
+		"fields": [
+			{
+				"field": "id"
+			},
+			{
+				"label": "Otv.",
+				"field": "datotv",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			},
+			{
+				"label": "Plan",
+				"field": "datserplan",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"fields": [
+			{
+				"field": "partner"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Objekt",
+		"fields": [
+			{
+				"field": "objekt"
+			}
+		]
+	},
+	{
+		"label": "Tip",
+		"fields": [
+			{
+				"field": "tip"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Zadužena osoba",
+		"fields": [
+			{
+				"field": "zaduzenaosoba"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Opis",
+		"classmain": "three-lines",
+		"fields": [
+			{
+				"field": "opis"
+			}
+		]
+	}
+]

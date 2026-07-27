@@ -1,0 +1,45 @@
+{
+  "gla": {
+    "list": {
+      "sp": "spMob_CRM_Upiti_Query",
+      "params": {
+        "action": "get"
+      }
+    },
+    "azur": {
+      "sp": "spMob_CRM_Upiti_Azur"
+    },
+    "filterdefaults": {
+      "sp": "spMob_CRM_Upiti_Query",
+      "params": {
+        "action": "getFilterDefaults"
+      }
+    },
+    "statusi": {
+      "sp": "spMob_CRM_Upiti_Query",
+      "params": {
+        "action": "getStatusi"
+      }
+    },
+    "prilozi": {
+      "sp": "spMob_ASURA_DGL_Query",
+      "params": {
+        "action": "getPrilozi"
+      }
+    },
+    "sifarnici": {
+      "sp": "spMob_CRM_Sifarnici_Query"
+    },
+	"createdoc": {
+      "sp": "spMob_CRM_CreateDoc_Azur"
+    }
+  },
+  "core": {
+    "settings": {
+      "sp": "spMob_CRM_Upiti_Settings_Query",
+      "params": {
+        "action": "get"
+      }
+    }
+  }  
+}

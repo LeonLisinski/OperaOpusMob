@@ -1,0 +1,128 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{	
+				"field": "id",
+				"caption": "Broj upita",
+				"class": "item-bold"
+			},
+			{
+				"field": "status",
+				"caption": "Status"
+			},
+			{
+				"field": "nositelj",
+				"caption": "Nositelj"
+			},
+			{
+				"field": "mjesto troska",
+				"caption": "Mjesto troška"
+			},
+			{
+				"field": "vrsta posla",
+				"caption": "Vrsta posla",
+				"lines": false
+			}
+		]
+	},	
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum upita",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum zatvaranja",
+				"caption": "Datum zatvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum dospijeca",
+				"caption": "Datum dospijeća",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum kreiranja",
+				"caption": "Datum kreiranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "planirani datum pocetka",
+				"caption": "Planirani datum početka",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "planirani datum zatvaranja",
+				"caption": "Planirani datum zatvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY.",
+				"lines": false
+			}
+		]
+	},		
+	{
+		"caption" : "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner",
+				"class": "item-bold"
+			},
+						{
+				"field": "objekt",
+				"caption": "Objekt"
+			},
+			{
+				"field": "adresa objekta",
+				"caption": "Adresa objekta",
+				"lines": false
+			}			
+		]
+	},
+	{
+		"caption": "Osobe",
+		"items": [
+			{
+				"field": "zaduzena osoba",
+				"caption": "Zadužena osoba:"
+			},
+{
+				"field": "kreirao osoba",
+				"caption": "Kreirao:"
+			},
+			{
+				"field": "nalogodavatelj osoba",
+				"caption": "Nalogodavatelj:"
+			}
+		]
+	},
+	{
+		"caption": "Ostalo",
+		"items": [
+			{
+				"field": "artikl",
+				"caption": "Artikl"
+			},
+			{
+				"field": "opis",
+				"caption": "Opis"
+			},
+			{
+				"field": "izvor",
+				"caption": "Izvor"
+			},
+			{
+				"field": "prioritet",
+				"caption": "Prioritet"
+			}
+		]
+	}
+]

@@ -1,0 +1,35 @@
+---
+description: Temeljni kontekst projekta Opera Mobile — što je sustav, koji je cilj, gdje su glavni dijelovi
+alwaysApply: true
+---
+
+# Opera Mobile — kontekst
+
+Poslovna mobilna aplikacija tvrtke SvamPlus; mobilni klijent za OperaOpus ERP. Koriste je stvarni klijenti u produkciji. Tim: ~5 developera, bez mobilne specijalizacije.
+
+## Cilj projekta
+
+Postojeća Ionic aplikacija je produkcijska referenca. Cilj je očuvati poslovne funkcionalnosti, kontrolirano ih migrirati u Expo, modernizirati UI/UX, dovršiti nedovršene funkcionalnosti i pojednostaviti dugoročno održavanje za mali razvojni tim. Ne radi se o mehaničkom prepisivanju Ionic komponenti.
+
+## Karta sustava
+
+| Dio | Lokacija | Napomena |
+|---|---|---|
+| Ionic aplikacija (referenca) | `src/` | Ionic React 8 + Capacitor 6, ~11k LOC, Android only |
+| Expo aplikacija (cilj) | `expo/` | Nastaje odvojeno; Ionic ostaje dok parnost nije dokazana |
+| JSON layouti | `MobLayoutsControls/` | 757 JSON datoteka, definiraju UI i SP mapiranje po tenantu |
+| API sloj u kodu | `src/utils/dataHelper.js` | Svi `fetch` pozivi na jednom mjestu |
+| Redux moduli | `src/pages/*/store/index.jsx` | `auth`, `core.cc`, `servis`, `docs` (=dgl), `gen` |
+| Rute i bootstrap | `src/AppMain.tsx` | Cold start, `PrivateRoute`, sve rute |
+
+## Tri paralelna UI modela
+
+`servis/` (legacy, hardkodirani SP-ovi) · `dgl/` (generički, layout po `sifdv`) · `gen/` (generički, layout po `app/module`). Rade istu stvar na tri načina. Svaka promjena zajedničke logike mora provjeriti sva tri.
+
+## Dvije razine baza
+
+`OperaMobile` — centralni registar (PIN-ovi, serveri, licence aplikacija). Tenant ERP baza — poslovni podaci i `spMob_*` procedure. Aplikacija bira tenant bazu preko PIN aktivacije.
+
+## Backend
+
+API servis (`/data`, `/login`, `/doclayouts`, …) **nije u ovom repozitoriju**. Njegovo ponašanje se ne izmišlja — nepotvrđeno se označava kao nepoznato.

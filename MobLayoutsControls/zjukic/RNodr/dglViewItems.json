@@ -1,0 +1,150 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+			{
+				"field": "projekt vodi",
+				"caption": "Projekt vodi"
+			},
+			{
+				"field": "ugovor",
+				"caption": "Broj ugovora",
+				"class": "item-bold"
+			},
+			{
+				"field": "mjesto troska",
+				"caption": "Mjesto troška"
+			},
+			{
+				"field": "vrste posla",
+				"caption": "Vrsta posla"
+			},
+			{
+				"field": "poduzecesifosobe",
+				"caption": "Serviser",
+				"lines": false
+			},
+		]
+	},
+	{
+		"caption": "Datumi",
+		"items": [
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY.",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "kontakt",
+				"caption": "Kontakt partnera"
+			},
+			{
+				"field": "brojevitelefona",
+				"caption": "Mob:/Tel: korisnika"
+			},
+			{
+				"field": "kontakt rucni unos",
+				"caption": "Kontakt ručni unos"
+			},
+			{
+				"field": "krajnji korisnik",
+				"caption": "Krajnji korisnik"
+			},
+			{
+				"field": "kontakt2",
+				"caption": "Kontakt krajnjeg korisnika"
+			},
+			{
+				"field": "brojevitelefona2",
+				"caption": "Mob:/Tel: krajnjeg korisnika"
+			},
+			{
+				"field": "objekt prikaz",
+				"caption": "Objekt"
+			},
+			{
+				"field": "adresa prikaz",
+				"caption": "Adresa objekta"
+			},
+			{
+				"field": "www",
+				"urlcaption": "Lokacija na mapi",
+				"caption": "Lokacija",
+				"type": "url",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Vezani dokumenti",
+		"items": [
+			{
+				"field": "br. narudzbe kupca",
+				"caption": "Br. narudzbe kupca"
+			},
+			{
+				"field": "br. crm upita",
+				"caption": "Br. CRM upita"
+			},
+			{
+				"field": "broj ponude",
+				"caption": "Broj ponude",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Upute",
+		"items": [
+			{
+				"field": "opis kvara/usluge",
+				"caption": "Opis kvara/usluge"
+			},
+						{
+				"field": "radni protokol",
+				"caption": "Radni protokol"
+			},
+			{
+				"field": "napomena voditelja",
+				"caption": "Napomena voditelja"
+			},
+			{
+				"field": "interna napomena",
+				"caption": "Interna napomena"
+			},
+			{	
+				"field": "napomena servisera",
+				"caption": "Izvedeni radovi (vidi kupac)"
+			},
+			{
+				"field": "dodatni zahtjevi",
+				"caption": "Dodatni zahtjevi (vidi kupac)"
+			}
+		]
+	}
+]

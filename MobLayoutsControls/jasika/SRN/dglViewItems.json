@@ -1,0 +1,114 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{	
+				"field": "zakljucan otkljucan",
+				"class": "color-red"
+			},
+			{
+				"field": "status",
+				"caption": "Status",
+				"class": "item-bold"
+			},
+			{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"caption": "Datum i vrijeme dolaska",
+				"field": "datum dolaska prikaz"
+			},
+			{	"field": "narudzbenica",
+				"caption": "Narudžbenica"
+			},
+			{	"field": "ponuda",
+				"caption": "Ponuda"
+			},
+			{
+				"field": "vrsta posla",
+				"caption": "Vrsta posla",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "mjesto servisa",
+				"caption": "Mjesto servisa"
+			},
+			{
+				"field": "adresa servisa",
+				"caption": "Adresa servisa"
+			},
+			{
+				"field" : "servis narucio",
+				"caption": "Servis naručio"
+			},
+			{
+				"field" : "servisnaruciorucno",
+				"caption": "Servis naručio (ručni unos)"
+			},
+			{
+				"field" : "kontaktemailrucno",
+				"caption": "E-mail (ručni unos)",
+				"lines": false
+			}			
+		]
+	},
+	{
+		"caption": "Osobe",
+		"items": [
+			{
+				"field": "voditelj",
+				"caption": "Voditelj"
+			},
+			{
+				"field" : "izradio",
+				"caption": "Izradio",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Artikl",
+		"items": [
+			{
+				"field": "serijski broj",
+				"caption": "Serijski broj"
+			},
+			{
+				"field": "uredaj",
+				"caption": "Uređaj",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "opis kvara",
+				"caption": "Opis kvara"
+			},
+			{
+				"field": "napomena servisera",
+				"caption": "Napomena servisera"
+			}	
+		]
+	}
+]

@@ -1,0 +1,25 @@
+[
+	{
+		"type": "memo",
+		"caption": "Komentar (Interno - ne vidi kupac)",
+		"selectFieldKey": "komentar",
+		"azurFieldKey": "opis2"
+	},
+	{
+		"type": "text",
+		"caption": "Sati rada",
+		"selectFieldKey": "sati rada",
+		"azurFieldKey": "dstdatum2temp",
+		"placeholder": "HHmm",
+		"inputType": "text"
+	},
+	{
+		"type": "simple",
+		"caption": "Vozilo",
+		"entity": "vozilo-jukic",
+		"debaunce": 300,
+		"selectFieldKey": "zagkssifart",
+		"selectFieldText": "vozilo",
+		"azurFieldKey": "zagkssifart"
+	}	
+]

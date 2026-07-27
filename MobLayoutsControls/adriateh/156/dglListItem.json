@@ -1,0 +1,46 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj radnog naloga"
+			},
+			{
+				"field": "datumdokumenta",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"fields": [
+			{
+				"field": "partner"
+			}
+		],
+		"class": "item-bold",
+		"classmain" : "two-lines"
+	},
+	{
+		"label": "Mjesto servisa",
+		"fields": [
+			{
+				"field": "partner_dod_adresa_mjesto"
+				
+			}
+		],
+		"classmain": "three-lines",
+		"class": "item-bold"
+		
+	},
+	{
+		"label": "Vrsta garancije",
+		"fields": [
+			{
+				"field": "nazvrsteposla"
+			}
+		]
+	}
+
+]

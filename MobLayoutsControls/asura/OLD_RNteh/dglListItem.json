@@ -1,0 +1,49 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj radnog naloga"
+			},
+			{
+				"field": "datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"fields": [
+			{
+				"field": "partner"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Objekt",
+		"fields": [
+			{
+				"field": "objekt2"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Nositelj",
+		"fields": [
+			{
+				"field": "ugovor"
+			}
+		]
+	},	
+	{
+		"label": "Vrsta posla",
+		"fields": [
+			{
+				"field": "vrste posla"
+			}
+		]
+	}
+]

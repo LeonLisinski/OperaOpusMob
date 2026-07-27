@@ -1,0 +1,84 @@
+[
+{
+		"caption": "Partner",
+		"items": 
+[
+			{
+				"field": "partner",
+				"class": "item-bold"
+			},
+			{	
+				"field": "mjesto servisa list",
+				"caption": "Mjesto servisa"
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status naloga"
+			},
+]
+},
+{
+	"caption": "Uređaj",
+	"items": 
+[
+		{
+		"field": "uredaj1"
+		},
+		{
+		"field": "uredaj2"
+		}
+
+],
+},
+	{
+		"caption": "Datumi",
+		"items": [
+		{
+				"field": "datum otvaranja",
+				"caption": "Datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY."			
+			},
+			{
+				"field": "datum izvrsenja",
+				"caption": "Datum izvršenja",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			}
+	
+		]
+	},
+		{
+		"caption": "Osobe",
+		"items": [
+			{
+				"field": "serviser",
+				"caption": "Serviser"
+			},
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			},
+			{
+				"field": "nalogodavatelj",
+				"caption": "Nalogodavatelj"
+			},
+		]
+	},
+		{
+		"caption": "Opis kvara",
+		"items": [
+			{
+				"field": "napomena7",
+			}
+		]
+	},
+	{
+		"caption": "Napomena servisera",
+		"items": [
+			{
+				"field": "napomena8",
+			}
+		]
+	}
+]

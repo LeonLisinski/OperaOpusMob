@@ -1,0 +1,11 @@
+{
+  "reportName": "rptSRN_samoKOL",
+  "signatureTextSelectField": "kontakt rucni unos",
+  "signatureTextAzurField": "napomena4",
+  "signatureEmailAzurField": "napomena11",
+  "signatureEmailSelectField": "email rucno",
+  "signatureOpenPdf": true,
+  "dglallownew": true,
+  "signatureSecondary": true,
+  "testEmail": "goran.funtak@svamplus.hr"
+}

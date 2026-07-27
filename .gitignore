@@ -11,6 +11,11 @@
 # production
 /dist
 
+# docs (VitePress) — izolirane ovisnosti i build izlaz
+/docs/node_modules
+/docs/.vitepress/cache
+/docs/.vitepress/dist
+
 # misc
 .DS_Store
 .env.local

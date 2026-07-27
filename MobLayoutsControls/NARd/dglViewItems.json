@@ -1,0 +1,94 @@
+[
+	{
+		"caption": "Opći podaci",
+		"items": [
+			{
+				"field": "broj radnog naloga",
+				"class": "item-bold"
+			},
+			{
+				"field": "datum dokumenta",
+				"caption": "Datum narudžbe",
+				"type": "date",
+				"format": "DD.MM.YYYY."
+			},
+			{
+				"field": "status naloga",
+				"caption": "Status narudžbe"
+			},
+			{
+				"field": "broj ponude",
+				"caption": "Broj ponude"
+			},
+			{
+				"field": "br. narudzbe kupca",
+				"caption": "Broj narudzbe kupca"
+			},
+			{
+				"field": "izradio",
+				"caption": "Izradio"
+			},
+			{
+				"field": "projekt vodi",
+				"caption": "Komercijalist"
+			},
+			{
+				"field": "mjesto troska",
+				"caption": "Mjesto troška",
+				"lines": false
+			}
+		]
+	},
+	{
+		"caption": "Partner i lokacija",
+		"items": [
+			{
+				"field": "partner",
+				"caption": "Partner"
+			},
+			{
+				"field": "objekt prikaz",
+				"caption": "Podružnica partnera"
+			},
+			{
+				"field": "adresa prikaz",
+				"caption": "Adresa podružnice/isporuke"
+			},
+			{
+				"field": "www",
+				"urlcaption": "Lokacija na mapi",
+				"caption": "Lokacija",
+				"type": "url"
+			},
+			{
+				"field": "kontakt",
+				"caption": "Kontakt partnera"
+			},
+			{
+				"field": "brojevitelefona",
+				"caption": "Mob:/Tel: korisnika"
+			},
+			{
+				"field": "kontakt rucni unos",
+				"caption": "Kontakt osoba (ručni unos)"
+			}		
+		]
+	},
+	{
+		"caption": "Napomene",
+		"items": [
+			{
+				"field": "interna napomena",
+				"caption": "Interna napomena"
+			},
+			{
+				"field": "napomena prije",
+				"caption": "Napomena prije"
+			},
+						{
+				"field": "napomena poslije",
+				"caption": "Napomena posilje"
+			}
+		]
+	}
+]

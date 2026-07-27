@@ -1,0 +1,27 @@
+[
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Serviser",
+		"fields": [
+			{
+				"field": "radnik"
+			}
+		]
+	},
+		{
+		"label": "Količina",
+		"fields": [
+			{
+				"field": "kol"
+			}
+		]
+	}
+]

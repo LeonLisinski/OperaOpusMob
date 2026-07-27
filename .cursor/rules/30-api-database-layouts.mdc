@@ -1,0 +1,65 @@
+---
+description: Činjenice i granice za API komunikaciju, SQL objekte i JSON layoute
+globs: src/utils/**,src/pages/**/store/**,src/components/search/**,expo/**/api/**,expo/**/services/**,expo/**/store/**,MobLayoutsControls/**/*.json,**/*.sql
+alwaysApply: false
+---
+
+# API, baza i JSON layouti
+
+## API — potvrđeno iz koda
+
+Svi pozivi su u `src/utils/dataHelper.js`. Bazni URL je runtime vrijednost `auth.api`, dobivena PIN aktivacijom — **nije** konstanta iz `src/constants.ts` (te konstante su fallback i dijelom legacy).
+
+| Endpoint | Funkcija | Body |
+|---|---|---|
+| `{auth.api}/data` | `getData` | `{ db, queries: [{ query, params, commandtype, tablename, loadoptions }], printing?, mails? }` |
+| `{auth.api}/login` | `login` | `{ db, uid, pwd }` |
+| `{auth.api}/doclayouts` | `getDocsDefinitions` | `{ folder }` — dva poziva: `{layoutprefix}/{folder}`, pa `{folder}` |
+| `{auth.api}/repxreport` | `getReport` | `{ db, id, reportname, parameters, mailTo, type }` |
+| `{auth.api}/saveatt` / `/getatt` | privitci | `{ db, parameters }` / `{ db, id }` |
+| `SERVICE_CORE_DOMAIN/data` | `getUnlock` | `{ db: 'OperaMobile', queries }` |
+
+Konvencije: više result setova dolazi kao `table1`, `table2`, …; `commandType: 'sp'` za procedure; greška je `response.status != 200` → `throw(data)`.
+
+**Nepotvrđeno (ne izmišljati):** shema `/login` responsa, rezolucija `folder` → datoteka na serveru, gdje se rješavaju makroi `#today` / `#coid`, je li Basic `test:123` jedina zaštita.
+
+## SQL
+
+Read-only (pravilo 10). `OperaMobile` sadrži registar: `PinCore`, `PinApp`, `App`, `Server`, `Token`, `StoreVersion`, `AppAccessLog` + `spPinCoreAzur`, `spPinAppAzur`. Sve `spMob_*` procedure su u **tenant** bazama i nisu dostupne preko trenutnog MCP-a — njihovo ponašanje se ne pretpostavlja.
+
+Ime SP-a za generičke module dolazi iz `queries.json`, ne iz koda. Prije nego zaključiš da SP ne postoji, provjeri `queries.json` relevantnog modula i tenanta.
+
+## JSON layouti — `MobLayoutsControls/`
+
+### Činjenice o izvoru
+
+- Lokalna centralna kopija potvrđeno je bajt-identična kopiji na `\\operaweb\c$\inetpub\wwwroot\Opera\MobLayoutsControls`.
+- Ona **nije izvor istine za klijente s vlastitim API serverom**.
+- Layouti Jukića, Ruvea i ostalih zasebnih servera moraju se pribaviti odvojeno.
+- **Nijedan layout ne smije se mijenjati bez eksplicitno odobrenog zadatka.**
+- Prije dodavanja layouta u Git mora se napraviti read-only provjera tajni, osobnih podataka i pristupnih prava.
+- Budući validator u početku mora biti report-only i ne smije automatski popravljati JSON.
+- 34 od 757 datoteka nije validan strogi JSON (višak zareza, prazne datoteke). .NET parser to tolerira, `JSON.parse` ne. Ne oslanjaj se na client-side parsiranje bez provjere.
+
+### Struktura
+
+Folder je `{tenant}/{sifdv}/` ili `{sifdv}/` (bez prefiksa). Po modulu do 12 datoteka:
+
+| Datoteka | Uloga |
+|---|---|
+| `queries.json` | logička operacija → `{ sp, params }` |
+| `properties.json` | `reportName`, `signature*Field`, `signatureOpenPdf`, `testEmail` |
+| `dglListItem` / `glaListItem` | redak liste |
+| `dglViewItems` / `glaViewItems` | detalj: grupe (`caption`, `items`, `visiblefield`) |
+| `dglEditItems` / `glaEditItems` | forma |
+| `*EditItemsExtends` | default vrijednosti, makroi `#today`, `#coid` |
+| `dstListItem` / `dstListItemRad` | stavke / stavke rada |
+| `dstEditItems` / `dstEditItemsRad` (+ `*Extends`) | forme stavki |
+
+Tipovi kontrola u `*EditItems`: `date`, `simple`, `advanced`, `memo`, `text`. Polja: `caption`, `entity`, `selectFieldKey`, `selectFieldText`, `azurFieldKey`, `parentIdFieldKey`, `debaunce`, `searchItems`.
+
+`entity` nije UI pojam — prosljeđuje se kao `action` parametar SP-a `spMob_DGL_Sifarnici` (v. `src/components/search/simple/search.jsx`). Novi šifrarnik znači izmjenu SP-a, ne mobilnog koda.
+
+## Mjesto promjene u sustavu
+
+Prije implementacije odredi gdje promjena pripada: Expo aplikacija · zajednička frontend arhitektura · JSON layout · API backend · SQL procedura ili view · `OperaMobile` · tenant baza. Poslovna ili tenant-specifična logika **ne ide** u mobilni kod zato što je to najbrže lokalno rješenje.

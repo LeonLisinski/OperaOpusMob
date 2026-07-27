@@ -1,0 +1,137 @@
+[
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status",
+		"azurFieldKey": "idstatus"
+	},	
+	{
+		"type": "date",
+		"caption": "Datum izvršenja",
+		"selectFieldKey": "datum izvrsenja",
+		"azurFieldKey": "datumdokumenta"
+	},
+	{
+		"type": "text",
+		"inputType": "number",
+		"caption": "Datum i vrijeme dolaska (GGGG-MM-DD HH:mm)",
+		"selectFieldKey": "datum dolaska2",
+		"azurFieldKey": "datumisporuke",
+		"placeholder": "GGGG-MM-DD HH:mm"		
+	},
+	{
+		"type": "simple",
+		"caption": "Vrsta posla",
+		"entity": "vrsteposla",
+		"debaunce": 200,
+		"selectFieldKey": "sifvrsteposla",
+		"selectFieldText": "vrsta posla",
+		"azurFieldKey": "sifvrsteposla"
+	},
+	{
+		"type": "simple",
+		"caption": "Voditelj/ica",
+		"entity": "voditelj",
+		"debaunce": 200,
+		"selectFieldKey": "vodipredmetsifosobe",
+		"selectFieldText": "voditelj",
+		"azurFieldKey": "vodipredmetsifosobe"
+	},
+	{
+		"type": "advanced",
+		"caption": "Partner",
+		"entity": "partner",
+		"debaunce": 500,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "simple",
+		"caption": "Mjesto servisa",
+		"entity": "podruznica",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "dodadresaid",
+		"selectFieldText": "mjesto servisa",
+		"azurFieldKey": "dodadresaid"
+	},
+	{
+		"type": "simple",
+		"caption": "Servis naručio",
+		"entity": "narucitelj",
+		"debaunce": 200,
+		"parentIdFieldKey": "sifpartnera",
+		"selectFieldKey": "narukesifosobe",
+		"selectFieldText": "servis narucio",
+		"azurFieldKey": "narukesifosobe"
+	},
+	{
+		"type": "text",
+		"caption": "Servis naručio (ručni unos)",
+		"selectFieldKey": "servisnaruciorucno",
+		"azurFieldKey": "napomena3"
+	},
+	{
+		"type": "text",
+		"caption": "E-mail (ručni unos)",
+		"selectFieldKey": "kontaktemailrucno",
+		"azurFieldKey": "napomena11"
+	},
+	{
+		"type": "advanced",
+		"caption": "Uređaj",
+		"entity": "artikl-uredaj",
+		"debaunce": 500,
+		"selectFieldKey": "dglsifart",
+		"selectFieldText": "uredaj",
+		"azurFieldKey": "dglsifart"
+	},		
+	{
+		"type": "memo",
+		"caption": "Opis kvara",
+		"selectFieldKey": "opis kvara",
+		"azurFieldKey": "napomena7",
+		"search":{
+				"type": "simple",
+				"entity": "napomena",
+				"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena servisera",
+		"selectFieldKey": "napomena servisera",
+		"azurFieldKey": "napomena8",
+		"search":{
+				"type": "simple",
+				"entity": "napomena",
+				"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Ser.br./ručni upis",
+		"selectFieldKey": "ser.br.rucni upis",
+		"azurFieldKey": "napomena1",
+		"search":{
+				"type": "simple",
+				"entity": "napomena",
+				"debaunce": 200
+		}
+	},
+	{
+		"type": "memo",
+		"caption": "Stari broj dok.",
+		"selectFieldKey": "stari broj dok.",
+		"azurFieldKey": "napomena2",
+		"search":{
+				"type": "simple",
+				"entity": "napomena",
+				"debaunce": 200
+		}
+	}
+]

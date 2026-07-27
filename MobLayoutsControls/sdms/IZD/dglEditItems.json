@@ -1,0 +1,26 @@
+[
+	{
+		"type": "simple",
+		"caption": "Gradilište",
+		"entity": "ugovor",
+		"debaunce": 200,
+		"selectFieldKey": "sifpred",
+		"selectFieldText": "ugovor",
+		"azurFieldKey": "sifpred"
+	},
+	{
+		"type": "simple",
+		"caption": "Odjel",
+		"entity": "odjel",
+		"debaunce": 200,
+		"selectFieldKey": "sifmjtr",
+		"selectFieldText": "odjel",
+		"azurFieldKey": "sifmjtr"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena",
+		"azurFieldKey": "napomena1"
+	}
+]

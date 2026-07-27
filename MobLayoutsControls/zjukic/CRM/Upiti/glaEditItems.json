@@ -1,0 +1,111 @@
+[{
+        "type": "advanced",
+        "caption": "Partner",
+        "entity": "cp",
+        "debaunce": 500,
+        "selectFieldKey": "cpid",
+        "selectFieldText": "partner",
+        "azurFieldKey": "cpid",
+        "dependencies": [{
+                "selectFieldKey": "vezadodadresaid",
+                "selectFieldText": "objekt",
+                "azurFieldKey": "vezadodadresaid",
+                "action": "reset"
+            }, {
+                "selectFieldKey": "coid",
+                "selectFieldText": "partnerosoba",
+                "azurFieldKey": "coid",
+                "action": "reset"
+            }
+        ]
+    }, {
+        "type": "simple",
+        "caption": "Objekt",
+        "entity": "cpda",
+        "debaunce": 200,
+        "parentIdFieldKey": "cpid",
+        "selectFieldKey": "cpdaid",
+        "selectFieldText": "objekt",
+        "azurFieldKey": "cpdaid"
+    }, {
+        "type": "simple",
+        "caption": "Osoba (partner)",
+        "entity": "partner-osoba",
+        "debaunce": 200,
+        "parentIdFieldKey": "cpid",
+        "selectFieldKey": "coid",
+        "selectFieldText": "partnerosoba",
+        "azurFieldKey": "coid"
+    }, {
+        "type": "advanced",
+        "caption": "Artikl",
+        "entity": "artikl",
+        "debaunce": 500,
+        "selectFieldKey": "sifart",
+        "selectFieldText": "artikl",
+        "azurFieldKey": "sifart"
+    }, {
+        "type": "simple",
+        "caption": "Zadužena osoba",
+        "entity": "zaduzena osoba",
+        "debaunce": 200,
+        "selectFieldKey": "cozaduzenid",
+        "selectFieldText": "zaduzena osoba",
+        "azurFieldKey": "cozaduzenid"
+    }, {
+        "type": "date",
+        "caption": "Planirani datum servisa",
+        "selectFieldKey": "planirani datum pocetka",
+        "azurFieldKey": "datserplan"
+    }, {
+        "type": "date",
+        "caption": "Planirani završetak servisa",
+        "selectFieldKey": "planirani datum zatvaranja",
+        "azurFieldKey": "datzatvplan"
+    }, {
+        "type": "simple",
+        "caption": "Tip",
+        "entity": "ctip",
+        "debaunce": 200,
+        "selectFieldKey": "ctipid",
+        "selectFieldText": "tip",
+        "azurFieldKey": "ctipid"
+    }, {
+        "type": "simple",
+        "caption": "Prioritet",
+        "entity": "cpri",
+        "debaunce": 200,
+        "selectFieldKey": "cpriid",
+        "selectFieldText": "prioritet",
+        "azurFieldKey": "cpriid"
+    }, {
+        "type": "simple",
+        "caption": "Status",
+        "entity": "status",
+        "debaunce": 200,
+        "selectFieldKey": "cstatid",
+        "selectFieldText": "status",
+        "azurFieldKey": "cstatid"
+    }, {
+        "type": "simple",
+        "caption": "Mjesto troška",
+        "entity": "mjesta-troska",
+        "debaunce": 200,
+        "selectFieldKey": "sifmjtr",
+        "selectFieldText": "mjesto troska",
+        "azurFieldKey": "sifmjtr"
+    }, {
+        "type": "simple",
+        "caption": "Vrsta posla",
+        "entity": "vrste-posla",
+        "debaunce": 200,
+        "selectFieldKey": "sifvrsteposla",
+        "selectFieldText": "vrsta posla",
+        "azurFieldKey": "sifvrsteposla"
+    }, {
+        "type": "memo",
+        "caption": "Opis",
+        "selectFieldKey": "opis",
+        "azurFieldKey": "opis"
+    }
+]

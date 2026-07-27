@@ -1,0 +1,54 @@
+[
+	{
+		"fields": [
+			{
+				"field": "broj radnog naloga"
+			},
+			{
+				"field": "datum otvaranja",
+				"type": "date",
+				"format": "DD.MM.YYYY",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Partner",
+		"fields": [
+			{
+				"field": "partner"
+			}
+		],
+		"class": "item-bold"
+	},
+		{
+		"label": "Podružnica",
+		"fields": [
+			{
+				"field": "objekt prikaz"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Adresa podružnice",
+		"fields": [
+			{
+				"field": "adresa objekta"
+			},
+			{
+				"field": "regija"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Interna napomena",
+		"classmain": "three-lines",
+		"fields": [
+			{
+				"field": "interna napomena"
+			}
+		]
+	}
+]

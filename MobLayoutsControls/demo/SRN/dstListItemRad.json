@@ -1,0 +1,48 @@
+[
+	{
+		"label": "Skladište",
+		"fields": [
+			{
+				"field": "skladiste"
+			}
+		]
+	},
+	{
+		"label": "Artikl",
+		"fields": [
+			{
+				"field": "artikl"
+			}
+		],
+		"class": "item-bold"
+	},
+	{
+		"label": "Opis artikla",
+		"fields": [
+			{
+				"field": "opis artikla"
+			}
+		]
+	},
+	{
+		"fields": [
+			{
+				"field": "datum rada",
+				"type": "date",
+				"format": "DD.MM.YYYY"
+			},
+			{
+				"field": "sati rada prikaz",
+				"class": "item-bold"
+			}
+		]
+	},
+	{
+		"label": "Radnik",
+		"fields": [
+			{
+				"field": "radnik"
+			}
+		]
+	}
+]

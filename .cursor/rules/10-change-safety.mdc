@@ -1,0 +1,26 @@
+---
+description: Tvrde zabrane koje vrijede u svakom zadatku na Opera Mobile projektu
+alwaysApply: true
+---
+
+# Sigurnost promjene — tvrde zabrane
+
+Ovo su granice, ne preporuke. Prekoračenje traži eksplicitno odobrenje korisnika u istoj poruci.
+
+1. **SQL je read-only.** Nikada `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER`, `DROP`, `EXEC` s nuspojavama. SQL MCP služi isključivo čitanju strukture i podataka.
+2. **`src/` je produkcijska referenca.** Mijenja se samo kroz eksplicitno odobren zadatak, uz analizu utjecaja na postojeće korisnike i bez nepotrebnog refaktora tijekom Expo migracije.
+3. **Nijedan layout u `MobLayoutsControls/` se ne mijenja** bez eksplicitno odobrenog zadatka za taj konkretan layout.
+4. **Produkcijske konfiguracije se ne mijenjaju** — `src/constants.ts`, `capacitor.config.ts`, `android/**`, `vite.config.ts`, `package.json` ovisnosti.
+5. **Git write operacije** — ne izvršavaj `git add`, commit, push, reset, rebase, checkout s odbacivanjem promjena ili druge Git write operacije bez eksplicitnog zahtjeva korisnika.
+6. **Nove ovisnosti** smiju se dodati samo uz: dokazanu potrebu, provjeru postoji li već odgovarajuće rješenje, procjenu održavanja i kompatibilnosti, te eksplicitno odobrenje.
+7. **Nema usputnih refactora** izvan opsega zadatka. Loš obrazac koji se primijeti usput se prijavljuje, ne popravlja.
+8. **Postojeće ponašanje se ne uklanja** dok zamjena nije potvrđena kao funkcionalno jednaka.
+9. **Autentikacija se ne mijenja** dok se ne razriješi backend strana (`/login` shema, Basic auth) — v. `docs/ai/OPEN_QUESTIONS.md`.
+
+## Kad nešto nije potvrđeno
+
+Označi kao **nepoznato** i navedi što treba pronaći ili pitati tim. Ne prikrivaj nepoznato pretpostavkom i ne koristi subjektivne procjene sigurnosti ("vjerojatno", "95% siguran").
+
+## Prije netrivijalne promjene
+
+Postupak je opisan u skillu `plan-project-change`. Bez odobrenog plana ne kreće implementacija srednje ili velike promjene.

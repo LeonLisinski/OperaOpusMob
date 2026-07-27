@@ -1,0 +1,32 @@
+[
+	{
+		"type": "simple",
+		"caption": "Status",
+		"entity": "status",
+		"debaunce": 200,
+		"selectFieldKey": "idstatus",
+		"selectFieldText": "status naloga",
+		"azurFieldKey": "idstatus"
+	},
+	{
+		"type": "advanced",
+		"caption": "Dobavljač",
+		"entity": "partner",
+		"debaunce": 500,
+		"selectFieldKey": "sifpartnera",
+		"selectFieldText": "partner",
+		"azurFieldKey": "sifpartnera"
+	},
+	{
+		"type": "text",
+		"caption": "Eksterni broj",
+		"selectFieldKey": "eksternibroj",
+		"azurFieldKey": "eksternibroj"
+	},
+	{
+		"type": "memo",
+		"caption": "Napomena",
+		"selectFieldKey": "napomena1",
+		"azurFieldKey": "napomena1"
+	}
+]
