@@ -1,6 +1,7 @@
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export default withMermaid({
+  base: '/OperaOpusMob/',
   title: 'Opera Mobile dokumentacija',
   description: 'Razvojna i projektna dokumentacija Expo migracije',
   lang: 'hr-HR',
@@ -9,6 +10,15 @@ export default withMermaid({
 
   themeConfig: {
     siteTitle: 'Opera Mobile',
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/LeonLisinski/OperaOpusMob' },
+    ],
+
+    editLink: {
+      pattern: 'https://github.com/LeonLisinski/OperaOpusMob/edit/main/docs/:path',
+      text: 'Uredi na GitHubu',
+    },
 
     nav: [
       { text: 'Početna', link: '/' },
