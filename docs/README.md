@@ -19,10 +19,38 @@ Ionic aplikacija (`src/`) je postojeća produkcijska referenca. Expo aplikacija 
 
 ```
 docs/
-├── ai/            kanonska dokumentacija
-├── technical/      dokumentacija za developere — nastaje u sljedećim serijama
-└── user/          dokumentacija za korisnike aplikacije — nastaje u sljedećim serijama
+├── user/           upute za korisnike aplikacije
+├── technical/      dokumentacija za developere
+└── ai/             kanonska arhitektura i migracija
 ```
+
+**Online verzija:** https://leonlisinski.github.io/OperaOpusMob/
+
+### `docs/user/`
+
+Upute za krajnje korisnike aplikacije, na hrvatskom, organizirane po zadatku. Opisuje samo funkcionalnosti implementirane u Expo verziji.
+
+| Dokument | Sadržaj |
+|---|---|
+| [Pregled](user/index.md) | Tko koristi app, osnovni tok, što nije dostupno |
+| [Prvi koraci](user/pocetak.md) | Core PIN, prijava, ponovna aktivacija |
+| [Kontrolni centar](user/kontrolni-centar.md) | Aplikacije, App PIN, moduli |
+| [Dokumenti](user/dokumenti.md) | Popis, filter, detalj, uređivanje |
+| [Stavke, privitci, potpis](user/stavke-privitci-potpis.md) | Tabovi unutar dokumenta |
+| [Postavke](user/postavke.md) | Izgled, odjava, reset |
+
+### `docs/technical/`
+
+Dokumentacija za developere: razvojno okruženje, struktura koda, JSON layouti, API/state, build.
+
+| Dokument | Sadržaj |
+|---|---|
+| [Pregled](technical/index.md) | Brzi start, tehnologije, granice |
+| [Okruženje](technical/okruzenje.md) | Instalacija, pokretanje, provjere |
+| [Struktura](technical/struktura.md) | Mape, rute, Redux, tema |
+| [JSON layouti](technical/json-layouti.md) | MobLayoutsControls, queries.json |
+| [API i state](technical/api-i-state.md) | Endpointi, slice-ovi, storage |
+| [Build](technical/build.md) | Native build, testiranje, ograničenja |
 
 ### `docs/ai/`
 
@@ -39,14 +67,6 @@ Kanonski izvor istine o sustavu: potvrđene činjenice, arhitektonske odluke, po
 | [`DECISION_LOG.md`](ai/DECISION_LOG.md) | Donesene odluke, s razlogom i posljedicama |
 | [`KNOWN_RISKS.md`](ai/KNOWN_RISKS.md) | Rizici s dokazom, ublažavanjem i vlasnikom |
 | [`OPEN_QUESTIONS.md`](ai/OPEN_QUESTIONS.md) | Pitanja koja blokiraju odluke, s statusom |
-
-### `docs/technical/` (planirano)
-
-Dokumentacija za developere i buduće održavatelje: razvojno okruženje, kako dodati modul, debugging, build i deployment. Referencirat će `docs/ai/` umjesto da ponavlja iste činjenice.
-
-### `docs/user/` (planirano)
-
-Upute za krajnje korisnike aplikacije, na hrvatskom, organizirane po zadatku. Ne dokumentira funkcionalnost koja još ne postoji.
 
 ## Što je kanonski izvor
 

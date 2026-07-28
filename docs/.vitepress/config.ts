@@ -22,13 +22,38 @@ export default withMermaid({
 
     nav: [
       { text: 'Početna', link: '/' },
-      { text: 'Kontekst', link: '/ai/PROJECT_CONTEXT' },
-      { text: 'Arhitektura', link: '/ai/CURRENT_ARCHITECTURE' },
-      { text: 'Migracija', link: '/ai/MIGRATION_STRATEGY' },
-      { text: 'Rizici i pitanja', link: '/ai/KNOWN_RISKS' },
+      { text: 'Korisnička', link: '/user/' },
+      { text: 'Tehnička', link: '/technical/' },
+      { text: 'AI / Razvoj', link: '/ai/SYSTEM_MAP' },
     ],
 
     sidebar: {
+      '/user/': [
+        {
+          text: 'Korisnička dokumentacija',
+          items: [
+            { text: 'Pregled', link: '/user/' },
+            { text: 'Prvi koraci i prijava', link: '/user/pocetak' },
+            { text: 'Kontrolni centar', link: '/user/kontrolni-centar' },
+            { text: 'Dokumenti', link: '/user/dokumenti' },
+            { text: 'Stavke, privitci, potpis', link: '/user/stavke-privitci-potpis' },
+            { text: 'Postavke', link: '/user/postavke' },
+          ],
+        },
+      ],
+      '/technical/': [
+        {
+          text: 'Tehnička dokumentacija',
+          items: [
+            { text: 'Pregled', link: '/technical/' },
+            { text: 'Razvojno okruženje', link: '/technical/okruzenje' },
+            { text: 'Struktura projekta', link: '/technical/struktura' },
+            { text: 'JSON layouti', link: '/technical/json-layouti' },
+            { text: 'API i state', link: '/technical/api-i-state' },
+            { text: 'Build i testiranje', link: '/technical/build' },
+          ],
+        },
+      ],
       '/ai/': [
         {
           text: 'Projekt',
