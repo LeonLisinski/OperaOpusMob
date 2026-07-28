@@ -1,7 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
-import { spacing, typography, useTheme } from '@/theme';
+import { radius, spacing, typography, useTheme } from '@/theme';
 
 interface RetryStateProps {
   message: string;
@@ -15,7 +16,11 @@ export function RetryState({ message, onRetry, retrying = false }: RetryStatePro
 
   return (
     <View style={styles.container} accessibilityRole="alert">
-      <Text style={[styles.message, { color: colors.text }]}>{message}</Text>
+      <View style={[styles.iconCircle, { backgroundColor: colors.dangerSoft }]}>
+        <Ionicons name="cloud-offline-outline" size={28} color={colors.danger} />
+      </View>
+      <Text style={[styles.title, { color: colors.text }]}>Podaci nisu dohvaćeni</Text>
+      <Text style={[styles.message, { color: colors.textMuted }]}>{message}</Text>
       <PrimaryButton label="Pokušaj ponovno" onPress={onRetry} loading={retrying} variant="secondary" />
     </View>
   );
@@ -26,12 +31,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: spacing.lg,
+    gap: spacing.sm,
     padding: spacing.xl,
   },
-  message: {
-    fontSize: typography.size.md,
-    fontWeight: typography.weight.medium,
+  iconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
+  },
+  title: {
+    fontSize: typography.size.lg,
+    fontWeight: typography.weight.semibold,
     textAlign: 'center',
+  },
+  message: {
+    fontSize: typography.size.sm,
+    lineHeight: typography.lineHeight.md,
+    textAlign: 'center',
+    maxWidth: 280,
+    marginBottom: spacing.md,
   },
 });

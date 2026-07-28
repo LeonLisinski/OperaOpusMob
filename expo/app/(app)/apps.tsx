@@ -6,8 +6,10 @@ import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from '
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppCard } from '@/components/AppCard';
+import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { Screen } from '@/components/Screen';
+import { SectionHeader } from '@/components/SectionHeader';
 import { fetchMenu, selectApp } from '@/features/core/coreSlice';
 import type { AppMenuEntry } from '@/features/core/types';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -49,10 +51,10 @@ export default function AppsScreen() {
 
   return (
     <Screen edges={['left', 'right', 'bottom']} style={styles.screen}>
-      <View style={[styles.heroBand, { backgroundColor: colors.primary, paddingTop: insets.top + spacing.md }]}>
+      <View style={[styles.heroBand, { backgroundColor: colors.brandChrome, paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.heroTopRow}>
           {korime ? (
-            <Text style={styles.greeting} numberOfLines={1}>
+            <Text style={[styles.greeting, { color: colors.onBrandMuted }]} numberOfLines={1}>
               Pozdrav, {korime}
             </Text>
           ) : (
@@ -63,9 +65,12 @@ export default function AppsScreen() {
             accessibilityRole="button"
             accessibilityLabel="Postavke"
             hitSlop={10}
-            style={({ pressed }) => [styles.settingsButton, { opacity: pressed ? 0.7 : 1 }]}
+            style={({ pressed }) => [
+              styles.settingsButton,
+              { backgroundColor: colors.onBrandSurface, opacity: pressed ? 0.7 : 1 },
+            ]}
           >
-            <Ionicons name="settings-outline" size={22} color="#FFFFFF" />
+            <Ionicons name="settings-outline" size={22} color={colors.onBrand} />
           </Pressable>
         </View>
 
@@ -89,9 +94,15 @@ export default function AppsScreen() {
             contentContainerStyle={styles.list}
             refreshing={loading}
             onRefresh={() => dispatch(fetchMenu())}
-            ListHeaderComponent={<Text style={[styles.sectionLabel, { color: colors.textMuted }]}>Aplikacije</Text>}
+            ListHeaderComponent={
+              <SectionHeader title="Aplikacije" trailing={apps.length > 0 ? `${apps.length}` : undefined} />
+            }
             ListEmptyComponent={
-              <Text style={[styles.emptyText, { color: colors.textMuted }]}>Nema dostupnih aplikacija.</Text>
+              <EmptyState
+                icon="apps-outline"
+                title="Nema dostupnih aplikacija"
+                description="Za ovog korisnika nije dodijeljena nijedna aplikacija."
+              />
             }
             renderItem={({ item }) =>
               'placeholder' in item ? (
@@ -121,10 +132,10 @@ const styles = StyleSheet.create({
   },
   heroBand: {
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xl,
+    paddingBottom: spacing.lg,
     borderBottomLeftRadius: radius.xl,
     borderBottomRightRadius: radius.xl,
-    gap: spacing.md,
+    gap: spacing.sm,
   },
   heroTopRow: {
     flexDirection: 'row',
@@ -132,25 +143,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   greeting: {
-    color: 'rgba(255,255,255,0.92)',
     fontSize: typography.size.md,
     fontWeight: typography.weight.medium,
     flexShrink: 1,
   },
   settingsButton: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255,0.16)',
   },
   logo: {
-    width: '70%',
-    maxWidth: 260,
-    height: 44,
+    width: '64%',
+    maxWidth: 240,
+    height: 38,
     alignSelf: 'center',
-    marginTop: spacing.sm,
   },
   body: {
     flex: 1,
@@ -165,16 +173,9 @@ const styles = StyleSheet.create({
   },
   list: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.md,
     paddingBottom: spacing.xl,
     flexGrow: 1,
-  },
-  sectionLabel: {
-    fontSize: typography.size.xs,
-    fontWeight: typography.weight.semibold,
-    letterSpacing: 0.6,
-    textTransform: 'uppercase',
-    marginBottom: spacing.md,
   },
   gridRow: {
     gap: spacing.md,
@@ -182,10 +183,5 @@ const styles = StyleSheet.create({
   },
   cardSlot: {
     flex: 1,
-  },
-  emptyText: {
-    textAlign: 'center',
-    paddingTop: spacing.xl,
-    fontSize: typography.size.md,
   },
 });

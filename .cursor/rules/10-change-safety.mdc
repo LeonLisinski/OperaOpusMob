@@ -16,6 +16,7 @@ Ovo su granice, ne preporuke. Prekoračenje traži eksplicitno odobrenje korisni
 7. **Nema usputnih refactora** izvan opsega zadatka. Loš obrazac koji se primijeti usput se prijavljuje, ne popravlja.
 8. **Postojeće ponašanje se ne uklanja** dok zamjena nije potvrđena kao funkcionalno jednaka.
 9. **Autentikacija se ne mijenja** dok se ne razriješi backend strana (`/login` shema, Basic auth) — v. `docs/ai/OPEN_QUESTIONS.md`.
+10. **`API/` ne dirati** osim ako endpoint stvarno ne radi ili nedostaje — prilagodbe idu kroz **`MobLayoutsControls/` JSON** i **`spMob_*` procedure** (isti princip kao web). Referenca ponašanja: radni Ionic klijent (`dataHelper.js`), ne nužno svaki file u `API/`.
 
 ## Kad nešto nije potvrđeno
 

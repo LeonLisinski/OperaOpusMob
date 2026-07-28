@@ -37,7 +37,7 @@ export function AppCard({ title, icon, color, locked, onPress }: AppCardProps) {
       ]}
     >
       <View style={[styles.iconBadge, { backgroundColor: iconBg }]}>
-        <Ionicons name={(icon || 'apps-outline') as IoniconName} size={26} color="#FFFFFF" />
+        <Ionicons name={(icon || 'apps-outline') as IoniconName} size={26} color={colors.onBrand} />
         {locked ? (
           <View style={[styles.lockBadge, { backgroundColor: colors.surface, borderColor: colors.surface }]}>
             <Ionicons name="lock-closed" size={11} color={colors.textMuted} />

@@ -1,22 +1,20 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Card } from '@/components/Card';
+import { AuthLayout } from '@/components/AuthLayout';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { PinInput } from '@/components/PinInput';
 import { PrimaryButton } from '@/components/PrimaryButton';
-import { Screen } from '@/components/Screen';
 import { unlockCore } from '@/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { spacing, typography, useTheme } from '@/theme';
+import { spacing } from '@/theme';
 
 const MIN_PIN_LENGTH = 8;
 
 export default function UnlockCoreScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { colors } = useTheme();
 
   const [pin, setPin] = useState('');
   const { loading, error } = useAppSelector((state) => state.auth.coreUnlock);
@@ -37,19 +35,14 @@ export default function UnlockCoreScreen() {
   };
 
   return (
-    <Screen scroll keyboardAware contentStyle={styles.screenContent}>
-      <View style={styles.header}>
-        <Text style={[styles.eyebrow, { color: colors.textMuted }]}>SvamPlus</Text>
-        <Text style={[styles.title, { color: colors.text }]}>Opera Mobile</Text>
-        <Text style={[styles.subtitle, { color: colors.textMuted }]}>
-          Unesite šifru za aktivaciju aplikacije na ovom uređaju.
-        </Text>
-      </View>
-
-      <Card style={styles.card}>
-        <ErrorMessage message={error} />
+    <AuthLayout
+      title="Aktivacija uređaja"
+      subtitle="Unesite šifru za aktivaciju aplikacije na ovom uređaju."
+    >
+      <ErrorMessage message={error} />
+      <View style={styles.form}>
         <PinInput
-          label="Šifra za otključavanje aplikacije"
+          label="Šifra za otključavanje"
           value={pin}
           onChangeText={setPin}
           editable={!loading}
@@ -62,38 +55,13 @@ export default function UnlockCoreScreen() {
           disabled={!canSubmit}
           accessibilityLabel="Otključaj aplikaciju"
         />
-      </Card>
-    </Screen>
+      </View>
+    </AuthLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContent: {
-    paddingHorizontal: spacing.xl,
-    paddingTop: spacing.xxl,
-    paddingBottom: spacing.xxxl,
-    gap: spacing.xl,
-  },
-  header: {
-    alignItems: 'center',
-    gap: spacing.xs,
-  },
-  eyebrow: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.semibold,
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
-  title: {
-    fontSize: typography.size.xxl,
-    fontWeight: typography.weight.bold,
-  },
-  subtitle: {
-    fontSize: typography.size.sm,
-    textAlign: 'center',
-    paddingHorizontal: spacing.md,
-  },
-  card: {
+  form: {
     gap: spacing.lg,
   },
 });

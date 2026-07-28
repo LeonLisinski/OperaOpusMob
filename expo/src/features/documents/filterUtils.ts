@@ -110,6 +110,45 @@ export function buildFilterSummary(filter: DocumentFilter): { line1: string; lin
   };
 }
 
+export type FilterChip = { id: string; label: string; icon: 'calendar-outline' | 'pricetag-outline' | 'person-outline' };
+
+/**
+ * Aktivni filter kao niz chipova — zamjena za višelinijski tekstualni sažetak koji je
+ * zauzimao visinu iznad liste. Statusi se skraćuju da red ostane čitljiv.
+ */
+export function buildFilterChips(filter: DocumentFilter): FilterChip[] {
+  const formatShort = (iso: string) => {
+    const [, month, day] = iso.split('-');
+    return `${day}.${month}.`;
+  };
+  const [year] = filter.datumdo.split('-');
+
+  const chips: FilterChip[] = [
+    {
+      id: 'period',
+      icon: 'calendar-outline',
+      label: `${formatShort(filter.datumod)} – ${formatShort(filter.datumdo)}${year}.`,
+    },
+  ];
+
+  const checkedStatuses = filter.statuses.filter((item) => item.checked);
+  if (checkedStatuses.length > 0) {
+    const shown = checkedStatuses.slice(0, 2).map((item) => item.name).join(', ');
+    const rest = checkedStatuses.length - Math.min(2, checkedStatuses.length);
+    chips.push({
+      id: 'statuses',
+      icon: 'pricetag-outline',
+      label: rest > 0 ? `${shown} +${rest}` : shown,
+    });
+  }
+
+  if (filter.samomoje) {
+    chips.push({ id: 'samomoje', icon: 'person-outline', label: 'Samo moje' });
+  }
+
+  return chips;
+}
+
 export function mergeStatusesWithDefaults(
   statuses: StatusFilterItem[],
   statusiChecked: string | null | undefined,

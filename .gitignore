@@ -16,6 +16,9 @@
 /docs/.vitepress/cache
 /docs/.vitepress/dist
 
+# Expo CLI cache/logs — nastaje i na rootu ako se `npx expo` pokrene izvan expo/
+/.expo
+
 # misc
 .DS_Store
 .env.local

@@ -346,3 +346,23 @@ ADR-light format: kratak zapis odluke, razloga i posljedica. Nove odluke se doda
 
 **Posljedice:** Isključivo prezentacijska izmjena - uvjet `dstLinesStatus.loading \|\| attachmentsStatus.loading` i sami thunkovi u `documentsSlice.ts` nisu mijenjani (provjereno diffom); `LoadingState.tsx` ostaje u upotrebi drugdje (npr. inicijalni bootstrap)
 
+## D035
+
+**Datum:** 2026-07-28 · **Status:** `approved` (vlasnik projekta)
+
+**Odluka:** Potvrđen smisao migracije i operativni kontekst: ista aplikacija modernizirana u Expo-u; JSON layouti + SP-ovi kao primarni mehanizam prilagodbe; API se ne dira dok radi; Ionic original je brzo sklopljen i ima propuste — referenca ponašanja, ne uzor kvalitete; test tenanti `jukic001`, `svam`, `plusplus`; layouti na operawebu održavaju konzultanti/tim; EAS/Store build zadnji korak; push cilj na Android i iOS.
+
+**Razlog:** Usklađivanje dokumentacije, rules i AI konteksta s objašnjenjem vlasnika projekta kako se stvarno radi i što je prioritet održivosti.
+
+**Posljedice:** Ažurirani `00-project-context.mdc`, `10-change-safety.mdc` (#10), `30-api-database-layouts.mdc`, `PROJECT_CONTEXT.md`, `OPEN_QUESTIONS.md` (razriješene stavke #1, #4, #13, #14, #17 i djelomično ostale).
+
+## D036
+
+**Datum:** 2026-07-28 · **Status:** `approved` (vlasnik projekta)
+
+**Odluka:** Paritet = **sve što danas radi u Ionic originalu** treba raditi u Expo-u (po modulu/tenantu gdje je u produkciji omogućeno). Test flow: **jukic001 → login svam → app PIN plusplus**. CRUD stavki uključuje **swipe akcije** koje backend vrati na retku (`cmddelete`, `cmdpotvrdakolicine`, `cmddeletepotvrdakolicine`, `cmdpodstavke`) — ovisi o firmi/SP-u, ne o mobilnom hardkodu. "Odabir teksta" na memo poljima **ne implementirati u Expo-u** dok se ne potvrdi da ga netko koristi (vjerojatno mrtav dio originala).
+
+**Razlog:** Pojašnjenje vlasnika projekta; usklađivanje prioriteta i test okruženja.
+
+**Posljedice:** `OPEN_QUESTIONS.md`, `FEATURE_PARITY_MATRIX.md` (stavke), `PROJECT_CONTEXT.md`, `00-project-context.mdc` ažurirani. Expo backlog: swipe akcije na `documents/lines.tsx`, `queries.dst.azur` u JSON-u po tenantu (odobren zadatak), runtime test na jukic001.
+

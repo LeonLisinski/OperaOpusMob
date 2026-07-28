@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
@@ -10,7 +11,7 @@ import { Screen } from '@/components/Screen';
 import { reactivateCore } from '@/features/auth/authSlice';
 import { selectApp, unlockApp } from '@/features/core/coreSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { spacing, typography, useTheme } from '@/theme';
+import { radius, spacing, typography, useTheme } from '@/theme';
 
 const PIN_LENGTH = 8;
 
@@ -74,9 +75,14 @@ export default function AppUnlockScreen() {
 
   return (
     <Screen scroll keyboardAware contentStyle={styles.screenContent}>
-      <Text style={[styles.subtitle, { color: colors.textMuted }]}>
-        Unesite šifru za otključavanje ove aplikacije.
-      </Text>
+      <View style={styles.hero}>
+        <View style={[styles.heroIcon, { backgroundColor: colors.primarySurface }]}>
+          <Ionicons name="lock-closed-outline" size={26} color={colors.primary} />
+        </View>
+        <Text style={[styles.subtitle, { color: colors.textMuted }]}>
+          Unesite šifru za otključavanje ove aplikacije.
+        </Text>
+      </View>
 
       <Card style={styles.card}>
         <ErrorMessage message={error} />
@@ -125,6 +131,18 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
     paddingBottom: spacing.xxxl,
     gap: spacing.lg,
+  },
+  hero: {
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingTop: spacing.md,
+  },
+  heroIcon: {
+    width: 60,
+    height: 60,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   subtitle: {
     fontSize: typography.size.sm,

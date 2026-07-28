@@ -8,7 +8,10 @@ interface HeaderTextButtonProps {
   disabled?: boolean;
 }
 
-/** Tekstualna akcija u navigacijskom headeru (Odustani/Spremi/Uredi/Novi) — konzistentna kroz sve ekrane. */
+/**
+ * Tekstualna akcija u navigacijskom headeru (Odustani/Spremi/Uredi/Novi) — konzistentna kroz sve
+ * ekrane. Header je brand podloga (v. brandHeaderOptions), pa tekst ide u `onBrand` tonovima.
+ */
 export function HeaderTextButton({ label, onPress, disabled }: HeaderTextButtonProps) {
   const { colors } = useTheme();
 
@@ -21,7 +24,7 @@ export function HeaderTextButton({ label, onPress, disabled }: HeaderTextButtonP
       hitSlop={8}
       style={styles.button}
     >
-      <Text style={[styles.label, { color: disabled ? colors.textSubtle : colors.primary }]}>{label}</Text>
+      <Text style={[styles.label, { color: disabled ? colors.onBrandSubtle : colors.onBrand }]}>{label}</Text>
     </Pressable>
   );
 }

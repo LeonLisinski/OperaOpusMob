@@ -57,6 +57,7 @@ export function normalizeModuleLayout(raw: unknown, route: ModuleRoute): LayoutV
       dstListItems: readListItemGroups(record.dstListItem),
       dstListItemsRad: readListItemGroups(record.dstListItemRad),
       dstAzurQuery: readNamedQuery(record.queries, 'dst', 'azur') ?? undefined,
+      dstDeleteQuery: readNamedQuery(record.queries, 'dst', 'delete') ?? undefined,
       dstEditItems: readEditFields(record.dstEditItems),
       dstEditItemsExtends: readPlainObject(record.dstEditItemsExtends),
       dstEditItemsRad: readEditFields(record.dstEditItemsRad),

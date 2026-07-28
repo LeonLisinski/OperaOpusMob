@@ -1,5 +1,5 @@
 import { Modal, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -11,6 +11,7 @@ import {
   updateFilterTempField,
   resetFilterTemp,
 } from '@/features/documents/documentsSlice';
+import { statusToneFromColor } from '@/features/documents/statusTone';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { radius, spacing, typography, useTheme } from '@/theme';
 
@@ -29,6 +30,16 @@ type DocumentFilterModalProps = {
 export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalProps) {
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+  const statusColor = (indcolor: string | null | undefined) =>
+    ({
+      neutral: colors.borderStrong,
+      primary: colors.primary,
+      success: colors.success,
+      warning: colors.warning,
+      danger: colors.danger,
+      info: colors.info,
+    })[statusToneFromColor(indcolor)];
   const filterTemp = useAppSelector((state) => state.documents.filterTemp);
   const listStatus = useAppSelector((state) => state.documents.listStatus);
 
@@ -45,14 +56,14 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-        <View style={[styles.header, { borderBottomColor: colors.border }]}>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={[styles.header, { backgroundColor: colors.brandChrome, paddingTop: insets.top + spacing.md }]}>
           <Pressable onPress={onClose} accessibilityRole="button" hitSlop={8}>
-            <Text style={[styles.headerAction, { color: colors.primary }]}>Odustani</Text>
+            <Text style={[styles.headerAction, { color: colors.onBrand }]}>Odustani</Text>
           </Pressable>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>Filter</Text>
+          <Text style={[styles.headerTitle, { color: colors.onBrand }]}>Filter</Text>
           <Pressable onPress={() => dispatch(resetFilterTemp())} accessibilityRole="button" hitSlop={8}>
-            <Text style={[styles.headerAction, { color: colors.textMuted }]}>Reset</Text>
+            <Text style={[styles.headerAction, styles.headerActionEnd, { color: colors.onBrandSubtle }]}>Reset</Text>
           </Pressable>
         </View>
 
@@ -75,7 +86,7 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
                   onPress={() => dispatch(toggleFilterTempStatus(item.id))}
                   style={styles.statusRow}
                 >
-                  <View style={[styles.statusStripe, { backgroundColor: item.indcolor ?? colors.border }]} />
+                  <View style={[styles.statusStripe, { backgroundColor: statusColor(item.indcolor) }]} />
                   <Text style={[styles.statusLabel, { color: colors.text }]}>{item.name}</Text>
                   <Switch
                     value={item.checked}
@@ -137,7 +148,7 @@ function FilterSection({ title, children }: { title: string; children: React.Rea
   const { colors } = useTheme();
   return (
     <Card style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: colors.text }]}>{title}</Text>
+      <Text style={[styles.sectionTitle, { color: colors.primary }]}>{title}</Text>
       <View style={styles.sectionBody}>{children}</View>
     </Card>
   );
@@ -152,16 +163,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
+    paddingBottom: spacing.md,
   },
   headerAction: {
     fontSize: typography.size.md,
     fontWeight: typography.weight.medium,
-    minWidth: 60,
+    minWidth: 64,
+  },
+  headerActionEnd: {
+    textAlign: 'right',
   },
   headerTitle: {
-    fontSize: typography.size.md,
+    fontSize: typography.size.lg,
     fontWeight: typography.weight.semibold,
   },
   body: {
@@ -172,10 +185,10 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   sectionTitle: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.bold,
+    fontSize: typography.size.xs,
+    fontWeight: typography.weight.semibold,
     textTransform: 'uppercase',
-    letterSpacing: 0.3,
+    letterSpacing: 0.6,
   },
   sectionBody: {
     gap: spacing.sm,

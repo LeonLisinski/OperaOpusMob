@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
   type LayoutChangeEvent,
+  type StyleProp,
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
@@ -14,8 +15,13 @@ import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 import { spacing, useTheme } from '@/theme';
 
 type ScreenProps = PropsWithChildren<{
-  style?: ViewStyle;
-  contentStyle?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
+  /**
+   * Zadano bez `top` jer navigacijski header već zauzima gornji safe area — ponovno
+   * dodavanje istog odmaka je stvaralo prazan pojas ispod headera. Ekrani bez headera
+   * (auth, bootstrap) eksplicitno uključuju `top`.
+   */
   edges?: Edge[];
   scroll?: boolean;
   /** Scroll do fokusiranog polja kad se otvori tipkovnica — bez podizanja cijelog ekrana. */
@@ -23,6 +29,12 @@ type ScreenProps = PropsWithChildren<{
   /** Fiksni sadržaj ispod glavnog tijela (npr. tab bar na detalju dokumenta). */
   footer?: ReactNode;
 }>;
+
+/**
+ * Ekran unutar tab navigatora: donji safe area nosi tab bar, gornji header —
+ * ekran ne smije dodati ni jedan od njih ponovno.
+ */
+export const TAB_SCREEN_EDGES: Edge[] = ['left', 'right'];
 
 type KeyboardAwareContextValue = {
   registerField: (id: string, y: number, height: number) => void;
@@ -43,7 +55,7 @@ export function Screen({
   children,
   style,
   contentStyle,
-  edges = ['top', 'bottom', 'left', 'right'],
+  edges = ['left', 'right', 'bottom'],
   scroll = false,
   keyboardAware = false,
   footer,

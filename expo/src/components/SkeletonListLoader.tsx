@@ -57,9 +57,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     overflow: 'hidden',
-    minHeight: 64,
+    minHeight: 60,
   },
   stripe: {
     width: 4,

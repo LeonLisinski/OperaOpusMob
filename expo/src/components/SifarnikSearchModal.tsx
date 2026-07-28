@@ -1,6 +1,7 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { EmptyState } from '@/components/EmptyState';
 import { readItemId } from '@/features/documents/documentsSlice';
@@ -28,6 +29,7 @@ interface SifarnikSearchModalProps {
  */
 export function SifarnikSearchModal({ visible, field, onClose, onSelect }: SifarnikSearchModalProps) {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
   const inputRef = useRef<TextInput>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -120,24 +122,32 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-        <View style={[styles.header, { borderBottomColor: colors.border }]}>
-          <Text style={[styles.headerTitle, { color: colors.text }]}>{field.caption}</Text>
-          <Pressable onPress={onClose} accessibilityRole="button" hitSlop={8}>
-            <Text style={[styles.headerAction, { color: colors.primary }]}>Odustani</Text>
-          </Pressable>
-        </View>
+      <SafeAreaView
+        edges={['left', 'right', 'bottom']}
+        style={[styles.container, { backgroundColor: colors.background }]}
+      >
+        <View style={[styles.band, { backgroundColor: colors.brandChrome, paddingTop: insets.top + spacing.md }]}>
+          <View style={styles.header}>
+            <Text style={[styles.headerTitle, { color: colors.onBrand }]} numberOfLines={1}>
+              {field.caption}
+            </Text>
+            <Pressable onPress={onClose} accessibilityRole="button" hitSlop={8}>
+              <Text style={[styles.headerAction, { color: colors.onBrand }]}>Odustani</Text>
+            </Pressable>
+          </View>
 
-        <View style={[styles.searchRow, { borderColor: colors.border, backgroundColor: colors.surface }]}>
-          <TextInput
-            ref={inputRef}
-            value={query}
-            onChangeText={handleChangeText}
-            placeholder={placeholder}
-            placeholderTextColor={colors.textSubtle}
-            autoCorrect={false}
-            style={[styles.searchInput, { color: colors.text }]}
-          />
+          <View style={[styles.searchPill, { backgroundColor: colors.surface }]}>
+            <Ionicons name="search" size={18} color={colors.textMuted} />
+            <TextInput
+              ref={inputRef}
+              value={query}
+              onChangeText={handleChangeText}
+              placeholder={placeholder}
+              placeholderTextColor={colors.textSubtle}
+              autoCorrect={false}
+              style={[styles.searchInput, { color: colors.text }]}
+            />
+          </View>
         </View>
 
         {loading ? (
@@ -154,8 +164,11 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
 
         {showEmpty ? (
           <EmptyState
+            icon="search-outline"
             title="Nema rezultata"
-            description={isAdvanced && query.length < MIN_ADVANCED_LENGTH ? 'Upišite tekst za pretragu.' : 'Promijenite pretragu.'}
+            description={
+              isAdvanced && query.length < MIN_ADVANCED_LENGTH ? 'Upišite tekst za pretragu.' : 'Promijenite pretragu.'
+            }
           />
         ) : (
           <FlatList
@@ -183,32 +196,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  band: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+    borderBottomLeftRadius: radius.xl,
+    borderBottomRightRadius: radius.xl,
+    gap: spacing.md,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
+    gap: spacing.md,
   },
   headerTitle: {
-    fontSize: typography.size.md,
+    flex: 1,
+    fontSize: typography.size.lg,
     fontWeight: typography.weight.semibold,
   },
   headerAction: {
     fontSize: typography.size.md,
     fontWeight: typography.weight.medium,
   },
-  searchRow: {
-    marginHorizontal: spacing.lg,
-    marginTop: spacing.md,
-    borderWidth: 1,
-    borderRadius: radius.md,
+  searchPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    borderRadius: radius.pill,
     paddingHorizontal: spacing.md,
     minHeight: 44,
-    justifyContent: 'center',
   },
   searchInput: {
+    flex: 1,
     fontSize: typography.size.md,
     paddingVertical: spacing.sm,
   },

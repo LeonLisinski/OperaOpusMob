@@ -21,7 +21,15 @@ Svi pozivi su u `src/utils/dataHelper.js`. Bazni URL je runtime vrijednost `auth
 
 Konvencije: više result setova dolazi kao `table1`, `table2`, …; `commandType: 'sp'` za procedure; greška je `response.status != 200` → `throw(data)`.
 
-**Nepotvrđeno (ne izmišljati):** shema `/login` responsa, rezolucija `folder` → datoteka na serveru, gdje se rješavaju makroi `#today` / `#coid`, je li Basic `test:123` jedina zaštita.
+**Makroi u `*EditItemsExtends.json`:** `#today`, `#coid`, `#sifosobe` — klijent **ne zamjenjuje**; šalju se u SP parametre, backend ih rješava (isto kao web).
+
+**Legacy `/layouts`:** `getDefinitions()` u `dataHelper.js` postoji, ali **nitko ga ne zove** — stvarni put je `/doclayouts` (`getDocsDefinitions`). U Expo-u ne implementirati `/layouts`.
+
+**Privitci:** Ionic koristi `{auth.api}/saveatt` i `/getatt` (JSON body). Lokalni `API/` može imati drugačiji controller (`uploadPrilozi`) — **referenca za Expo je Ionic request**, ne nužno svaki file u `API/`.
+
+**API mijenjati tek ako ne radi** — prvo layout JSON ili `spMob_*` procedura.
+
+**Nepotvrđeno (ne izmišljati):** točan parser 34 „loših“ JSON datoteka na serveru; je li Basic `test:123` jedina zaštita.
 
 ## SQL
 

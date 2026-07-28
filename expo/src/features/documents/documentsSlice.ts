@@ -25,6 +25,8 @@ import {
   parseSearchFields,
 } from './filterUtils';
 import { normalizeModuleLayout } from './layoutContract';
+import { overlayMissingLayoutQueries } from './layoutQueryPatches';
+import { layoutHasDstActions } from './dstLineHelpers';
 import { resolveModuleRoute } from './moduleRouting';
 import type { DocumentFilter, DstLineKind, EditControlValues, EditFieldDef, ModuleLayout, ModuleRoute, QueryDef, StatusFilterItem } from './types';
 
@@ -259,7 +261,14 @@ export const loadDocumentModule = createAsyncThunk<
       fallbackFolder: route.fallbackFolder,
     });
 
-    const validation = normalizeModuleLayout(rawLayout, route);
+    const mergedLayout = overlayMissingLayoutQueries(
+      rawLayout,
+      core.layoutprefix,
+      route.folder,
+      route.kind === 'dgl' ? route.sifdv : undefined,
+    );
+
+    const validation = normalizeModuleLayout(mergedLayout, route);
     if (!validation.ok) {
       return rejectWithValue(validation.error);
     }
@@ -550,6 +559,138 @@ export const saveDstLine = createAsyncThunk<void, void, { state: RootState; reje
     }
   },
 );
+
+/**
+ * Brisanje stavke — ekvivalent Ionic deleteDst (queries.dst.delete + action deleteDst).
+ */
+export const deleteDstLine = createAsyncThunk<void, string | number, { state: RootState; rejectValue: string }>(
+  'documents/deleteDstLine',
+  async (dstId, { getState, dispatch, rejectWithValue }) => {
+    const state = getState();
+    const { layout } = state.documents;
+    const { core } = state.auth;
+    if (!layout || !core) {
+      return rejectWithValue('Modul nije učitan.');
+    }
+    if (!layout.dstDeleteQuery) {
+      return rejectWithValue('Brisanje stavki nije podržano (nedostaje queries.dst.delete u layoutu).');
+    }
+    try {
+      await runSpQuery(core.apiBaseUrl, getTenantDb(state), layout.dstDeleteQuery, {
+        ...layout.dstDeleteQuery.params,
+        action: 'deleteDst',
+        dstid: dstId,
+      });
+      await dispatch(loadDocumentLines());
+    } catch (error) {
+      return rejectWithValue(toUserMessage(error));
+    }
+  },
+  {
+    condition: (_, { getState }) => !getState().documents.dstLinesStatus.loading,
+  },
+);
+
+/** Potvrda količine — Ionic dstPotvrdaKolcine (dst.azur + action potvrdaKolicine). */
+export const confirmDstQuantity = createAsyncThunk<void, string | number, { state: RootState; rejectValue: string }>(
+  'documents/confirmDstQuantity',
+  async (dstId, { getState, dispatch, rejectWithValue }) => {
+    const state = getState();
+    const { layout } = state.documents;
+    const { core } = state.auth;
+    if (!layout || !core) {
+      return rejectWithValue('Modul nije učitan.');
+    }
+    if (!layout.dstAzurQuery) {
+      return rejectWithValue('Potvrda količine nije podržana (nedostaje queries.dst.azur u layoutu).');
+    }
+    try {
+      await runSpQuery(core.apiBaseUrl, getTenantDb(state), layout.dstAzurQuery, {
+        ...layout.dstAzurQuery.params,
+        action: 'potvrdaKolicine',
+        dstid: dstId,
+      });
+      await dispatch(loadDocumentLines());
+    } catch (error) {
+      return rejectWithValue(toUserMessage(error));
+    }
+  },
+  {
+    condition: (_, { getState }) => !getState().documents.dstLinesStatus.loading,
+  },
+);
+
+/** Uklanjanje potvrđene količine — Ionic dstDeletePotvrdaKolcine. */
+export const removeDstQuantityConfirm = createAsyncThunk<
+  void,
+  string | number,
+  { state: RootState; rejectValue: string }
+>(
+  'documents/removeDstQuantityConfirm',
+  async (dstId, { getState, dispatch, rejectWithValue }) => {
+    const state = getState();
+    const { layout } = state.documents;
+    const { core } = state.auth;
+    if (!layout || !core) {
+      return rejectWithValue('Modul nije učitan.');
+    }
+    if (!layout.dstAzurQuery) {
+      return rejectWithValue('Uklanjanje potvrde nije podržano (nedostaje queries.dst.azur u layoutu).');
+    }
+    try {
+      await runSpQuery(core.apiBaseUrl, getTenantDb(state), layout.dstAzurQuery, {
+        ...layout.dstAzurQuery.params,
+        action: 'deletePotvrdaKolicine',
+        dstid: dstId,
+      });
+      await dispatch(loadDocumentLines());
+    } catch (error) {
+      return rejectWithValue(toUserMessage(error));
+    }
+  },
+  {
+    condition: (_, { getState }) => !getState().documents.dstLinesStatus.loading,
+  },
+);
+
+/** Ponovno učitava layout i dopunjava queries.dst ako su nedostajali (hot reload / stari cache). */
+export const refreshLayoutDstQueries = createAsyncThunk<
+  ModuleLayout | null,
+  void,
+  { state: RootState; rejectValue: string }
+>('documents/refreshLayoutDstQueries', async (_, { getState, rejectWithValue }) => {
+  const state = getState();
+  const { route, layout } = state.documents;
+  const { core } = state.auth;
+  if (!route || !core) {
+    return null;
+  }
+  if (layoutHasDstActions(layout)) {
+    return null;
+  }
+
+  try {
+    const rawLayout = await fetchModuleLayout({
+      apiBaseUrl: core.apiBaseUrl,
+      layoutPrefix: core.layoutprefix,
+      folder: route.folder,
+      fallbackFolder: route.fallbackFolder,
+    });
+    const mergedLayout = overlayMissingLayoutQueries(
+      rawLayout,
+      core.layoutprefix,
+      route.folder,
+      route.kind === 'dgl' ? route.sifdv : undefined,
+    );
+    const validation = normalizeModuleLayout(mergedLayout, route);
+    if (!validation.ok) {
+      return rejectWithValue(validation.error);
+    }
+    return validation.layout;
+  } catch (error) {
+    return rejectWithValue(toUserMessage(error));
+  }
+});
 
 /** Ima li modul privitke — u Ionicu tab "Privitci" postoji samo za dgl (v. types.ts priloziQuery napomena, D027). */
 export function moduleHasAttachments(route: ModuleRoute | null, layout: ModuleLayout | null): boolean {
@@ -933,6 +1074,11 @@ const documentsSlice = createSlice({
       })
       .addCase(loadDocumentLines.rejected, (state, action) => {
         state.dstLinesStatus = { loading: false, error: action.payload ?? 'Dohvat stavki nije uspio.' };
+      })
+      .addCase(refreshLayoutDstQueries.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.layout = action.payload;
+        }
       })
       .addCase(loadAttachments.pending, (state) => {
         state.attachmentsStatus = { loading: true, error: null };

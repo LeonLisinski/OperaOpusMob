@@ -1,9 +1,11 @@
-import { useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useRef } from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { Badge } from '@/components/Badge';
-import { buildFilterSummary, countActiveFilters } from '@/features/documents/filterUtils';
+import { Chip } from '@/components/Chip';
+import { IconButton } from '@/components/IconButton';
 import { clearSearchQuery, setSearchQuery } from '@/features/documents/documentsSlice';
+import { buildFilterChips, countActiveFilters } from '@/features/documents/filterUtils';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { radius, spacing, typography, useTheme } from '@/theme';
 
@@ -11,12 +13,16 @@ type DocumentListToolbarProps = {
   onOpenFilter: () => void;
 };
 
+/**
+ * Kontekst liste: trajno vidljiva pretraga u brand zoni (nastavak headera), filter kao
+ * ikona s brojem aktivnih promjena, a aktivni filter kao red chipova. Zamjenjuje dva
+ * tekstualna gumba i centrirani troredni sažetak koji su trošili visinu bez informacije.
+ */
 export function DocumentListToolbar({ onOpenFilter }: DocumentListToolbarProps) {
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
   const searchRef = useRef<TextInput>(null);
 
-  const [searchVisible, setSearchVisible] = useState(false);
   const searchQuery = useAppSelector((state) => state.documents.searchQuery);
   const filter = useAppSelector((state) => state.documents.filter);
   const filterBaseline = useAppSelector((state) => state.documents.filterBaseline);
@@ -25,76 +31,74 @@ export function DocumentListToolbar({ onOpenFilter }: DocumentListToolbarProps) 
   const searchFields = useAppSelector((state) => state.documents.searchFields);
 
   const activeFilterCount = countActiveFilters(filter, filterBaseline);
-  const summary = buildFilterSummary(filter);
+  const chips = buildFilterChips(filter);
   const isSearchActive = searchQuery.trim().length > 0;
   const isEmptyBecauseSearch = isSearchActive && list.length === 0 && originalList.length > 0;
-
-  const openSearch = () => {
-    setSearchVisible(true);
-    requestAnimationFrame(() => searchRef.current?.focus());
-  };
-
-  const closeSearch = () => {
-    setSearchVisible(false);
-    dispatch(clearSearchQuery());
-  };
-
-  if (searchVisible) {
-    return (
-      <View style={[styles.searchRow, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-        <TextInput
-          ref={searchRef}
-          value={searchQuery}
-          onChangeText={(value) => dispatch(setSearchQuery(value))}
-          placeholder="Pretraga…"
-          placeholderTextColor={colors.textSubtle}
-          returnKeyType="search"
-          autoCorrect={false}
-          autoCapitalize="none"
-          style={[styles.searchInput, { color: colors.text }]}
-        />
-        {searchQuery.length > 0 ? (
-          <Pressable onPress={() => dispatch(clearSearchQuery())} accessibilityRole="button" hitSlop={8}>
-            <Text style={[styles.actionText, { color: colors.primary }]}>Očisti</Text>
-          </Pressable>
-        ) : null}
-        <Pressable onPress={closeSearch} accessibilityRole="button" hitSlop={8}>
-          <Text style={[styles.actionText, { color: colors.primary }]}>Zatvori</Text>
-        </Pressable>
-      </View>
-    );
-  }
+  const canSearch = searchFields.length > 0;
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.actionsRow}>
-        {searchFields.length > 0 ? (
+    <View>
+      <View style={[styles.band, { backgroundColor: colors.brandChrome }]}>
+        {canSearch ? (
           <Pressable
-            onPress={openSearch}
-            accessibilityRole="button"
-            style={[styles.iconButton, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            onPress={() => searchRef.current?.focus()}
+            style={[styles.searchPill, { backgroundColor: colors.surface }]}
           >
-            <Text style={[styles.iconLabel, { color: colors.text }]}>Pretraga</Text>
+            <Ionicons name="search" size={18} color={colors.textMuted} />
+            <TextInput
+              ref={searchRef}
+              value={searchQuery}
+              onChangeText={(value) => dispatch(setSearchQuery(value))}
+              placeholder="Pretraga…"
+              placeholderTextColor={colors.textSubtle}
+              returnKeyType="search"
+              autoCorrect={false}
+              autoCapitalize="none"
+              style={[styles.searchInput, { color: colors.text }]}
+            />
+            {searchQuery.length > 0 ? (
+              <Pressable
+                onPress={() => dispatch(clearSearchQuery())}
+                accessibilityRole="button"
+                accessibilityLabel="Očisti pretragu"
+                hitSlop={10}
+              >
+                <Ionicons name="close-circle" size={18} color={colors.textSubtle} />
+              </Pressable>
+            ) : null}
           </Pressable>
-        ) : null}
-        <Pressable
-          onPress={onOpenFilter}
-          accessibilityRole="button"
-          style={[styles.iconButton, { backgroundColor: colors.surface, borderColor: colors.border }]}
-        >
-          <Text style={[styles.iconLabel, { color: colors.text }]}>Filter</Text>
-          {activeFilterCount > 0 ? <Badge label={String(activeFilterCount)} tone="primary" /> : null}
-        </Pressable>
+        ) : (
+          <View style={styles.searchSpacer} />
+        )}
+
+        <View>
+          <IconButton icon="options-outline" variant="onBrand" onPress={onOpenFilter} accessibilityLabel="Filter" />
+          {activeFilterCount > 0 ? (
+            <View style={[styles.filterBadge, { backgroundColor: colors.surface }]}>
+              <Text style={[styles.filterBadgeText, { color: colors.primary }]}>{activeFilterCount}</Text>
+            </View>
+          ) : null}
+        </View>
       </View>
 
-      <View style={[styles.summaryBox, { borderColor: colors.border }]}>
-        <Text style={[styles.summaryLine, { color: colors.textMuted }]}>{summary.line1}</Text>
-        <Text style={[styles.summaryLine, { color: colors.textMuted }]}>{summary.line2}</Text>
-        <Text style={[styles.countLine, { color: colors.textSubtle }]}>
-          Ukupno stavaka: <Text style={{ color: colors.text, fontWeight: typography.weight.semibold }}>{list.length}</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.chipsRow}
+        keyboardShouldPersistTaps="handled"
+      >
+        {chips.map((chip) => (
+          <Chip key={chip.id} label={chip.label} icon={chip.icon} tone="brand" onPress={onOpenFilter} />
+        ))}
+      </ScrollView>
+
+      <View style={styles.metaRow}>
+        <Text style={[styles.count, { color: colors.textMuted }]}>
+          <Text style={[styles.countValue, { color: colors.text }]}>{list.length}</Text>
+          {list.length === 1 ? ' dokument' : ' dokumenata'}
         </Text>
         {isEmptyBecauseSearch ? (
-          <Text style={[styles.hint, { color: colors.warning }]}>Nema podudaranja za unesenu pretragu.</Text>
+          <Text style={[styles.hint, { color: colors.warning }]}>Nema podudaranja</Text>
         ) : null}
       </View>
     </View>
@@ -102,62 +106,67 @@ export function DocumentListToolbar({ onOpenFilter }: DocumentListToolbarProps) 
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    gap: spacing.sm,
-  },
-  actionsRow: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-  },
-  iconButton: {
+  band: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xs,
-    borderWidth: 1,
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    minHeight: 40,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+    borderBottomLeftRadius: radius.xl,
+    borderBottomRightRadius: radius.xl,
   },
-  iconLabel: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-  },
-  summaryBox: {
-    borderTopWidth: StyleSheet.hairlineWidth,
-    paddingTop: spacing.sm,
-    gap: spacing.xs,
-  },
-  summaryLine: {
-    fontSize: typography.size.xs,
-    textAlign: 'center',
-  },
-  countLine: {
-    fontSize: typography.size.xs,
-    textAlign: 'right',
-    paddingTop: spacing.xs,
-  },
-  hint: {
-    fontSize: typography.size.sm,
-    textAlign: 'center',
-    paddingTop: spacing.xs,
-  },
-  searchRow: {
+  searchPill: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.md,
     gap: spacing.sm,
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md,
     minHeight: 44,
+  },
+  searchSpacer: {
+    flex: 1,
   },
   searchInput: {
     flex: 1,
     fontSize: typography.size.md,
     paddingVertical: spacing.sm,
   },
-  actionText: {
-    fontSize: typography.size.sm,
+  filterBadge: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    minWidth: 18,
+    height: 18,
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  filterBadgeText: {
+    fontSize: 11,
+    fontWeight: typography.weight.bold,
+  },
+  chipsRow: {
+    gap: spacing.xs,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+  },
+  count: {
+    fontSize: typography.size.xs,
+  },
+  countValue: {
+    fontWeight: typography.weight.semibold,
+  },
+  hint: {
+    fontSize: typography.size.xs,
     fontWeight: typography.weight.medium,
   },
 });

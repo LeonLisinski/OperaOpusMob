@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { TextField } from '@/components/TextField';
@@ -63,6 +64,9 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
             },
           ]}
         />
+        {value.length > 0 ? (
+          <Text style={[styles.counter, { color: colors.textSubtle }]}>{`${value.length} znakova`}</Text>
+        ) : null}
       </View>
     );
   }
@@ -92,21 +96,26 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
         disabled={disabled}
         accessibilityRole="button"
         accessibilityLabel={field.caption}
-        style={[
+        style={({ pressed }) => [
           styles.pickerRow,
           {
             backgroundColor: disabled ? colors.surfaceMuted : colors.surface,
-            borderColor: colors.border,
+            borderColor: displayValue && !disabled ? colors.primaryBorder : colors.border,
+            opacity: pressed ? 0.7 : 1,
           },
         ]}
       >
         <Text
-          style={[styles.pickerValue, { color: displayValue ? colors.text : colors.textSubtle }]}
+          style={[
+            styles.pickerValue,
+            displayValue ? styles.pickerValueSelected : null,
+            { color: displayValue ? colors.text : colors.textSubtle },
+          ]}
           numberOfLines={2}
         >
           {displayValue ? String(displayValue) : 'Odaberite…'}
         </Text>
-        {!disabled ? <Text style={[styles.chevron, { color: colors.textSubtle }]}>›</Text> : null}
+        {!disabled ? <Ionicons name="chevron-forward" size={18} color={colors.textSubtle} /> : null}
       </Pressable>
     </View>
   );
@@ -121,17 +130,23 @@ const styles = StyleSheet.create({
     fontWeight: typography.weight.medium,
   },
   memo: {
-    minHeight: 110,
+    minHeight: 120,
     borderWidth: 1,
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     fontSize: typography.size.md,
+    lineHeight: typography.lineHeight.md,
+  },
+  counter: {
+    fontSize: typography.size.xs,
+    textAlign: 'right',
   },
   pickerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: spacing.sm,
     borderWidth: 1,
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
@@ -142,8 +157,7 @@ const styles = StyleSheet.create({
     fontSize: typography.size.md,
     paddingVertical: spacing.sm,
   },
-  chevron: {
-    fontSize: typography.size.xl,
-    paddingLeft: spacing.sm,
+  pickerValueSelected: {
+    fontWeight: typography.weight.medium,
   },
 });

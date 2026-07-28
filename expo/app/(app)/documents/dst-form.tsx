@@ -1,7 +1,8 @@
 import { useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
+import { Card } from '@/components/Card';
 import { EditFormField } from '@/components/EditFormField';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
@@ -9,6 +10,7 @@ import { HeaderTextButton } from '@/components/HeaderTextButton';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { SifarnikSearchModal } from '@/components/SifarnikSearchModal';
+import { StickyFooter } from '@/components/StickyFooter';
 import { dstEditLayoutFor, resetEditForm, saveDstLine, updateEditFormData, updateEditValues } from '@/features/documents/documentsSlice';
 import type { EditFieldDef } from '@/features/documents/types';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -105,7 +107,11 @@ export default function DstFormScreen() {
   if (!layout || !editValues || !dstEditContext) {
     return (
       <Screen>
-        <EmptyState title="Forma nije spremna" description="Vratite se i pokušajte ponovno otvoriti unos/izmjenu." />
+        <EmptyState
+          icon="alert-circle-outline"
+          title="Forma nije spremna"
+          description="Vratite se i pokušajte ponovno otvoriti unos/izmjenu."
+        />
       </Screen>
     );
   }
@@ -115,27 +121,38 @@ export default function DstFormScreen() {
   if (fields.length === 0) {
     return (
       <Screen>
-        <EmptyState title="Forma nije definirana" description="Layout ovog modula ne sadrži definiciju forme stavke." />
+        <EmptyState
+          icon="create-outline"
+          title="Forma nije definirana"
+          description="Layout ovog modula ne sadrži definiciju forme stavke."
+        />
       </Screen>
     );
   }
 
   return (
-    <Screen scroll keyboardAware contentStyle={styles.content}>
-      {fields.map((field, index) => (
-        <EditFormField
-          key={`${field.azurFieldKey}-${index}`}
-          field={field}
-          editingExisting={isExistingRecord}
-          onOpenSearch={setActiveSearchField}
-        />
-      ))}
+    <Screen
+      scroll
+      keyboardAware
+      contentStyle={styles.content}
+      footer={
+        <StickyFooter>
+          <PrimaryButton label="Spremi" onPress={() => void handleSave()} loading={saveStatus.loading} />
+        </StickyFooter>
+      }
+    >
+      <Card style={styles.card}>
+        {fields.map((field, index) => (
+          <EditFormField
+            key={`${field.azurFieldKey}-${index}`}
+            field={field}
+            editingExisting={isExistingRecord}
+            onOpenSearch={setActiveSearchField}
+          />
+        ))}
+      </Card>
 
       <ErrorMessage message={saveStatus.error} />
-
-      <View style={styles.footer}>
-        <PrimaryButton label="Spremi" onPress={() => void handleSave()} loading={saveStatus.loading} />
-      </View>
 
       <SifarnikSearchModal
         key={activeSearchField ? `${activeSearchField.entity ?? ''}-${activeSearchField.azurFieldKey}` : 'none'}
@@ -151,10 +168,11 @@ export default function DstFormScreen() {
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.lg,
     gap: spacing.md,
   },
-  footer: {
-    paddingTop: spacing.sm,
+  card: {
+    gap: spacing.md,
   },
 });

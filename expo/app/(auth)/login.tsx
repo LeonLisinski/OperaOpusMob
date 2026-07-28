@@ -2,15 +2,13 @@ import { useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { Badge } from '@/components/Badge';
-import { Card } from '@/components/Card';
+import { AuthLayout } from '@/components/AuthLayout';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { PrimaryButton } from '@/components/PrimaryButton';
-import { Screen } from '@/components/Screen';
 import { TextField } from '@/components/TextField';
 import { loginErp, reactivateCore } from '@/features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { spacing, typography, useTheme } from '@/theme';
+import { radius, spacing, typography, useTheme } from '@/theme';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -54,78 +52,75 @@ export default function LoginScreen() {
   };
 
   return (
-    <Screen scroll keyboardAware contentStyle={styles.screenContent}>
-      <View style={styles.header}>
-        <Text style={[styles.title, { color: colors.text }]}>Prijava</Text>
-        {db ? <Badge label={db} /> : null}
-      </View>
-
-      <Card style={styles.card}>
-        <ErrorMessage message={error} />
-
-        <View style={styles.form}>
-              <TextField
-                label="Korisničko ime"
-                value={username}
-                onChangeText={setUsername}
-                autoComplete="username"
-                textContentType="username"
-                editable={!loading}
-                returnKeyType="next"
-                onSubmitEditing={() => passwordRef.current?.focus()}
-              />
-              <TextField
-                label="Lozinka"
-                value={password}
-                onChangeText={setPassword}
-                secureEntry
-                autoComplete="password"
-                textContentType="password"
-                editable={!loading}
-                inputRef={passwordRef}
-                returnKeyType="done"
-                onSubmitEditing={handleSubmit}
-              />
-        </View>
-
-        <PrimaryButton label="Prijava" onPress={handleSubmit} loading={loading} disabled={!canSubmit} />
-
+    <AuthLayout
+      title="Prijava"
+      subtitle="Prijavite se ERP korisničkim podacima."
+      heroBadge={
+        db ? (
+          <View style={[styles.dbBadge, { backgroundColor: colors.onBrandSurface }]}>
+            <Text style={[styles.dbBadgeText, { color: colors.onBrand }]}>{db}</Text>
+          </View>
+        ) : null
+      }
+      footer={
         <Pressable onPress={handleReactivate} accessibilityRole="button" style={styles.reactivateLink}>
           <Text style={[styles.reactivateText, { color: colors.primary }]}>Ponovno unesi Core PIN</Text>
         </Pressable>
-      </Card>
-    </Screen>
+      }
+    >
+      <ErrorMessage message={error} />
+
+      <View style={styles.form}>
+        <TextField
+          label="Korisničko ime"
+          value={username}
+          onChangeText={setUsername}
+          autoComplete="username"
+          textContentType="username"
+          editable={!loading}
+          returnKeyType="next"
+          onSubmitEditing={() => passwordRef.current?.focus()}
+        />
+        <TextField
+          label="Lozinka"
+          value={password}
+          onChangeText={setPassword}
+          secureEntry
+          autoComplete="password"
+          textContentType="password"
+          editable={!loading}
+          inputRef={passwordRef}
+          returnKeyType="done"
+          onSubmitEditing={handleSubmit}
+        />
+      </View>
+
+      <PrimaryButton label="Prijava" onPress={handleSubmit} loading={loading} disabled={!canSubmit} />
+    </AuthLayout>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContent: {
-    paddingHorizontal: spacing.xl,
-    paddingTop: spacing.xxl,
-    paddingBottom: spacing.xxxl,
-    gap: spacing.xl,
-  },
-  header: {
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  title: {
-    fontSize: typography.size.xxl,
-    fontWeight: typography.weight.bold,
-  },
-  card: {
-    gap: spacing.lg,
-  },
   form: {
     gap: spacing.md,
   },
+  dbBadge: {
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 3,
+  },
+  dbBadgeText: {
+    fontSize: typography.size.xs,
+    fontWeight: typography.weight.semibold,
+  },
   reactivateLink: {
     alignSelf: 'center',
-    paddingVertical: spacing.xs,
+    paddingVertical: spacing.sm,
+    minHeight: 44,
+    justifyContent: 'center',
   },
   reactivateText: {
     fontSize: typography.size.sm,
     fontWeight: typography.weight.medium,
-    textDecorationLine: 'underline',
   },
 });

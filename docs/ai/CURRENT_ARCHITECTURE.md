@@ -2,7 +2,7 @@
 
 > **Status:** trenutno stanje, dokazano iz koda repozitorija i read-only SQL uvida u `OperaMobile`.
 > **Metoda:** statička analiza koda + SQL MCP (`OperaMobile`, SQL Server 2019) + inspekcija lokalne kopije `MobLayoutsControls/`.
-> **Napomena:** API backend (ASP.NET servis na `*/api`) **nije** u ovom repozitoriju; ponašanje endpointa je inferirano iz klijentskog koda i gdje god nije potvrđeno, tako je i označeno. Backend detalji koji blokiraju odluke su u [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md).
+> **Napomena:** ASP.NET API je u repou kao `API/` (reference s TFS-a). Ponašanje endpointa potvrđuj iz **radnog Ionic klijenta** (`src/utils/dataHelper.js`) ako lokalni controller nedostaje. Backend detalji koji i dalje blokiraju odluke su u [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md).
 
 ---
 

@@ -22,11 +22,30 @@ Aplikacija je izgrađena na Ionic React + Capacitor (v6), objavljena za Android.
 
 ## Cilj migracije
 
-Cilj je Expo/React Native aplikacija koja čuva postojeće poslovno ponašanje, ostaje kompatibilna s postojećim API-jem i bazama, modernizira UI/UX i pojednostavljuje dugoročno održavanje. Ovo **nije** mehaničko prepisivanje Ionic komponenti u React Native - cilj je kontrolirana migracija poslovnih flowova u smisleniju ciljnu arhitekturu, uz smanjenje postojećeg dupliciranja (`servis` / `dgl` / `gen`).
+Cilj je **ista aplikacija, modernizirana i dovršena** — ne novi proizvod od nule:
+
+- **Expo/React Native** (Android + iOS), ljepši UI/UX, čistija arhitektura za održavanje.
+- **Zadržati JSON-driven model** — prilagodbe po klijentu kroz `MobLayoutsControls/` i `spMob_*` procedure, bez obaveznog Store releasea za svaku sitnicu (kao web pristup).
+- **Ne dirati API** dok radi; promjene prvenstveno kroz layout JSON i SQL.
+- **Dovršiti** što je u Ionic originalu nedovršeno ili loše (push, servis moduli, mrtvi tabovi, hardkodi).
+- Ionic original je brzo sklopljen — **referenca ponašanja**, ne uzor kvalitete; bugove u Expo-u ne replicirati namjerno.
+
+Ovo **nije** mehaničko prepisivanju Ionic komponenti u React Native.
 
 **Ciljne platforme:** trenutna Ionic aplikacija je Android-only produkcijska referenca. Expo aplikacija se razvija **ravnopravno za Android i iOS** - iOS nije naknadna opcija nego dio ciljne aplikacije od početka, pa arhitektura, odabrane biblioteke i implementirane funkcionalnosti moraju podržavati obje platforme. Huawei uređaji koje SvamPlus klijenti koriste imaju Google Play Services, pa se Huawei ne tretira kao zasebna platforma ni poseban tehnički zahtjev.
 
-Ciljna arhitektura je tek djelomično definirana - v. [`TARGET_ARCHITECTURE.md`](TARGET_ARCHITECTURE.md) (status: Draft).
+## Test okruženje
+
+1. **Core PIN:** `jukic001`
+2. **ERP login:** korisnik `svam`
+3. **App PIN:** `plusplus` (nakon odabira aplikacije)
+
+Read-only pristup **produkcijskim tenant bazama** moguć po dogovoru — korisno za provjeru `spMob_*` prije izmjene JSON layouta.
+
+## Backend i layouti
+
+- ASP.NET API: folder **`API/`** u repou (TFS, reference-only).
+- Layouti: **`\\operaweb\c$\inetpub\wwwroot\Opera\MobLayoutsControls`** — održavaju konzultanti + tim.
 
 ## Pravilo tijekom migracije
 

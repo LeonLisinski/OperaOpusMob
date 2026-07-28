@@ -30,7 +30,7 @@ export function PrimaryButton({
   const palette = {
     primary: { bg: colors.primary, bgPressed: colors.primaryPressed, text: colors.onPrimary, border: 'transparent' },
     secondary: { bg: colors.surface, bgPressed: colors.surfaceMuted, text: colors.text, border: colors.border },
-    danger: { bg: colors.danger, bgPressed: colors.danger, text: '#FFFFFF', border: 'transparent' },
+    danger: { bg: colors.danger, bgPressed: colors.danger, text: colors.onBrand, border: 'transparent' },
   }[variant];
 
   return (

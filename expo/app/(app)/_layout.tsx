@@ -1,6 +1,7 @@
 import { Redirect, Stack } from 'expo-router';
 import { ActivityIndicator, StyleSheet } from 'react-native';
 
+import { brandHeaderOptions } from '@/components/AppHeader';
 import { Screen } from '@/components/Screen';
 import { useAppSelector } from '@/store/hooks';
 import { useTheme } from '@/theme';
@@ -29,24 +30,13 @@ export default function AppLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: { backgroundColor: colors.background },
-        headerTintColor: colors.text,
-        headerTitleStyle: { fontWeight: '600' },
-        headerShadowVisible: false,
-        contentStyle: { backgroundColor: colors.background },
-      }}
-    >
+    <Stack screenOptions={brandHeaderOptions(colors)}>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="apps" options={{ headerShown: false }} />
       <Stack.Screen name="settings" options={{ title: 'Postavke' }} />
       <Stack.Screen name="modules/[code]" options={{ title: 'Moduli' }} />
       <Stack.Screen name="documents/list" options={{ title: 'Popis' }} />
-      <Stack.Screen name="documents/detail" options={{ title: 'Detalji' }} />
-      <Stack.Screen name="documents/lines" options={{ title: 'Stavke' }} />
-      <Stack.Screen name="documents/attachments" options={{ title: 'Privitci' }} />
-      <Stack.Screen name="documents/signature" options={{ title: 'Potpis' }} />
+      <Stack.Screen name="documents/doc" options={{ title: 'Dokument' }} />
       <Stack.Screen name="documents/form" options={{ presentation: 'modal', title: 'Forma' }} />
       <Stack.Screen name="documents/dst-form" options={{ presentation: 'modal', title: 'Stavka' }} />
       <Stack.Screen name="app-unlock" options={{ presentation: 'modal', title: 'Otključavanje aplikacije' }} />

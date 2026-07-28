@@ -1,13 +1,13 @@
 import { useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 
 import { DocumentFilterModal } from '@/components/DocumentFilterModal';
 import { DocumentListToolbar } from '@/components/DocumentListToolbar';
 import { DynamicListItem } from '@/components/DynamicListItem';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { HeaderTextButton } from '@/components/HeaderTextButton';
+import { Fab } from '@/components/Fab';
 import { LoadingState } from '@/components/LoadingState';
 import { RetryState } from '@/components/RetryState';
 import { Screen } from '@/components/Screen';
@@ -34,7 +34,7 @@ export default function DocumentsListScreen() {
 
   // "Novi" gumb: gen nema flag u Ionic izvoru (uvijek prikazan), dgl poštuje settings.dglallownew
   // (v. src/pages/dgl/List.jsx vs src/pages/gen/List.jsx).
-  const canCreateNew = route ? (route.kind === 'gen' || Boolean(settings.dglallownew)) : false;
+  const canCreateNew = route ? route.kind === 'gen' || Boolean(settings.dglallownew) : false;
 
   const onNewPress = () => {
     dispatch(startEditForm(null));
@@ -42,12 +42,8 @@ export default function DocumentsListScreen() {
   };
 
   useEffect(() => {
-    navigation.setOptions({
-      title: selectedModule?.title ?? 'Popis',
-      headerRight: canCreateNew ? () => <HeaderTextButton label="+ Novi" onPress={onNewPress} /> : undefined,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation, selectedModule, canCreateNew]);
+    navigation.setOptions({ title: selectedModule?.title ?? 'Popis' });
+  }, [navigation, selectedModule]);
 
   useEffect(() => {
     if (selectedModule) {
@@ -57,7 +53,7 @@ export default function DocumentsListScreen() {
 
   const onItemPress = (item: Record<string, unknown>) => {
     dispatch(selectListItem(item));
-    router.push('/(app)/documents/detail');
+    router.push('/(app)/documents/doc');
   };
 
   const onOpenFilter = () => {
@@ -68,7 +64,11 @@ export default function DocumentsListScreen() {
   if (!selectedModule) {
     return (
       <Screen>
-        <EmptyState title="Modul nije odabran" description="Vratite se na popis modula i odaberite modul ponovno." />
+        <EmptyState
+          icon="albums-outline"
+          title="Modul nije odabran"
+          description="Vratite se na popis modula i odaberite modul ponovno."
+        />
       </Screen>
     );
   }
@@ -92,36 +92,41 @@ export default function DocumentsListScreen() {
   const isSearchEmpty = searchQuery.trim().length > 0 && list.length === 0 && originalList.length > 0;
   const isListEmpty = list.length === 0 && !listStatus.loading;
 
-  const listHeader = (
-    <View style={styles.toolbar}>
-      <DocumentListToolbar onOpenFilter={onOpenFilter} />
-      {listStatus.error ? <ErrorMessage message={listStatus.error} /> : null}
-      {isListEmpty ? (
-        isSearchEmpty ? (
-          <EmptyState title="Nema podudaranja" description="Promijenite pretragu ili poništite filter." />
-        ) : (
-          <EmptyState title="Nema dokumenata za prikaz" description="Za odabrani filter trenutno nema stavki." />
-        )
-      ) : null}
-    </View>
-  );
-
   return (
     <Screen style={styles.screen}>
+      <DocumentListToolbar onOpenFilter={onOpenFilter} />
+
       <FlatList
         style={styles.list}
         data={isListEmpty ? [] : list}
         keyExtractor={(item, index) => String(item.dglid ?? item.id ?? index)}
-        ListHeaderComponent={listHeader}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, canCreateNew ? styles.listContentWithFab : null]}
         refreshing={listStatus.loading}
         onRefresh={() => dispatch(refreshDocumentList())}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        ListHeaderComponent={listStatus.error ? <ErrorMessage message={listStatus.error} /> : null}
+        ListEmptyComponent={
+          isSearchEmpty ? (
+            <EmptyState
+              icon="search-outline"
+              title="Nema podudaranja"
+              description="Promijenite pretragu ili poništite filter."
+            />
+          ) : (
+            <EmptyState
+              icon="file-tray-outline"
+              title="Nema dokumenata za prikaz"
+              description="Za odabrani filter trenutno nema stavki."
+            />
+          )
+        }
         renderItem={({ item }) => (
           <DynamicListItem groups={layout?.listItems ?? []} item={item} onPress={() => onItemPress(item)} />
         )}
       />
+
+      {canCreateNew ? <Fab onPress={onNewPress} accessibilityLabel="Novi dokument" /> : null}
 
       <DocumentFilterModal visible={filterVisible} onClose={() => setFilterVisible(false)} />
     </Screen>
@@ -132,18 +137,18 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  toolbar: {
-    paddingTop: spacing.md,
-    gap: spacing.sm,
-    paddingBottom: spacing.sm,
-  },
   list: {
     flex: 1,
   },
   listContent: {
     gap: spacing.sm,
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xl,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.xxl,
     flexGrow: 1,
+  },
+  // Zadnja kartica ne smije ostati ispod FAB-a (56px + odmak od dna).
+  listContentWithFab: {
+    paddingBottom: 88,
   },
 });

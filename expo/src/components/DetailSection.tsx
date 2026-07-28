@@ -20,7 +20,7 @@ export function DetailSection({ section, item }: DetailSectionProps) {
 
   return (
     <Card style={styles.card}>
-      <Text style={[styles.caption, { color: colors.text }]}>{section.caption}</Text>
+      <Text style={[styles.caption, { color: colors.primary }]}>{section.caption}</Text>
       <View>
         {section.items.map((field, index) => (
           <DetailField key={`${field.field}-${index}`} field={field} item={item} />
@@ -33,12 +33,13 @@ export function DetailSection({ section, item }: DetailSectionProps) {
 const styles = StyleSheet.create({
   card: {
     gap: spacing.xs,
+    paddingVertical: spacing.md,
   },
   caption: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.bold,
+    fontSize: typography.size.xs,
+    fontWeight: typography.weight.semibold,
     textTransform: 'uppercase',
-    letterSpacing: 0.3,
+    letterSpacing: 0.6,
     marginBottom: spacing.xs,
   },
 });

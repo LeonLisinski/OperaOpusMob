@@ -129,6 +129,11 @@ export interface ModuleLayout {
    * porukom umjesto tihog poziva tuđeg tenant SP-a.
    */
   dstAzurQuery?: QueryDef;
+  /**
+   * queries.dst.delete — brisanje stavke (Ionic deleteDst → spMob_DST_RadniNalozi_Azur).
+   * Ostale akcije (potvrda količine) idu preko dstAzurQuery s drugim `action` parametrom.
+   */
+  dstDeleteQuery?: QueryDef;
   dstEditItems: EditFieldDef[];
   dstEditItemsExtends: Record<string, unknown>;
   dstEditItemsRad: EditFieldDef[];

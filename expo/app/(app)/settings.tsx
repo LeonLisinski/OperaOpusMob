@@ -151,7 +151,7 @@ function SettingsSection({ title, children }: { title: string; children: React.R
   const { colors } = useTheme();
   return (
     <Card style={styles.card}>
-      <Text style={[styles.caption, { color: colors.text }]}>{title}</Text>
+      <Text style={[styles.caption, { color: colors.primary }]}>{title}</Text>
       <View>{children}</View>
     </Card>
   );
@@ -183,8 +183,8 @@ function ActionRow({
         </View>
         <Text style={[styles.actionLabel, { color: tint }]}>{label}</Text>
       </View>
-      <Text style={[styles.chevron, { color: colors.textSubtle }]}>›</Text>
-    </Pressable>
+        <Ionicons name="chevron-forward" size={16} color={colors.textSubtle} />
+      </Pressable>
   );
 }
 
@@ -208,12 +208,13 @@ const styles = StyleSheet.create({
   },
   card: {
     gap: spacing.xs,
+    paddingVertical: spacing.md,
   },
   caption: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.bold,
+    fontSize: typography.size.xs,
+    fontWeight: typography.weight.semibold,
     textTransform: 'uppercase',
-    letterSpacing: 0.3,
+    letterSpacing: 0.6,
     marginBottom: spacing.xs,
   },
   row: {
@@ -233,10 +234,12 @@ const styles = StyleSheet.create({
   },
   segment: {
     flex: 1,
-    borderRadius: 8,
+    borderRadius: radius.sm,
     borderWidth: StyleSheet.hairlineWidth,
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.md,
     alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
   },
   segmentLabel: {
     fontSize: typography.size.sm,
@@ -247,6 +250,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: spacing.sm,
+    minHeight: 48,
   },
   actionRowLeft: {
     flexDirection: 'row',
@@ -265,9 +269,6 @@ const styles = StyleSheet.create({
     fontSize: typography.size.md,
     fontWeight: typography.weight.medium,
     flexShrink: 1,
-  },
-  chevron: {
-    fontSize: typography.size.lg,
   },
   footer: {
     alignItems: 'center',

@@ -5,11 +5,20 @@ alwaysApply: true
 
 # Opera Mobile — kontekst
 
-Poslovna mobilna aplikacija tvrtke SvamPlus; mobilni klijent za OperaOpus ERP. Koriste je stvarni klijenti u produkciji. Tim: ~5 developera, bez mobilne specijalizacije.
+Poslovna mobilna aplikacija tvrtke SvamPlus; mobilni klijent za **OperaOpus ERP** (Access-era jezgro, mobilna brzo sklopljena u Ionicu). Koriste je stvarni klijenti u produkciji. Tim: ~5 developera + konzultanti, bez mobilne specijalizacije.
 
 ## Cilj projekta
 
-Postojeća Ionic aplikacija je produkcijska referenca. Cilj je očuvati poslovne funkcionalnosti, kontrolirano ih migrirati u Expo, modernizirati UI/UX, dovršiti nedovršene funkcionalnosti i pojednostaviti dugoročno održavanje za mali razvojni tim. Ne radi se o mehaničkom prepisivanju Ionic komponenti.
+**Ista aplikacija, modernizirana** — ne reinvent the wheel:
+
+- Očuvati poslovno ponašanje i postojeći okvir: **JSON layouti** + **`spMob_*` procedure** + API koji već radi.
+- **Ne dirati API** osim ako stvarno ne radi ili nedostaje endpoint; prilagodbe idu kroz **layout JSON** i **SQL/store**, kao na webu.
+- Migrirati u **Expo** (Android + iOS), **modernizirati UI/UX**, **dovršiti** nedovršeno u originalu (push, mrtvi tabovi, servis moduli…).
+- Kod mora biti **održiv za ljude koji ne žele živjeti u kodu** — konfiguracija po tenantu kroz JSON, ne nova verzija appa za svaku sitnicu.
+
+Ionic (`src/`) je **produkcijska referenca ponašanja**, ne uzor kvalitete koda — original ima propuste, hardkode i nelogičnosti. U Expo-u popravljamo arhitekturu; ne kopiramo bugove radi „pariteta“.
+
+Ne radi se o mehaničkom prepisivanju Ionic komponenti.
 
 ## Karta sustava
 
@@ -32,4 +41,20 @@ Postojeća Ionic aplikacija je produkcijska referenca. Cilj je očuvati poslovne
 
 ## Backend
 
-API servis (`/data`, `/login`, `/doclayouts`, …) **nije u ovom repozitoriju**. Njegovo ponašanje se ne izmišlja — nepotvrđeno se označava kao nepoznato.
+ASP.NET API je u repou kao **`API/`** (reference s TFS-a, ista verzija kao produkcija prema timu). Runtime deploy (`Web.config`, IIS putanje) može se razlikovati — ne pretpostavljati bez provjere.
+
+Ionic/Expo pozivaju `{auth.api}/data`, `/login`, `/doclayouts`, `/saveatt`, `/getatt`, `/repxreport`. **Referenca za ponašanje je radni Ionic klijent** (`src/utils/dataHelper.js`) ako lokalni `API/` nema odgovarajući controller.
+
+## Test okruženje
+
+Redoslijed za razvoj/paritet:
+
+1. **Core PIN:** `jukic001` (aktivacija tenanta — u `OperaMobile.PinCore`)
+2. **ERP login:** korisnik **`svam`**
+3. **App PIN:** **`plusplus`** (otključavanje aplikacije nakon odabira app-a u kontrolnom centru)
+
+Interne baze: SQL20xx. Produkcija kod klijenata često na **zasebnim serverima/IP** — read-only pristup prod bazama moguć po dogovoru.
+
+## Layouti
+
+JSON po tenantu/modulu u **`MobLayoutsControls/`** — produkcijski izvor na `\\operaweb\c$\inetpub\wwwroot\Opera\MobLayoutsControls` (konzultanti/tim sastavljaju). Lokalna kopija u repou služi za analizu i verzioniranje; **ne mijenjati bez odobrenog zadatka** (pravilo 10).

@@ -31,6 +31,14 @@
       "params": {
         "action": "get"
       }
+    },
+    "azur": {
+      "sp": "spMob_ZJUKIC_DST_Azur",
+      "params": {}
+    },
+    "delete": {
+      "sp": "spMob_DST_RadniNalozi_Azur",
+      "params": {}
     }
   },
   "core": {

@@ -1,6 +1,12 @@
 import { useEffect } from 'react';
 
-import { loadDocumentLines, moduleHasDstLines, readItemId } from '@/features/documents/documentsSlice';
+import {
+  loadDocumentLines,
+  moduleHasDstLines,
+  readItemId,
+  refreshLayoutDstQueries,
+} from '@/features/documents/documentsSlice';
+import { layoutHasDstActions } from '@/features/documents/dstLineHelpers';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 /** Dohvaća dst stavke kad korisnik uđe u detalj/stavke — isto kao Ionic getListItem nakon odabira retka. */
@@ -11,6 +17,15 @@ export function useDocumentLinesLoader(): void {
   const route = useAppSelector((state) => state.documents.route);
   const dstLinesForItemId = useAppSelector((state) => state.documents.dstLinesForItemId);
   const dstLinesStatus = useAppSelector((state) => state.documents.dstLinesStatus);
+
+  useEffect(() => {
+    if (!route) {
+      return;
+    }
+    if (!layoutHasDstActions(layout)) {
+      void dispatch(refreshLayoutDstQueries());
+    }
+  }, [dispatch, layout, route]);
 
   useEffect(() => {
     if (!moduleHasDstLines(layout) || !item || !route) {
