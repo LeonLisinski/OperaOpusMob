@@ -2,7 +2,7 @@
 
 Praktične upute za developere koji rade na **Opera Mobile** Expo aplikaciji.
 
-Za arhitektonske detalje, odluke i status migracije v. [AI dokumentacija](/ai/SYSTEM_MAP) — ovdje je fokus na **kako pokrenuti, razumjeti strukturu i raditi u kodu**.
+Za arhitektonske detalje, odluke i status migracije v. [AI dokumentacija](/ai/SYSTEM_MAP) - ovdje je fokus na **kako pokrenuti, razumjeti strukturu i raditi u kodu**.
 
 ## Repozitorij
 
@@ -51,6 +51,6 @@ U terminalu odaberite platformu (development build, emulator, web).
 
 ## Granice
 
-- **`src/`** je produkcijska referenca — ne mijenjati bez eksplicitnog zadatka
+- **`src/`** je produkcijska referenca - ne mijenjati bez eksplicitnog zadatka
 - **`MobLayoutsControls/`** se ne mijenja bez odobrenog zadatka za konkretan layout
-- Backend API **nije u ovom repozitoriju** — ponašanje se ne izmišlja
+- Backend API **nije u ovom repozitoriju** - ponašanje se ne izmišlja

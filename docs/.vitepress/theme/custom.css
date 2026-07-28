@@ -1,24 +1,25 @@
 /**
  * SvamPlus tema za Opera Mobile dokumentaciju.
- * Prilagođava VitePress default temu preko službenih CSS varijabli --vp-*.
- * Namjerno suzdržano: bez animacija, bez dodatnih layout komponenti.
+ * Prilagodava VitePress default temu preko sluzbenih CSS varijabli --vp-*.
  */
 
 :root {
-  /* Brand — svijetli način rada */
+  /* Uzi sidebar i aside - vise prostora za sadrzaj */
+  --vp-sidebar-width: 220px;
+  --vp-aside-width: 180px;
+
+  /* Brand - svijetli nacin rada */
   --vp-c-brand-1: #496c60;
   --vp-c-brand-2: #3a564d;
   --vp-c-brand-3: #2e453d;
   --vp-c-brand-soft: rgba(73, 108, 96, 0.12);
 
-  /* Vrlo svijetla zelena podloga za kartice, oznake i istaknute blokove */
   --sp-soft-bg: #e7ede9;
   --sp-soft-bg-strong: #dbe6e0;
   --sp-soft-border: #c4d6cd;
 }
 
 .dark {
-  /* Brand — tamni način rada, posvjetljeno radi kontrasta na tamnoj podlozi */
   --vp-c-brand-1: #7dbba4;
   --vp-c-brand-2: #93c9b4;
   --vp-c-brand-3: #63a88f;
@@ -29,7 +30,26 @@
   --sp-soft-border: #2d3d36;
 }
 
-/* Linkovi i aktivni elementi unutar sadržaja */
+/* Sidebar - kompaktniji */
+.VPSidebar {
+  padding-left: 16px !important;
+  padding-right: 12px !important;
+}
+
+.VPSidebarItem .text {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.VPSidebarItem.level-0 > .item > .text {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--vp-c-text-2);
+}
+
+/* Linkovi */
 .vp-doc a {
   color: var(--vp-c-brand-1);
   text-decoration-color: var(--vp-c-brand-soft);
@@ -39,7 +59,6 @@
   color: var(--vp-c-brand-2);
 }
 
-/* Aktivna stavka u sidebaru — dodatno istaknuta mekom pozadinom */
 .VPSidebarItem.is-active > .item .text {
   color: var(--vp-c-brand-1) !important;
   font-weight: 600;
@@ -50,12 +69,11 @@
   border-radius: 6px;
 }
 
-/* Aktivna stavka u gornjoj navigaciji */
 .VPNavBarMenuLink.active {
   color: var(--vp-c-brand-1) !important;
 }
 
-/* "Tip" istaknuti blok koristi brand boju umjesto zadane */
+/* Tip blokovi */
 .vp-doc .custom-block.tip {
   border-color: var(--vp-c-brand-1);
   background-color: var(--sp-soft-bg);
@@ -69,7 +87,6 @@
   color: var(--vp-c-brand-1);
 }
 
-/* Oznake (badge) u brand tonu */
 .vp-doc .VPBadge.tip,
 .VPBadge.tip {
   border-color: var(--sp-soft-border);
@@ -82,28 +99,84 @@
   color: var(--vp-c-brand-1);
 }
 
-/* Tablice — čitljivost i jasne granice */
+/* Tablice - horizontalni scroll, citljivije */
+.vp-doc .content-container {
+  overflow-x: visible;
+}
+
 .vp-doc table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  border-collapse: collapse;
+  -webkit-overflow-scrolling: touch;
+  margin: 1rem 0;
+}
+
+.vp-doc thead,
+.vp-doc tbody,
+.vp-doc tr {
   display: table;
   width: 100%;
+  table-layout: auto;
+}
+
+.vp-doc th,
+.vp-doc td {
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+  border: 1px solid var(--sp-soft-border);
+  word-break: break-word;
+  white-space: normal;
 }
 
 .vp-doc th {
   background-color: var(--sp-soft-bg);
   color: var(--vp-c-text-1);
+  font-weight: 600;
 }
 
 .vp-doc tr:nth-child(2n) {
   background-color: var(--vp-c-bg-soft);
 }
 
-/* Inline kod — mekša, brand-svjesna podloga */
+/* Decision Log - kartice po odluci */
+.vp-doc h2[id^="d0"] {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--sp-soft-border);
+  font-size: 1.125rem;
+  font-family: var(--vp-font-family-mono);
+  letter-spacing: 0.02em;
+}
+
+.vp-doc h2[id^="d0"]:first-of-type {
+  margin-top: 1.5rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.vp-doc h2[id^="d0"] + p strong {
+  color: var(--vp-c-text-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.vp-doc h2[id^="d0"] ~ p {
+  margin: 0.35rem 0 0.75rem;
+  line-height: 1.6;
+}
+
+/* Inline kod */
 .vp-doc :not(pre) > code {
   background-color: var(--sp-soft-bg);
   border-radius: 4px;
 }
 
-/* Mermaid dijagrami — čitljiv okvir u oba načina rada */
+/* Mermaid */
 .mermaid {
   background-color: var(--vp-c-bg-soft);
   border: 1px solid var(--sp-soft-border);
@@ -113,16 +186,13 @@
   overflow-x: auto;
 }
 
-/* Footer — suzdržan prikaz SvamPlus oznake */
 .VPFooter .message,
 .VPFooter .copyright {
   color: var(--vp-c-text-2);
 }
 
-/* Responzivnost: sidebar/tablice na manjim ekranima */
 @media (max-width: 767px) {
-  .vp-doc table {
-    display: block;
-    overflow-x: auto;
+  :root {
+    --vp-sidebar-width: 260px;
   }
 }

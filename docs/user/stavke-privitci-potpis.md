@@ -9,14 +9,14 @@ Tab **Stavke** prikazuje popis stavki dokumenta (artikli, usluge, radovi…).
 ### Pregled
 
 - Svaki redak prikazuje polja definirana konfiguracijom modula
-- Dokument se učitava pri otvaranju taba — kratko se prikazuje placeholder (skeleton) dok se podaci dohvaćaju
+- Dokument se učitava pri otvaranju taba - kratko se prikazuje placeholder (skeleton) dok se podaci dohvaćaju
 
 ### Dodavanje i uređivanje
 
 Ako je dokument **urediv** i modul to podržava:
 
-- **+ Novi** — dodavanje nove stavke
-- Dodir na postojeću stavku — uređivanje (ako stavka nije zaključana)
+- **+ Novi** - dodavanje nove stavke
+- Dodir na postojeću stavku - uređivanje (ako stavka nije zaključana)
 
 Forma stavke koristi ista polja kao glavni dokument (tekst, datum, šifrarnici…).
 
@@ -28,7 +28,7 @@ Brisanje stavki, promjena statusa stavke i potvrda količine **nisu implementira
 
 ## Tab Rad
 
-Neki moduli imaju i tab **Rad** — zaseban popis radnih stavki (isti ekran kao Stavke, drugi tip podataka). Prikazuje se samo kad modul to definira.
+Neki moduli imaju i tab **Rad** - zaseban popis radnih stavki (isti ekran kao Stavke, drugi tip podataka). Prikazuje se samo kad modul to definira.
 
 ## Privitci
 
@@ -50,7 +50,7 @@ Tab **Potpis** omogućuje:
 
 1. **Unos imena i e-maila** (predpopunjeno iz dokumenta ako je konfigurirano)
 2. **Crtanje potpisa** prstom/stylusom na platnu
-3. **Spremanje** — potpis se šalje na server i po konfiguraciji generira/se šalje izvještaj (REPX)
+3. **Spremanje** - potpis se šalje na server i po konfiguraciji generira/se šalje izvještaj (REPX)
 
 Tab se prikazuje samo kad:
 
@@ -72,4 +72,4 @@ Crtanje potpisa zahtijeva **Android ili iOS uređaj**. Na web pregledniku potpis
 | Privitci | dgl modul + konfiguracija privitaka |
 | Potpis | dgl modul + dokument dopušta potpis |
 
-Ako tab ne vidite, vaš modul ili dokument to ne podržava — to je očekivano ponašanje, ne greška aplikacije.
+Ako tab ne vidite, vaš modul ili dokument to ne podržava - to je očekivano ponašanje, ne greška aplikacije.

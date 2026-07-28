@@ -10,8 +10,8 @@
 
 Opera Mobile je **hybrid mobilna aplikacija** (Ionic React + Capacitor 6) koja služi kao klijent za **OperaOpus ERP**. Arhitektura je **dvoslojna baza**:
 
-1. **`OperaMobile`** — centralni registar uređaja, PIN-ova, API servera i licenci aplikacija (11 tablica, 18 SP-ova u `dbo`).
-2. **Tenant ERP baza** (npr. `ooMIDA_20230124`) — poslovni podaci, meni, dokumenti; pristup preko dinamičkih `spMob_*` procedura koje mobilni klijent poziva kroz generički `/data` endpoint.
+1. **`OperaMobile`** - centralni registar uređaja, PIN-ova, API servera i licenci aplikacija (11 tablica, 18 SP-ova u `dbo`).
+2. **Tenant ERP baza** (npr. `ooMIDA_20230124`) - poslovni podaci, meni, dokumenti; pristup preko dinamičkih `spMob_*` procedura koje mobilni klijent poziva kroz generički `/data` endpoint.
 
 Aplikacija koristi **tri paralelna UI modela**:
 
@@ -23,7 +23,7 @@ Aplikacija koristi **tri paralelna UI modela**:
 
 **Ključni zaključak:** Značajan dio UI-ja (liste, forme, view, SP mapiranja) **može se mijenjati bez nove verzije aplikacije** putem JSON definicija na API serveru i SP-ova u tenant bazi. Rutiranje, tabovi i neki moduli i dalje zahtijevaju kod.
 
-Verzija u `package.json`: **2.0.1** (`src/build-info.json` u repou pokazuje **2.0.5** — generira se pri buildu).
+Verzija u `package.json`: **2.0.1** (`src/build-info.json` u repou pokazuje **2.0.5** - generira se pri buildu).
 
 ---
 
@@ -46,12 +46,12 @@ Verzija u `package.json`: **2.0.1** (`src/build-info.json` u repou pokazuje **2.
 |-------------|---------|-------|
 | Capacitor Core | ^6.0.0 | `package.json`, `capacitor.config.ts` |
 | Capacitor Android | 6.0.0 | `package.json` |
-| @capacitor/preferences | ^6.0.0 | Login/storage — `src/pages/auth/Login.tsx` |
-| @capacitor/device | ^6.0.0 | Unlock — `src/pages/auth/UnlockCore.tsx` |
+| @capacitor/preferences | ^6.0.0 | Login/storage - `src/pages/auth/Login.tsx` |
+| @capacitor/device | ^6.0.0 | Unlock - `src/pages/auth/UnlockCore.tsx` |
 | @capacitor/push-notifications | ^6.0.0 | `src/pages/utils/PushNotificationsContainer.tsx` |
 | @capacitor/camera, filesystem, file-picker | ^6.0.0 | Privitci/fotografije |
 
-**Android:** `com.opera.mobile`, `webDir: dist` — `capacitor.config.ts`, `android/app/build.gradle`
+**Android:** `com.opera.mobile`, `webDir: dist` - `capacitor.config.ts`, `android/app/build.gradle`
 
 ### 2.3 Ostale biblioteke
 
@@ -65,15 +65,15 @@ Verzija u `package.json`: **2.0.1** (`src/build-info.json` u repou pokazuje **2.
 
 ### 2.4 Testiranje i alati
 
-- **Vitest** + Testing Library — `package.json`, `vite.config.ts`
-- **Cypress** ^13.5.0 — `cypress.config.ts`
-- **ESLint** ^8.35.0 — `.eslintrc.js`
-- **Sass** — `src/theme/custom.scss`
+- **Vitest** + Testing Library - `package.json`, `vite.config.ts`
+- **Cypress** ^13.5.0 - `cypress.config.ts`
+- **ESLint** ^8.35.0 - `.eslintrc.js`
+- **Sass** - `src/theme/custom.scss`
 
 ### 2.5 Backend (izvan repozitorija)
 
-- REST API na putanjama poput `https://erp.svamplus.hr/testapi/api` — `src/constants.ts`, tablica `OperaMobile.dbo.Server`
-- SQL Server 2019 — potvrđeno MCP konekcijom
+- REST API na putanjama poput `https://erp.svamplus.hr/testapi/api` - `src/constants.ts`, tablica `OperaMobile.dbo.Server`
+- SQL Server 2019 - potvrđeno MCP konekcijom
 
 ---
 
@@ -170,7 +170,7 @@ ERP-IONIC7/
 | `docs` | `src/pages/dgl/store/index.jsx` | dgl modul (layouts, list, filter, CRUD) |
 | `gen` | `src/pages/gen/store/index.jsx` | gen modul (layouts, list, CRUD) |
 
-**Napomena:** `docs` reducer je u `dgl/store` ali se u rootReducer-u importira kao `docs` — `src/store/rootReducer.ts`.
+**Napomena:** `docs` reducer je u `dgl/store` ali se u rootReducer-u importira kao `docs` - `src/store/rootReducer.ts`.
 
 ### 3.4 Rutiranje (AppMain.tsx)
 
@@ -237,17 +237,17 @@ sequenceDiagram
 
 Funkcija `checkRememberMe()` (wrapana u `AsyncCheckRememberMe` sa SplashScreen odgodom 1s):
 
-1. Čita `Preferences` ključ **`auth`** — mora imati `serverpath` (`getAuthStorage`, linija 138–143)
-2. `dispatch(setApi(authStorage))` — postavlja API URL i tenant DB
+1. Čita `Preferences` ključ **`auth`** - mora imati `serverpath` (`getAuthStorage`, linija 138–143)
+2. `dispatch(setApi(authStorage))` - postavlja API URL i tenant DB
 3. Čita **`unlocked`** → `setUnlockedApp` (otključane aplikacije)
-4. Čita **`user`** i **`connection`** — ako nema usera → `/login`, inače → `/cc/aplikacije`
+4. Čita **`user`** i **`connection`** - ako nema usera → `/login`, inače → `/cc/aplikacije`
 
 **Dokaz:** `src/AppMain.tsx` linije 59–87, 152–154
 
 ### 4.4 Capacitor lifecycle
 
-- `App.addListener('appUrlOpen')` — registriran ali prazan handler — `AppMain.tsx:55–57`
-- Push notifikacije — zasebna demo stranica, nije integrirana u login/unlock flow
+- `App.addListener('appUrlOpen')` - registriran ali prazan handler - `AppMain.tsx:55–57`
+- Push notifikacije - zasebna demo stranica, nije integrirana u login/unlock flow
 
 ---
 
@@ -296,10 +296,10 @@ sequenceDiagram
 
 - Korisnik unosi 8-znamenkasti PIN
 - Poziv `getUnlock()` → `POST {SERVICE_CORE_DOMAIN}/data` s **`db: 'OperaMobile'`** i SP **`spPinCoreAzur`** (`action: unlock`)
-- Parametri uključuju podatke uređaja: `Device.getInfo()`, `Device.getId()` — `UnlockCore.tsx:55–76`
+- Parametri uključuju podatke uređaja: `Device.getInfo()`, `Device.getId()` - `UnlockCore.tsx:55–76`
 - Rezultat se sprema u **`auth`** Preferences i Redux `setApi`
 
-**SQL dokaz** (`spPinCoreAzur`, OperaMobile): vraća `ServerPath`, `Pin`, `Db`, `Admin`, `LayoutPrefix` iz `PinCore` + `Server`; drugi result set — kodove aplikacija iz `PinApp`/`App`.
+**SQL dokaz** (`spPinCoreAzur`, OperaMobile): vraća `ServerPath`, `Pin`, `Db`, `Admin`, `LayoutPrefix` iz `PinCore` + `Server`; drugi result set - kodove aplikacija iz `PinApp`/`App`.
 
 #### Faza 2: ERP login (`Login.tsx`)
 
@@ -325,23 +325,23 @@ sequenceDiagram
 | `connection` | server, database info | Login |
 | `unlocked` | lista otključanih app kodova | UnlockApp |
 
-**localStorage:** `darkMode` — `TabPostavke.tsx`, `Login.tsx`
+**localStorage:** `darkMode` - `TabPostavke.tsx`, `Login.tsx`
 
-**JWT/OAuth:** **Nije implementirano** u klijentu. API koristi hardkodirani **`Authorization: Basic dGVzdDoxMjM=`** (test:123) u svim requestima — `src/utils/dataHelper.js:116`.
+**JWT/OAuth:** **Nije implementirano** u klijentu. API koristi hardkodirani **`Authorization: Basic dGVzdDoxMjM=`** (test:123) u svim requestima - `src/utils/dataHelper.js:116`.
 
 **RefreshToken:** kolona postoji u `PinCore.RefreshToken` i `Token.RefreshToken`, ali mobilni klijent **ne koristi** refresh token flow u analiziranom kodu.
 
 ### 5.4 Odjava
 
-- `logOut` async thunk — briše samo Preferences **`user`**, Redux `setUser(null)` — `src/pages/auth/store/index.jsx:4–17`
-- **`auth`**, **`connection`**, **`unlocked`** ostaju — korisnik ne mora ponovno unositi core PIN
-- Redirect na `/login` — `TabAplikacije.jsx:108–110`, `Menu.jsx:97–99`
+- `logOut` async thunk - briše samo Preferences **`user`**, Redux `setUser(null)` - `src/pages/auth/store/index.jsx:4–17`
+- **`auth`**, **`connection`**, **`unlocked`** ostaju - korisnik ne mora ponovno unositi core PIN
+- Redirect na `/login` - `TabAplikacije.jsx:108–110`, `Menu.jsx:97–99`
 
 ### 5.5 Autorizacija i prava
 
 | Razina | Mehanizam | Dokaz |
 |--------|-----------|-------|
-| Ruta | `PrivateRoute` — provjera `state.auth.user` | `src/components/PrivateRoute.tsx:7–18` |
+| Ruta | `PrivateRoute` - provjera `state.auth.user` | `src/components/PrivateRoute.tsx:7–18` |
 | Aplikacija | `app.unlocked` flag + PIN (`spPinAppAzur`) | `TabAplikacije.jsx:64–69`, `UnlockApp.jsx` |
 | Meni/moduli | SP **`spMob_Menu_Query`** s `korIme` | `src/pages/core/cc/store/index.jsx:4–15` |
 | Dokumenti | SP-ovi s `korime`, `sifosobe`; filter `samomoje` | npr. `gen/store/index.jsx:34–44` |
@@ -404,7 +404,7 @@ flowchart LR
 | `{auth.api}/gridToPdf` | POST | `getData(type:'printing')` | isto kao /data |
 | `{auth.api}/repxreport` | POST | `getReport()` | `{ db, id, reportname, parameters, mailTo, type }` |
 | `{auth.api}/saveatt` / `getatt` | POST | attachments | `{ db, parameters }` / `{ db, id }` |
-| `{SERVICE_DOMAIN}/layouts` | POST | `getDefinitions()` | (prazan body) — **vjerojatno legacy, rijetko korišten u kodu; je li stvarno još aktivan na backendu nije potvrđeno** |
+| `{SERVICE_DOMAIN}/layouts` | POST | `getDefinitions()` | (prazan body) - **vjerojatno legacy, rijetko korišten u kodu; je li stvarno još aktivan na backendu nije potvrđeno** |
 | `{SERVICE_DOMAIN}/base64frompath` | POST | `getFile()` | `{ path }` |
 | `{SERVICE_DOMAIN}/sendmail` | POST | `sendMail()` | `{ db, ... }` |
 | `{SERVICE_DOMAIN}/directpdf` | POST | `getDirectPdf()` | props |
@@ -428,9 +428,9 @@ flowchart LR
 }
 ```
 
-**Response:** JSON; za više result setova koristi se `table1`, `table2`, ... — npr. `getMenu.fulfilled` → `action.payload.table1`, `table2` — `core/cc/store/index.jsx:96–106`.
+**Response:** JSON; za više result setova koristi se `table1`, `table2`, ... - npr. `getMenu.fulfilled` → `action.payload.table1`, `table2` - `core/cc/store/index.jsx:96–106`.
 
-**Error handling:** `response.status != 200` → `throw(data)` — `dataHelper.js:136–138`. Nema globalnog interceptora; komponente prikazuju `IonAlert` lokalno.
+**Error handling:** `response.status != 200` → `throw(data)` - `dataHelper.js:136–138`. Nema globalnog interceptora; komponente prikazuju `IonAlert` lokalno.
 
 ### 6.4 Konfiguracija URL-ova
 
@@ -441,7 +441,7 @@ flowchart LR
 | `src/constants.ts` SERVICE_DOMAIN | Fallback/dev default | `https://erp.svamplus.hr/testapi/api` |
 | Login modal | Ručna promjena API + DB | `Login.tsx:119–134` |
 
-**Serveri u bazi (primjer):** SVAM, MIDA, MEDIVA, Zaštita Jukić, Ruve, MBFRIGO, ASURA, Adriateh, Jasika — MCP upit na `OperaMobile.dbo.Server`.
+**Serveri u bazi (primjer):** SVAM, MIDA, MEDIVA, Zaštita Jukić, Ruve, MBFRIGO, ASURA, Adriateh, Jasika - MCP upit na `OperaMobile.dbo.Server`.
 
 ---
 
@@ -449,7 +449,7 @@ flowchart LR
 
 ### 7.1 UI se djelomično definira izvan aplikacije
 
-Aplikacijski kod (`src/`) **ne sadrži** JSON layout datoteke (pretraga `*.json` — samo build-info, manifest, cypress fixtures). Layouti dolaze s API-ja **`/doclayouts`**. Lokalna snimka tih layouta postoji u `MobLayoutsControls/` na razini repozitorija — v. §7.7.
+Aplikacijski kod (`src/`) **ne sadrži** JSON layout datoteke (pretraga `*.json` - samo build-info, manifest, cypress fixtures). Layouti dolaze s API-ja **`/doclayouts`**. Lokalna snimka tih layouta postoji u `MobLayoutsControls/` na razini repozitorija - v. §7.7.
 
 ### 7.2 Tok učitavanja layouta
 
@@ -471,11 +471,11 @@ sequenceDiagram
     UI->>UI: renderForm(), renderLayout(), glaListItem
 ```
 
-**Dokaz — učitavanje:**
+**Dokaz - učitavanje:**
 
-- `dgl/store/getDocsLayout` — folder `${sifdv}/${sifgrupe}`, fallback `${sifdv}` — `src/pages/dgl/store/index.jsx:115–133`
-- `gen/store/getDocsLayout` — folder `${app}/${module}` — `src/pages/gen/store/index.jsx:121–131`
-- `getDocsDefinitions()` — `src/utils/dataHelper.js:458–505`; prefix iz `auth.layoutprefix`
+- `dgl/store/getDocsLayout` - folder `${sifdv}/${sifgrupe}`, fallback `${sifdv}` - `src/pages/dgl/store/index.jsx:115–133`
+- `gen/store/getDocsLayout` - folder `${app}/${module}` - `src/pages/gen/store/index.jsx:121–131`
+- `getDocsDefinitions()` - `src/utils/dataHelper.js:458–505`; prefix iz `auth.layoutprefix`
 
 ### 7.3 JSON struktura (inferirano iz renderera)
 
@@ -502,10 +502,10 @@ sequenceDiagram
 ### 7.5 Meni aplikacija (iz baze, ne iz JSON-a)
 
 - **`spMob_Menu_Query`** u **tenant DB** vraća aplikacije (`table1`) i module (`table2`)
-- Frontend spaja: `item.items = [{ title: 'Moduli', items: menus }]` — `core/cc/store/index.jsx:101–106`
-- Navigacija modula: `module.url` — `Modules.tsx:59–61`
+- Frontend spaja: `item.items = [{ title: 'Moduli', items: menus }]` - `core/cc/store/index.jsx:101–106`
+- Navigacija modula: `module.url` - `Modules.tsx:59–61`
 
-**Aplikacije u OperaMobile.App:** servis-mobile, crm-mobile, hrm-mobile, bi-mobile, wms-mobile, demo-mobile, rmk-mobile — MCP upit.
+**Aplikacije u OperaMobile.App:** servis-mobile, crm-mobile, hrm-mobile, bi-mobile, wms-mobile, demo-mobile, rmk-mobile - MCP upit.
 
 ### 7.6 Što i dalje zahtijeva novu verziju aplikacije
 
@@ -515,19 +515,19 @@ sequenceDiagram
 - Novi tipovi form kontrola u MasterAzur
 - Push integracija u produkcijski flow
 
-### 7.7 `MobLayoutsControls/` — lokalna snimka layouta
+### 7.7 `MobLayoutsControls/` - lokalna snimka layouta
 
 Ovo su nalazi iz inspekcije lokalne kopije `MobLayoutsControls/` na razini repozitorija (nije unutar `src/`, do sada nije bila pod Git kontrolom):
 
 - Lokalna kopija sadrži **762 datoteke ukupno**, od čega **757 JSON datoteka** (razlika su ne-JSON datoteke poput `TestPDF/sample.pdf`); kopija je **bajt-identična** kopiji na `\\operaweb\c$\inetpub\wwwroot\Opera\MobLayoutsControls`.
 - Taj centralni folder na `operaweb` posužuje **samo** tenante koji koriste `erp.svamplus.hr` kao API server.
-- Klijenti s **vlastitim API serverom** (npr. Zaštita Jukić, Ruve — v. §6.4 popis servera) imaju **zasebne kopije layouta koje nisu obuhvaćene ovom snimkom** i moraju se analizirati odvojeno, po serveru.
-- Sustav layouta **trenutno nema Git povijest ni pouzdan rollback mehanizam** — promjene na `operaweb` ili klijentskim serverima nisu praćene.
-- Pronađeni su ručni `.bak` fajlovi i backup folderi unutar strukture (npr. "ne diraj - mediva", "v0,1 JSON") — znak ad-hoc verzioniranja bez alata.
-- Od 757 JSON datoteka, **34 nisu validan strogi JSON** (npr. trailing commas, komentari ili slični odmaci od specifikacije — točan uzrok nije klasificiran po datoteci).
-- Postojeći backend očito **tolerira barem dio** tih 34 datoteke u produkciji (aplikacija za te tenante radi), ali **točno ponašanje parsera na backendu nije potvrđeno** jer backend kod nije u ovom repozitoriju — v. `OPEN_QUESTIONS.md`.
-- **Layouti još nisu odobreni kao deploy source of truth** za Expo migraciju — tretiraju se prvo kao verzionirana snimka za analizu, ne kao izvor koji se automatski deploya (v. `DECISION_LOG.md`).
-- **Nije potvrđeno** da su svi produkcijski layouti dostupni ovom snimkom — pokriveni su samo tenanti na centralnom `erp.svamplus.hr` serveru.
+- Klijenti s **vlastitim API serverom** (npr. Zaštita Jukić, Ruve - v. §6.4 popis servera) imaju **zasebne kopije layouta koje nisu obuhvaćene ovom snimkom** i moraju se analizirati odvojeno, po serveru.
+- Sustav layouta **trenutno nema Git povijest ni pouzdan rollback mehanizam** - promjene na `operaweb` ili klijentskim serverima nisu praćene.
+- Pronađeni su ručni `.bak` fajlovi i backup folderi unutar strukture (npr. "ne diraj - mediva", "v0,1 JSON") - znak ad-hoc verzioniranja bez alata.
+- Od 757 JSON datoteka, **34 nisu validan strogi JSON** (npr. trailing commas, komentari ili slični odmaci od specifikacije - točan uzrok nije klasificiran po datoteci).
+- Postojeći backend očito **tolerira barem dio** tih 34 datoteke u produkciji (aplikacija za te tenante radi), ali **točno ponašanje parsera na backendu nije potvrđeno** jer backend kod nije u ovom repozitoriju - v. `OPEN_QUESTIONS.md`.
+- **Layouti još nisu odobreni kao deploy source of truth** za Expo migraciju - tretiraju se prvo kao verzionirana snimka za analizu, ne kao izvor koji se automatski deploya (v. `DECISION_LOG.md`).
+- **Nije potvrđeno** da su svi produkcijski layouti dostupni ovom snimkom - pokriveni su samo tenanti na centralnom `erp.svamplus.hr` serveru.
 
 ---
 
@@ -535,9 +535,9 @@ Ovo su nalazi iz inspekcije lokalne kopije `MobLayoutsControls/` na razini repoz
 
 ### 8.1 Redux
 
-- **Store:** `configureStore({ reducer: createReducer() })` — `src/store/store.tsx`
+- **Store:** `configureStore({ reducer: createReducer() })` - `src/store/store.tsx`
 - **Async:** `createAsyncThunk` u svakom modulu
-- **Logout reset:** komentiran `state = undefined` — `rootReducer.ts:22–24` (store se **ne** resetira potpuno)
+- **Logout reset:** komentiran `state = undefined` - `rootReducer.ts:22–24` (store se **ne** resetira potpuno)
 
 ### 8.2 Capacitor Preferences (persistent)
 
@@ -550,21 +550,21 @@ Ovo su nalazi iz inspekcije lokalne kopije `MobLayoutsControls/` na razini repoz
 
 ### 8.3 localStorage
 
-- `darkMode` — boolean JSON
+- `darkMode` - boolean JSON
 
 ### 8.4 Cache i sinkronizacija
 
 - **Nema** offline cache sloja (SQLite, IndexedDB sync)
 - **Nema** explicit cache za API odgovore
 - Liste se osvježavaju na pull-to-refresh i `useIonViewWillEnter` (dgl List)
-- Pretraga je **klijentska** nad `originaldata` — `gen/store/setSearchText`, `dgl/store/setSearchText`
+- Pretraga je **klijentska** nad `originaldata` - `gen/store/setSearchText`, `dgl/store/setSearchText`
 - **Nema** background sync / queue za offline CRUD
 
 ---
 
 ## 9. Baza podataka i veza s aplikacijom
 
-### 9.1 OperaMobile — tablice
+### 9.1 OperaMobile - tablice
 
 | Tablica | Svrha | Ključna polja |
 |---------|-------|---------------|
@@ -575,23 +575,23 @@ Ovo su nalazi iz inspekcije lokalne kopije `MobLayoutsControls/` na razini repoz
 | `Token` | Tokeni (admin/alternativa) | Pin, ServerId, RefreshToken, Korisnik |
 | `StoreVersion` | Verzije u store-u | Platform, Version, NewVersionAvailable |
 | `AppAccessLog` | Log pristupa | Pin, Db, ServerPath, JsonData |
-| `LogPages` | Log stranica | — |
-| `SpPinCoreAzur_ParLog` | Audit parametara SP | — |
-| `SpPinAppAzur_ParLog` | Audit parametara SP | — |
-| `SpPinCoreQuery_ParLog` | Audit parametara SP | — |
+| `LogPages` | Log stranica | - |
+| `SpPinCoreAzur_ParLog` | Audit parametara SP | - |
+| `SpPinAppAzur_ParLog` | Audit parametara SP | - |
+| `SpPinCoreQuery_ParLog` | Audit parametara SP | - |
 
-### 9.2 OperaMobile — stored procedure (korištene iz aplikacije)
+### 9.2 OperaMobile - stored procedure (korištene iz aplikacije)
 
 | SP | Poziv iz | Akcija |
 |----|----------|--------|
-| `spPinCoreAzur` | `UnlockCore.tsx` | `action=unlock` — registracija uređaja |
-| `spPinAppAzur` | `UnlockApp.jsx` | `action=unlock` — otključavanje app |
+| `spPinCoreAzur` | `UnlockCore.tsx` | `action=unlock` - registracija uređaja |
+| `spPinAppAzur` | `UnlockApp.jsx` | `action=unlock` - otključavanje app |
 
-### 9.3 OperaMobile — SP-ovi u bazi (ne pozivaju se iz analiziranog klijentskog koda)
+### 9.3 OperaMobile - SP-ovi u bazi (ne pozivaju se iz analiziranog klijentskog koda)
 
-`spPinCoreQuery`, `spPinCoreAdminAzur`, `spPinAppAdminAzur`, `spTokenAzur`, `spServerQuery`, `spStoreVersionQuery`, `spAppAccessLog`, `spLogPagesAzur`, `spResetCoreAzur`, `spRepxLicenceQuery`, `spVirmaniZbirno` — MCP `INFORMATION_SCHEMA.ROUTINES`
+`spPinCoreQuery`, `spPinCoreAdminAzur`, `spPinAppAdminAzur`, `spTokenAzur`, `spServerQuery`, `spStoreVersionQuery`, `spAppAccessLog`, `spLogPagesAzur`, `spResetCoreAzur`, `spRepxLicenceQuery`, `spVirmaniZbirno` - MCP `INFORMATION_SCHEMA.ROUTINES`
 
-### 9.4 Tenant ERP — SP-ovi referencirani u kodu
+### 9.4 Tenant ERP - SP-ovi referencirani u kodu
 
 | SP | Modul | Datoteka |
 |----|-------|----------|
@@ -608,12 +608,12 @@ Ovo su nalazi iz inspekcije lokalne kopije `MobLayoutsControls/` na razini repoz
 | `spMob_ZJUKIC_DST_Azur` | Custom klijent | gen, dgl stores |
 | `spWeb_UpdateDGL` | Web update DGL | servis, dgl stores |
 
-**Napomena:** `spMob_*` procedure **nisu** u bazi `OperaMobile` — nalaze se u tenant ERP bazama. MCP pristup imao je samo `OperaMobile`.
+**Napomena:** `spMob_*` procedure **nisu** u bazi `OperaMobile` - nalaze se u tenant ERP bazama. MCP pristup imao je samo `OperaMobile`.
 
 **Dodatno o SP-ovima koji postoje ali se ne pozivaju iz klijenta:**
 
-- `spStoreVersionQuery` postoji u bazi (§9.3), ali klijent ga **ne poziva** — force update mehanizam nije implementiran u aplikaciji.
-- `PinCore` ima kolonu `PushRegistrationId` koja podržava push registraciju, ali mobilni klijent **ne šalje** taj podatak tijekom core unlock flowa (§5.2) — podrška je parcijalna, samo na strani baze.
+- `spStoreVersionQuery` postoji u bazi (§9.3), ali klijent ga **ne poziva** - force update mehanizam nije implementiran u aplikaciji.
+- `PinCore` ima kolonu `PushRegistrationId` koja podržava push registraciju, ali mobilni klijent **ne šalje** taj podatak tijekom core unlock flowa (§5.2) - podrška je parcijalna, samo na strani baze.
 
 ### 9.5 Mapiranje PinCore → API
 
@@ -648,21 +648,21 @@ ServerId=17 → ServerPath=https://erp.svamplus.hr/testapi/api
 
 ### 10.3 Flow: Gen modul (CRM upiti)
 
-1. `/gen/list/:app/:module` — npr. `crm/upiti`
+1. `/gen/list/:app/:module` - npr. `crm/upiti`
 2. Layout folder `crm/upiti` s API-ja
-3. CRUD preko `layouts.queries.gla.*` — SP imena **u JSON-u**, ne u kodu
+3. CRUD preko `layouts.queries.gla.*` - SP imena **u JSON-u**, ne u kodu
 
 ### 10.4 Flow: Privitci
 
 - `getPrivitci` → SP iz `layouts.queries.dgl.prilozi`
 - Upload: `saveAttachments` → `/saveatt`
 - Download: `getAttachemnt` → `/getatt`
-- Kamera: `@capacitor/camera`, `@capawesome/capacitor-file-picker` — `FilesAdd.tsx`, `usePhotoGallery.ts`
+- Kamera: `@capacitor/camera`, `@capawesome/capacitor-file-picker` - `FilesAdd.tsx`, `usePhotoGallery.ts`
 
 ### 10.5 Flow: Ispis (REPX)
 
 - `getReport()` → `/repxreport` s `reportName` iz layout `properties`
-- Potpis tab: email + PDF — `TabPotpis.jsx`, `Tab4.jsx`
+- Potpis tab: email + PDF - `TabPotpis.jsx`, `Tab4.jsx`
 
 ---
 
@@ -712,7 +712,7 @@ npx cap sync android
 | minifyEnabled | false | release build |
 | google-services | FCM push | `google-services.json` |
 
-**Napomena:** `package.json` version (2.0.1) ≠ Android `versionName` (1.0) — verzioniranje nije usklađeno.
+**Napomena:** `package.json` version (2.0.1) ≠ Android `versionName` (1.0) - verzioniranje nije usklađeno.
 
 ### 11.5 Environment varijable
 
@@ -730,22 +730,22 @@ npx cap sync android
 | Miješani JS/TS bez konzistentne migracije | `.jsx` store-ovi, `.tsx` komponente |
 | Tri paralelna modula (servis/dgl/gen) s dupliciranim logikom | stores, MasterAzur kopije |
 | `lodash` korišten ali nije direktna dependency | `package.json` vs `dataHelper.js:19` |
-| `useFetchData` gutaju greške bez re-throw | `useFetchData.js:30–36` — Login može dobiti `undefined` |
+| `useFetchData` gutaju greške bez re-throw | `useFetchData.js:30–36` - Login može dobiti `undefined` |
 | Redux store se ne resetira na logout | `rootReducer.ts:22–24` |
 | Hardkodirani naslovi ("CRM - Upiti") | `GenList.jsx:240` |
-| Push notifikacije — Enappd demo, nije produkcijski | `PushNotificationsContainer.tsx` |
+| Push notifikacije - Enappd demo, nije produkcijski | `PushNotificationsContainer.tsx` |
 | `TabPostavke` reset gumbi bez implementacije | `TabPostavke.tsx:113–117` |
 | Zakomentiran legacy kod (Mediva moduli) | `AppMain.tsx:18–19`, `199–200` |
 | Android verzija ne prati npm verziju | `build.gradle` vs `package.json` |
 | Nema README / CI pipeline u repou | pretraga |
-| Cypress test — samo placeholder | `cypress/e2e/test.cy.ts` |
+| Cypress test - samo placeholder | `cypress/e2e/test.cy.ts` |
 
 **Problematična mjesta:**
 
-- **`checkRememberMe` u AppMain** vraća JSX iz async funkcije kroz custom HOC — nestandardni pattern, teško održavanje
-- **`gen/store` vs `docs` naming** — `selectDocs` u gen modulu, zbunjujuće
-- **Duplicirani thunk tipovi** — npr. `'gen/getList'` korišten dvaput u gen store
-- **Ovisnost o API transformaciji** — klijent očekuje `serverpath`, SQL vraća `ServerPath` (transformacija na API-ju — nije verificirano u repou)
+- **`checkRememberMe` u AppMain** vraća JSX iz async funkcije kroz custom HOC - nestandardni pattern, teško održavanje
+- **`gen/store` vs `docs` naming** - `selectDocs` u gen modulu, zbunjujuće
+- **Duplicirani thunk tipovi** - npr. `'gen/getList'` korišten dvaput u gen store
+- **Ovisnost o API transformaciji** - klijent očekuje `serverpath`, SQL vraća `ServerPath` (transformacija na API-ju - nije verificirano u repou)
 
 ---
 
@@ -759,37 +759,37 @@ Sva otvorena pitanja o backend ponašanju, layoutima i infrastrukturi su konsoli
 
 ### 14.1 Ulaz i infrastruktura (1. dan)
 
-1. `package.json` — ovisnosti i verzije
-2. `src/main.tsx` → `src/App.tsx` → `src/AppMain.tsx` — bootstrap i routing
-3. `src/constants.ts` + `src/utils/data/constants.js` — API endpointi
-4. `src/utils/dataHelper.js` — **centralni** API sloj
-5. `src/store/rootReducer.ts` + `src/store/store.tsx` — Redux struktura
-6. `capacitor.config.ts` + `android/app/build.gradle` — mobilni build
+1. `package.json` - ovisnosti i verzije
+2. `src/main.tsx` → `src/App.tsx` → `src/AppMain.tsx` - bootstrap i routing
+3. `src/constants.ts` + `src/utils/data/constants.js` - API endpointi
+4. `src/utils/dataHelper.js` - **centralni** API sloj
+5. `src/store/rootReducer.ts` + `src/store/store.tsx` - Redux struktura
+6. `capacitor.config.ts` + `android/app/build.gradle` - mobilni build
 
 ### 14.2 Autentikacija (2. dan)
 
-7. `src/pages/auth/UnlockCore.tsx` — core PIN
-8. `src/pages/auth/Login.tsx` — ERP login
-9. `src/pages/auth/store/index.jsx` — auth state
-10. `src/components/PrivateRoute.tsx` — zaštita ruta
-11. `src/pages/core/cc/components/UnlockApp.jsx` — app PIN
+7. `src/pages/auth/UnlockCore.tsx` - core PIN
+8. `src/pages/auth/Login.tsx` - ERP login
+9. `src/pages/auth/store/index.jsx` - auth state
+10. `src/components/PrivateRoute.tsx` - zaštita ruta
+11. `src/pages/core/cc/components/UnlockApp.jsx` - app PIN
 12. SQL: `OperaMobile.dbo.spPinCoreAzur`, `spPinAppAzur` (MCP/SMS)
 
 ### 14.3 Navigacija i moduli (3. dan)
 
-13. `src/pages/core/cc/TabAplikacije.jsx` — kontrolni centar
-14. `src/pages/core/cc/store/index.jsx` — meni (`spMob_Menu_Query`)
-15. `src/pages/core/modules/Modules.tsx` — lista modula
-16. `src/components/Menu.jsx` — side menu
+13. `src/pages/core/cc/TabAplikacije.jsx` - kontrolni centar
+14. `src/pages/core/cc/store/index.jsx` - meni (`spMob_Menu_Query`)
+15. `src/pages/core/modules/Modules.tsx` - lista modula
+16. `src/components/Menu.jsx` - side menu
 
 ### 14.4 JSON-driven moduli (4.–5. dan)
 
-17. `src/pages/dgl/store/index.jsx` — **referentni** generic store
-18. `src/pages/dgl/List.jsx` — dinamička lista
-19. `src/pages/dgl/components/MasterAzur.jsx` — dinamička forma
-20. `src/pages/dgl/tabs/Tab1.jsx` — dinamički detail view
-21. `src/pages/dgl/tabs/MainTabs.tsx` — tab navigacija
-22. `src/pages/gen/store/index.jsx` — gen varijanta (usporediti s dgl)
+17. `src/pages/dgl/store/index.jsx` - **referentni** generic store
+18. `src/pages/dgl/List.jsx` - dinamička lista
+19. `src/pages/dgl/components/MasterAzur.jsx` - dinamička forma
+20. `src/pages/dgl/tabs/Tab1.jsx` - dinamički detail view
+21. `src/pages/dgl/tabs/MainTabs.tsx` - tab navigacija
+22. `src/pages/gen/store/index.jsx` - gen varijanta (usporediti s dgl)
 23. `src/pages/gen/List.jsx` + `src/pages/gen/components/MasterAzur.jsx`
 
 ### 14.5 Legacy servis (6. dan)
@@ -800,10 +800,10 @@ Sva otvorena pitanja o backend ponašanju, layoutima i infrastrukturi su konsoli
 
 ### 14.6 Pomoćni moduli (7. dan)
 
-27. `src/components/search/simple/search.jsx` — šifrarnici
-28. `src/pages/dgl/tabs/Tab4.jsx` / `src/pages/gen/tabs/TabPotpis.jsx` — potpis i REPX
-29. `src/hooks/usePhotoGallery.ts` — foto/privitci
-30. `src/pages/core/cc/TabPostavke.tsx` — postavke i debug info
+27. `src/components/search/simple/search.jsx` - šifrarnici
+28. `src/pages/dgl/tabs/Tab4.jsx` / `src/pages/gen/tabs/TabPotpis.jsx` - potpis i REPX
+29. `src/hooks/usePhotoGallery.ts` - foto/privitci
+30. `src/pages/core/cc/TabPostavke.tsx` - postavke i debug info
 
 ---
 

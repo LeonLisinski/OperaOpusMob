@@ -5,7 +5,7 @@
 Svi HTTP pozivi idu kroz `src/services/api/client.ts`:
 
 - **`fetch`** (bez Axios/React Query)
-- **Basic Auth** — credentials iz Core PIN odgovora
+- **Basic Auth** - credentials iz Core PIN odgovora
 - Strukturirane greške kao `ApiError`
 
 ### Glavni endpointi
@@ -19,9 +19,9 @@ Svi HTTP pozivi idu kroz `src/services/api/client.ts`:
 | `/getatt` | Download privitka |
 | `/repxreport` | Generiranje PDF izvještaja (potpis) |
 
-Implementacija endpointa **nije u repozitoriju** — ugovor se replicira iz Ionic `src/utils/dataHelper.js` i potvrđenih SP definicija.
+Implementacija endpointa **nije u repozitoriju** - ugovor se replicira iz Ionic `src/utils/dataHelper.js` i potvrđenih SP definicija.
 
-## Auth flow — storage
+## Auth flow - storage
 
 | Ključ | Sadržaj | Storage |
 |---|---|---|
@@ -32,7 +32,7 @@ Implementacija endpointa **nije u repozitoriju** — ugovor se replicira iz Ioni
 
 PIN se **namjerno ne sprema** (v. Decision Log D013).
 
-## Redux — authSlice
+## Redux - authSlice
 
 Glavni thunkovi:
 
@@ -45,14 +45,14 @@ Glavni thunkovi:
 | `reactivateCore` | Briše core → natrag na PIN |
 | `resetApp` | Briše sve lokalno |
 
-## Redux — coreSlice
+## Redux - coreSlice
 
 | Thunk | Akcija |
 |---|---|
 | `fetchMenu` | `spMob_Menu_Query` → aplikacije + moduli |
 | `unlockApp` | App PIN → označi app unlocked |
 
-## Redux — documentsSlice
+## Redux - documentsSlice
 
 Centralni engine za dgl/gen module.
 
@@ -72,15 +72,15 @@ State drži: `route`, `layout`, `list`, `filter`, `selectedItem`, `editForm`, `d
 
 ## Normalizacija odgovora
 
-`responseNormalizers.ts` — API ponekad vraća različite oblike (npr. `ServerPath` vs `serverpath`). Normalizacija je na granici API sloja, ne u komponentama.
+`responseNormalizers.ts` - API ponekad vraća različite oblike (npr. `ServerPath` vs `serverpath`). Normalizacija je na granici API sloja, ne u komponentama.
 
 ## Device identity
 
-`deviceIdentity.ts` generira **UUID po instalaciji** (Secure Store) za PIN registraciju. To je namjerna razlika u odnosu na Capacitor `Device.getId()` — v. D012.
+`deviceIdentity.ts` generira **UUID po instalaciji** (Secure Store) za PIN registraciju. To je namjerna razlika u odnosu na Capacitor `Device.getId()` - v. D012.
 
 ## Makroi u JSON-u
 
-Vrijednosti poput `#today`, `#sifosobe`, `#coid` u layoutu **ne rješava klijent** — šalju se na backend koji ih zamjenjuje. Expo ne duplicira tu logiku.
+Vrijednosti poput `#today`, `#sifosobe`, `#coid` u layoutu **ne rješava klijent** - šalju se na backend koji ih zamjenjuje. Expo ne duplicira tu logiku.
 
 ## Debugging
 

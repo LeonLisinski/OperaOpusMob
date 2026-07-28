@@ -2,7 +2,7 @@
 
 UI i mapiranje na stored procedure definiraju **JSON datoteke po tenant-u** u mapi `MobLayoutsControls/`.
 
-Expo aplikacija ne hardkodira izgled ekrana — učitava layout s API-ja (`/doclayouts`) prema modulu.
+Expo aplikacija ne hardkodira izgled ekrana - učitava layout s API-ja (`/doclayouts`) prema modulu.
 
 ## Organizacija
 
@@ -33,10 +33,10 @@ Za **gen** module struktura je `{tenant}/{app}/{module}/` s prefiksima `gla`/`ds
 | `*EditItemsExtends.json` | Dodatna polja pri spremanju (makroi `#today`, `#sifosobe`…) |
 | `dstListItem.json` | Redak stavke |
 | `dstEditItems.json` | Forma stavke |
-| `queries.json` | SP mapiranje — list, filter, azur, prilozi… |
+| `queries.json` | SP mapiranje - list, filter, azur, prilozi… |
 | `properties.json` | Konfiguracija potpisa i REPX izvještaja |
 
-## queries.json — API mapiranje
+## queries.json - API mapiranje
 
 Primjer strukture (pojednostavljeno):
 
@@ -57,7 +57,7 @@ Primjer strukture (pojednostavljeno):
 }
 ```
 
-Expo `documentsSlice` koristi ove ključeve za pozive na `/data`. Ako ključ **ne postoji**, funkcionalnost se ne nudi ili prikazuje grešku — aplikacija ne izmišlja SP.
+Expo `documentsSlice` koristi ove ključeve za pozive na `/data`. Ako ključ **ne postoji**, funkcionalnost se ne nudi ili prikazuje grešku - aplikacija ne izmišlja SP.
 
 ## Tipovi kontrola u formi
 
@@ -71,7 +71,7 @@ Podržani tipovi u `*EditItems.json` (Expo):
 | `simple` | SifarnikSearchModal (lokalni popis) |
 | `advanced` | SifarnikSearchModal (server pretraga) |
 
-Polja mogu imati `disabled: "allways"` / `"edit"`, `visiblefield`, `dependencies` — logika je u `EditFormField.tsx` i `documentsSlice`.
+Polja mogu imati `disabled: "allways"` / `"edit"`, `visiblefield`, `dependencies` - logika je u `EditFormField.tsx` i `documentsSlice`.
 
 ## Odabir layout foldera
 
@@ -88,7 +88,7 @@ Pravilo projekta: **nijedan layout u `MobLayoutsControls/` se ne mijenja** bez e
 
 ## Validacija
 
-U repozitoriju postoji ~757 JSON datoteka; dio ima sintaksne greške koje backend ipak tolerira. Validator (report-only) je planiran ali nije implementiran — v. `docs/ai/DECISION_LOG.md` D006, D007.
+U repozitoriju postoji ~757 JSON datoteka; dio ima sintaksne greške koje backend ipak tolerira. Validator (report-only) je planiran ali nije implementiran - v. `docs/ai/DECISION_LOG.md` D006, D007.
 
 ## Dodavanje podrške za novi modul
 
@@ -96,6 +96,6 @@ U repozitoriju postoji ~757 JSON datoteka; dio ima sintaksne greške koje backen
 2. Provjeriti da postoje potrebni JSON fajlovi na API serveru za tenant
 3. Za stavke: provjeriti `queries.dst.list` i `queries.dst.azur`
 4. Za privitci: `queries.dgl.prilozi` (ili ekvivalent)
-5. Testirati na stvarnom tenant-u — web preview s mock layoutom ne pokriva sve
+5. Testirati na stvarnom tenant-u - web preview s mock layoutom ne pokriva sve
 
 Detaljna shema polja: `.cursor/rules/30-api-database-layouts.mdc`

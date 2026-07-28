@@ -22,7 +22,7 @@ Odabir načina rada sučelja:
 | **Svijetla** | Uvijek svijetla tema |
 | **Tamna** | Uvijek tamna tema |
 
-Promjena je trenutna — ne treba ponovno pokretati aplikaciju.
+Promjena je trenutna - ne treba ponovno pokretati aplikaciju.
 
 ## Sesija
 
@@ -49,7 +49,7 @@ Nakon aktivacije morate se **ponovno prijaviti**.
 
 ### Resetiraj sve postavke
 
-Briše **sve lokalne podatke** aplikacije — kao da je prvi put instalirana:
+Briše **sve lokalne podatke** aplikacije - kao da je prvi put instalirana:
 
 - aktivacija uređaja
 - prijava

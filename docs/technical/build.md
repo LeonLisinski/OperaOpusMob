@@ -2,7 +2,7 @@
 
 ## Development build
 
-Expo projekt koristi **`expo-dev-client`** — za puni native pristup (Secure Store, document picker, sharing, potpis) trebate development build, ne Expo Go.
+Expo projekt koristi **`expo-dev-client`** - za puni native pristup (Secure Store, document picker, sharing, potpis) trebate development build, ne Expo Go.
 
 ```bash
 cd expo
@@ -22,7 +22,7 @@ Prvi native build traje duže (preuzimanje Gradle/CocoaPods ovisnosti).
 | Android package | `com.opera.mobile` |
 | Scheme | `operamobile` |
 | Orientacija | portrait |
-| iOS bundle ID | **nije postavljen** — potrebno prije App Store builda |
+| iOS bundle ID | **nije postavljen** - potrebno prije App Store builda |
 
 Verzija: `expo.version` (trenutno `1.0.0`).
 
@@ -44,12 +44,12 @@ npx expo-doctor
 
 Feature Parity Matrix označava `verified` tek kad je paritet potvrđen na **obje** platforme.
 
-## Web preview — poznata ograničenja
+## Web preview - poznata ograničenja
 
-- **`expo-secure-store`** — čitanje/pisanje može failati; bootstrap i Core PIN zahtijevaju try/catch (implementirano)
-- **`react-native-signature-canvas`** — ovisi o WebView; na webu ne radi pouzdano
-- **`expo-sharing`** / **`expo-document-picker`** — native only
-- **Direktna navigacija na URL** (npr. `/documents/lines`) gubi Redux state — uvijek krenuti od `/`
+- **`expo-secure-store`** - čitanje/pisanje može failati; bootstrap i Core PIN zahtijevaju try/catch (implementirano)
+- **`react-native-signature-canvas`** - ovisi o WebView; na webu ne radi pouzdano
+- **`expo-sharing`** / **`expo-document-picker`** - native only
+- **Direktna navigacija na URL** (npr. `/documents/lines`) gubi Redux state - uvijek krenuti od `/`
 
 ## Test tenant
 
@@ -71,8 +71,8 @@ Kad bude potrebno:
 
 Nakon funkcionalne promjene ažurirati:
 
-- `docs/ai/FEATURE_PARITY_MATRIX.md` — status pariteta
-- `docs/user/` — ako se mijenja korisnički tok
-- `docs/technical/` — ako se mijenja struktura ili setup
+- `docs/ai/FEATURE_PARITY_MATRIX.md` - status pariteta
+- `docs/user/` - ako se mijenja korisnički tok
+- `docs/technical/` - ako se mijenja struktura ili setup
 
 Ne ažurirati dokumentaciju za čisto vizualne promjene osim ako korisnik eksplicitno traži.

@@ -1,6 +1,6 @@
 # Dokumenti
 
-Modul otvara **popis dokumenata** — radnih naloga, upita, narudžbi ili drugih zapisa ovisno o modulu.
+Modul otvara **popis dokumenata** - radnih naloga, upita, narudžbi ili drugih zapisa ovisno o modulu.
 
 ## Popis dokumenata
 
@@ -10,7 +10,7 @@ Svaki redak prikazuje polja definirana konfiguracijom modula (npr. broj dokument
 
 Gore na popisu nalazi se **polje za pretragu**. Upis filtrira prikazani popis po poljima koja modul podržava za pretragu (konfiguracija `searchfields`).
 
-Pretraga radi **lokalno** nad već učitanim podacima — ne šalje novi upit na server pri svakom znaku.
+Pretraga radi **lokalno** nad već učitanim podacima - ne šalje novi upit na server pri svakom znaku.
 
 ### Filter
 
@@ -22,21 +22,21 @@ Gumb **Filter** otvara prozor s tri sekcije:
 | **Razdoblje** | Brzi odabir (npr. danas, tjedan, mjesec) |
 | **Ostalo** | Datumi od/do, dodatne opcije ovisno o modulu |
 
-- **Primijeni** — primjenjuje filter i osvježava popis s servera
-- **Reset** (gore desno) — vraća filter na zadane vrijednosti
-- **Odustani** — zatvara bez primjene
+- **Primijeni** - primjenjuje filter i osvježava popis s servera
+- **Reset** (gore desno) - vraća filter na zadane vrijednosti
+- **Odustani** - zatvara bez primjene
 
 Datumi se unose ručno u formatu **YYYY-MM-DD** (npr. `2026-07-28`).
 
 ::: tip
-Ako vam tipkovnica prekriva polja u filteru, skrolajte — ekran se automatski pomiče kad fokusirate polje.
+Ako vam tipkovnica prekriva polja u filteru, skrolajte - ekran se automatski pomiče kad fokusirate polje.
 :::
 
 ### Novi dokument
 
 Ako modul to dopušta, gore desno je gumb **+ Novi**. Otvara praznu formu za unos novog dokumenta.
 
-Dostupnost ovisi o tipu modula i postavkama — nije svaki modul dopušta kreiranje novih zapisa s mobitela.
+Dostupnost ovisi o tipu modula i postavkama - nije svaki modul dopušta kreiranje novih zapisa s mobitela.
 
 ## Detalj dokumenta
 
@@ -54,7 +54,7 @@ Ovisno o modulu i dokumentu, na dnu ekrana mogu biti tabovi:
 | **Privitci** | Datoteke vezane uz dokument |
 | **Potpis** | Potpis i slanje izvještaja |
 
-Nisu svi tabovi uvijek vidljivi — ovisi o modulu i stanju dokumenta.
+Nisu svi tabovi uvijek vidljivi - ovisi o modulu i stanju dokumenta.
 
 ## Uređivanje dokumenta
 

@@ -5,8 +5,8 @@
 - **Node.js** 20+ (preporučeno 22)
 - **npm** (dolazi s Node.js)
 - Za native build:
-  - **Android** — Android Studio, JDK
-  - **iOS** — Xcode (samo macOS)
+  - **Android** - Android Studio, JDK
+  - **iOS** - Xcode (samo macOS)
 
 ## Instalacija
 
@@ -15,7 +15,7 @@ cd expo
 npm install
 ```
 
-Expo aplikacija ima **svoje ovisnosti** — ne koristi `node_modules` iz korijena repozitorija.
+Expo aplikacija ima **svoje ovisnosti** - ne koristi `node_modules` iz korijena repozitorija.
 
 ## Pokretanje
 
@@ -28,7 +28,7 @@ npx expo start
 | Development build | Na fizičkom uređaju s `expo-dev-client` |
 | Android emulator | `a` |
 | iOS simulator | `i` (macOS) |
-| Web | `w` — brzi pregled UI-ja, **ne zamjenjuje** native test |
+| Web | `w` - brzi pregled UI-ja, **ne zamjenjuje** native test |
 
 Web preview je koristan za layout i navigaciju, ali **ne podržava** sve native module (Secure Store pisanje, potpis, dijeljenje datoteka…).
 
@@ -63,9 +63,9 @@ Online verzija: https://leonlisinski.github.io/OperaOpusMob/
 
 ## Konfiguracija API-ja
 
-API adresa dolazi iz **Core PIN odgovora** (`auth.serverpath`) — nema hardkodiranog URL-a u kodu aplikacije.
+API adresa dolazi iz **Core PIN odgovora** (`auth.serverpath`) - nema hardkodiranog URL-a u kodu aplikacije.
 
-Za lokalni razvoj s mock podacima koristite web preview s presretanjem `fetch` poziva (npr. Playwright route interception) — produkcijski API endpoint nije u repozitoriju.
+Za lokalni razvoj s mock podacima koristite web preview s presretanjem `fetch` poziva (npr. Playwright route interception) - produkcijski API endpoint nije u repozitoriju.
 
 ## Cursor / AI kontekst
 

@@ -6,7 +6,7 @@ Expo aplikacija u `expo/` organizirana je po funkcionalnim vertikalama, ne po ko
 
 ```
 expo/
-├── app/                    Expo Router — samo rute i tanki screen wrapperi
+├── app/                    Expo Router - samo rute i tanki screen wrapperi
 │   ├── index.tsx           Bootstrap (session → redirect)
 │   ├── (auth)/             Core PIN, ERP login
 │   └── (app)/              Autentificirani dio
@@ -36,7 +36,7 @@ expo/
 | `src/services/*` | HTTP, perzistencija, device identity |
 | `src/components/*` | Prezentacijske komponente bez poslovne logike |
 
-Route komponente **ne pozivaju API direktno** — koriste dispatch thunkova.
+Route komponente **ne pozivaju API direktno** - koriste dispatch thunkova.
 
 ## Tok autentifikacije
 
@@ -60,7 +60,7 @@ modules/[code].tsx          odabir modula
   → documents/signature.tsx
 ```
 
-`DocumentTabBar` na dnu povezuje tabove — vidljivost ovisi o modulu i dokumentu.
+`DocumentTabBar` na dnu povezuje tabove - vidljivost ovisi o modulu i dokumentu.
 
 ## Redux moduli
 
@@ -74,7 +74,7 @@ modules/[code].tsx          odabir modula
 
 `src/theme/` definira:
 
-- `colors` — light/dark palete, brand `#496C60`
+- `colors` - light/dark palete, brand `#496C60`
 - `spacing`, `typography`, `radius`, `shadows`
 - `ThemeProvider` + `useTheme()` hook
 
@@ -84,8 +84,8 @@ Komponente koriste tokene, ne hardkodirane boje.
 
 | Ionic (`src/`) | Status u Expo |
 |---|---|
-| `pages/servis/` | Nije migrirano — hardkodirani SP-ovi |
+| `pages/servis/` | Nije migrirano - hardkodirani SP-ovi |
 | `pages/dgl/` + `pages/gen/` | Zamijenjeno jednim `documents` engineom |
 | Capacitor plugini | Zamijenjeno Expo ekvivalentima |
 
-Jedan generički engine opslužuje **dgl** i **gen** module preko JSON layouta — v. [JSON layouti](./json-layouti).
+Jedan generički engine opslužuje **dgl** i **gen** module preko JSON layouta - v. [JSON layouti](./json-layouti).
