@@ -8,6 +8,15 @@ export default withMermaid({
   lastUpdated: true,
   cleanUrls: true,
 
+  markdown: {
+    config(md) {
+      md.renderer.rules.table_open = (tokens, idx, options, env, self) =>
+        `<div class="vp-table-wrap">\n${self.renderToken(tokens, idx, options)}`
+      md.renderer.rules.table_close = (tokens, idx, options, env, self) =>
+        `${self.renderToken(tokens, idx, options)}\n</div>`
+    },
+  },
+
   themeConfig: {
     siteTitle: 'Opera Mobile',
 

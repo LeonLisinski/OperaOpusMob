@@ -1,14 +1,12 @@
 /**
  * SvamPlus tema za Opera Mobile dokumentaciju.
- * Prilagodava VitePress default temu preko sluzbenih CSS varijabli --vp-*.
  */
 
 :root {
-  /* Uzi sidebar i aside - vise prostora za sadrzaj */
-  --vp-sidebar-width: 220px;
-  --vp-aside-width: 180px;
+  --vp-sidebar-width: 248px;
+  --vp-aside-width: 168px;
+  --vp-layout-max-width: 1440px;
 
-  /* Brand - svijetli nacin rada */
   --vp-c-brand-1: #496c60;
   --vp-c-brand-2: #3a564d;
   --vp-c-brand-3: #2e453d;
@@ -30,33 +28,57 @@
   --sp-soft-border: #2d3d36;
 }
 
-/* Sidebar - kompaktniji */
-.VPSidebar {
-  padding-left: 16px !important;
-  padding-right: 12px !important;
+/* Sidebar */
+@media (min-width: 960px) {
+  .VPSidebar {
+    width: var(--vp-sidebar-width);
+    padding: 24px 12px 96px 20px;
+  }
+
+  .VPDoc.has-sidebar .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .VPDoc .content {
+    max-width: none;
+  }
+
+  .aside-container {
+    width: var(--vp-aside-width);
+    padding-left: 12px;
+  }
 }
 
 .VPSidebarItem .text {
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.45;
+}
+
+.VPSidebarItem.level-0 {
+  margin-top: 0.75rem;
+}
+
+.VPSidebarItem.level-0:first-child {
+  margin-top: 0;
+}
+
+.VPSidebarItem.level-0 > .item {
+  pointer-events: none;
+  padding-left: 0;
+  min-height: auto;
 }
 
 .VPSidebarItem.level-0 > .item > .text {
   font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
   color: var(--vp-c-text-2);
 }
 
-/* Linkovi */
-.vp-doc a {
-  color: var(--vp-c-brand-1);
-  text-decoration-color: var(--vp-c-brand-soft);
-}
-
-.vp-doc a:hover {
-  color: var(--vp-c-brand-2);
+.VPSidebarItem.level-1 > .item {
+  padding-left: 0;
 }
 
 .VPSidebarItem.is-active > .item .text {
@@ -67,6 +89,16 @@
 .VPSidebarItem.is-active > .item {
   background-color: var(--vp-c-brand-soft);
   border-radius: 6px;
+}
+
+/* Linkovi */
+.vp-doc a {
+  color: var(--vp-c-brand-1);
+  text-decoration-color: var(--vp-c-brand-soft);
+}
+
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2);
 }
 
 .VPNavBarMenuLink.active {
@@ -87,82 +119,115 @@
   color: var(--vp-c-brand-1);
 }
 
-.vp-doc .VPBadge.tip,
-.VPBadge.tip {
-  border-color: var(--sp-soft-border);
-  color: var(--vp-c-brand-2);
-  background-color: var(--sp-soft-bg);
-}
-
-.dark .vp-doc .VPBadge.tip,
-.dark .VPBadge.tip {
-  color: var(--vp-c-brand-1);
-}
-
-/* Tablice - horizontalni scroll, citljivije */
-.vp-doc .content-container {
-  overflow-x: visible;
-}
-
-.vp-doc table {
-  display: block;
-  width: 100%;
-  max-width: 100%;
+/* Tablice - wrapper iz markdown configa, normalan table layout */
+.vp-table-wrap {
   overflow-x: auto;
-  font-size: 0.875rem;
-  line-height: 1.55;
-  border-collapse: collapse;
+  margin: 1rem 0 1.25rem;
+  border: 1px solid var(--sp-soft-border);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
   -webkit-overflow-scrolling: touch;
-  margin: 1rem 0;
 }
 
-.vp-doc thead,
-.vp-doc tbody,
-.vp-doc tr {
+.vp-doc .vp-table-wrap table {
   display: table;
   width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
   table-layout: auto;
 }
 
-.vp-doc th,
-.vp-doc td {
-  padding: 0.5rem 0.75rem;
-  vertical-align: top;
-  border: 1px solid var(--sp-soft-border);
-  word-break: break-word;
-  white-space: normal;
+.vp-doc .vp-table-wrap thead {
+  display: table-header-group;
 }
 
-.vp-doc th {
-  background-color: var(--sp-soft-bg);
+.vp-doc .vp-table-wrap tbody {
+  display: table-row-group;
+}
+
+.vp-doc .vp-table-wrap tr {
+  display: table-row;
+}
+
+.vp-doc .vp-table-wrap th,
+.vp-doc .vp-table-wrap td {
+  display: table-cell;
+  padding: 0.65rem 0.9rem;
+  vertical-align: top;
+  text-align: left;
+  border-right: 1px solid var(--sp-soft-border);
+  border-bottom: 1px solid var(--sp-soft-border);
+  word-break: break-word;
+}
+
+.vp-doc .vp-table-wrap th:last-child,
+.vp-doc .vp-table-wrap td:last-child {
+  border-right: none;
+}
+
+.vp-doc .vp-table-wrap tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.vp-doc .vp-table-wrap thead th {
+  background: var(--sp-soft-bg);
   color: var(--vp-c-text-1);
   font-weight: 600;
+  white-space: nowrap;
 }
 
-.vp-doc tr:nth-child(2n) {
-  background-color: var(--vp-c-bg-soft);
+.vp-doc .vp-table-wrap tbody tr:nth-child(even) {
+  background: var(--vp-c-bg-soft);
 }
 
-/* Decision Log - kartice po odluci */
+/* 2-stupcane tablice - stabilan omjer */
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(2):last-child) {
+  table-layout: fixed;
+}
+
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(2):last-child) th:first-child,
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(2):last-child) td:first-child {
+  width: 30%;
+}
+
+/* 3-stupcane tablice */
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(3):last-child) {
+  table-layout: fixed;
+}
+
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(3):last-child) th:nth-child(1),
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(3):last-child) td:nth-child(1) {
+  width: 22%;
+}
+
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(3):last-child) th:nth-child(2),
+.vp-doc .vp-table-wrap table:has(thead th:nth-child(3):last-child) td:nth-child(2) {
+  width: 28%;
+}
+
+/* Decision Log */
 .vp-doc h2[id^="d0"] {
-  margin-top: 2.25rem;
+  margin-top: 2rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--sp-soft-border);
   font-size: 1.125rem;
   font-family: var(--vp-font-family-mono);
-  letter-spacing: 0.02em;
 }
 
 .vp-doc h2[id^="d0"]:first-of-type {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   padding-top: 0;
   border-top: none;
 }
 
-.vp-doc h2[id^="d0"] + p strong {
-  color: var(--vp-c-text-2);
+.vp-doc h2[id^="d0"] + p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
   font-size: 0.8125rem;
-  font-weight: 600;
+  color: var(--vp-c-text-2);
 }
 
 .vp-doc h2[id^="d0"] ~ p {
@@ -191,8 +256,8 @@
   color: var(--vp-c-text-2);
 }
 
-@media (max-width: 767px) {
-  :root {
-    --vp-sidebar-width: 260px;
+@media (max-width: 959px) {
+  .vp-table-wrap {
+    border-radius: 6px;
   }
 }
