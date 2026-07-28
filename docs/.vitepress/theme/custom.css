@@ -4,6 +4,7 @@
 
 :root {
   --sp-sidebar-width: 272px;
+  --sp-nav-title-width: 272px;
   --vp-sidebar-width: var(--sp-sidebar-width);
   --sp-aside-width: 240px;
   --vp-aside-width: var(--sp-aside-width);
@@ -87,13 +88,14 @@
     padding-left: 0 !important;
   }
 
-  /* Navbar: naslov u stupcu sidebara, pretraga desno - bez preklapanja */
+  /* Navbar: fiksni stupac naslova - ne ovisi o sklopljenom sidebaru */
   .VPNavBar.has-sidebar .container > .title {
-    flex: 0 0 var(--vp-sidebar-width) !important;
-    width: var(--vp-sidebar-width) !important;
-    max-width: var(--vp-sidebar-width) !important;
+    flex: 0 0 var(--sp-nav-title-width) !important;
+    width: var(--sp-nav-title-width) !important;
+    max-width: var(--sp-nav-title-width) !important;
     padding-left: 24px !important;
     overflow: hidden !important;
+    display: block !important;
   }
 
   .VPNavBar.has-sidebar .VPNavBarTitle .title span {
@@ -104,9 +106,25 @@
   }
 
   .VPNavBar.has-sidebar .VPNavBarSearch {
-    flex: 0 1 var(--sp-nav-search-max) !important;
-    width: auto !important;
-    min-width: 9rem !important;
+    flex: 0 0 var(--sp-nav-search-max) !important;
+    width: var(--sp-nav-search-max) !important;
+    min-width: var(--sp-nav-search-max) !important;
+    max-width: var(--sp-nav-search-max) !important;
+    padding-left: 16px !important;
+  }
+
+  /* Sklopljen sidebar: naslov i pretraga ostaju na istom mjestu */
+  html.sidebar-collapsed .VPNavBar.has-sidebar .container > .title {
+    flex: 0 0 var(--sp-nav-title-width) !important;
+    width: var(--sp-nav-title-width) !important;
+    max-width: var(--sp-nav-title-width) !important;
+    padding-left: 48px !important;
+  }
+
+  html.sidebar-collapsed .VPNavBar.has-sidebar .VPNavBarSearch {
+    flex: 0 0 var(--sp-nav-search-max) !important;
+    width: var(--sp-nav-search-max) !important;
+    min-width: var(--sp-nav-search-max) !important;
     max-width: var(--sp-nav-search-max) !important;
     padding-left: 16px !important;
   }
@@ -132,17 +150,6 @@
 
   .VPNavBarMenuLink {
     white-space: nowrap !important;
-  }
-
-  /* Kad je sidebar sklopljen, naslov se ne prikazuje */
-  html.sidebar-collapsed .VPNavBar.has-sidebar .container > .title {
-    display: none !important;
-  }
-
-  html.sidebar-collapsed .VPNavBar.has-sidebar .VPNavBarSearch {
-    flex: 0 1 var(--sp-nav-search-max) !important;
-    max-width: var(--sp-nav-search-max) !important;
-    padding-left: 48px !important;
   }
 
   .VPNavBar.home .VPNavBarSearch {
@@ -210,7 +217,7 @@
     justify-content: center;
     position: fixed;
     top: calc(var(--vp-nav-height) + 16px);
-    left: calc(var(--vp-sidebar-width) - 12px);
+    left: calc(var(--sp-sidebar-width) - 12px);
     z-index: 40;
     width: 24px;
     height: 24px;
@@ -309,11 +316,22 @@
     display: block !important;
     width: 100% !important;
     max-width: none !important;
-    padding: 0 0 0 28px !important;
+    padding: 0 !important;
     margin: 0 !important;
     position: relative !important;
-    border-left: 1px solid var(--sp-soft-border) !important;
+    border: none !important;
     box-sizing: border-box !important;
+  }
+
+  .VPDoc.has-sidebar .container > .aside .aside-container {
+    border-left: 1px solid var(--sp-soft-border) !important;
+    padding-left: 28px !important;
+  }
+
+  /* VitePress default crta unutar outlinea - ukloni duplikat */
+  .VPDoc.has-sidebar .container > .aside .content {
+    border-left: none !important;
+    padding-left: 0 !important;
   }
 
   .VPDoc .aside-container {
@@ -379,13 +397,13 @@
 
   .VPNavBar.has-sidebar .container > .title {
     padding-left: max(24px, calc((100vw - var(--vp-layout-max-width)) / 2)) !important;
-    flex-basis: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)) !important;
-    width: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)) !important;
-    max-width: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width)) !important;
+    flex-basis: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--sp-nav-title-width)) !important;
+    width: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--sp-nav-title-width)) !important;
+    max-width: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--sp-nav-title-width)) !important;
   }
 
   html.sidebar-collapsed .VPNavBar.has-sidebar .container > .title {
-    display: none !important;
+    padding-left: max(48px, calc((100vw - var(--vp-layout-max-width)) / 2 + 24px)) !important;
   }
 
   .VPDoc.has-sidebar .container {
