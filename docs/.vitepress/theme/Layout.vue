@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
+import { Teleport } from 'vue'
 import SidebarToggle from './SidebarToggle.vue'
 
 const { Layout } = DefaultTheme
 </script>
 
 <template>
-  <Layout>
-    <template #layout-top>
-      <SidebarToggle />
-    </template>
-  </Layout>
+  <Layout />
+  <Teleport to="body">
+    <SidebarToggle />
+  </Teleport>
 </template>

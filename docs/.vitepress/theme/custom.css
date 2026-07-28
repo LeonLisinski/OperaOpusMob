@@ -3,11 +3,12 @@
  */
 
 :root {
-  --sp-sidebar-width: 260px;
+  --sp-sidebar-width: 272px;
   --vp-sidebar-width: var(--sp-sidebar-width);
-  --vp-aside-width: 176px;
-  --sp-doc-max-width: 880px;
-  --vp-layout-max-width: 1280px;
+  --vp-aside-width: 180px;
+  --sp-doc-max-width: 900px;
+  /* VitePress na >=1440px centrira layout i stvara prazninu lijevo od sidebar-a - iskljuceno */
+  --vp-layout-max-width: 100vw;
 
   --vp-c-brand-1: #496c60;
   --vp-c-brand-2: #3a564d;
@@ -30,20 +31,31 @@
   --sp-soft-border: #2d3d36;
 }
 
-/* Sidebar + layout */
+/* Sidebar + layout - standardno lijevo, bez praznine */
 @media (min-width: 960px) {
+  /* Iskljuci VitePress centriranje na sirokim ekranima */
+  .VPContent.has-sidebar {
+    padding-left: var(--vp-sidebar-width) !important;
+    padding-right: 0 !important;
+  }
+
+  html.sidebar-collapsed .VPContent.has-sidebar {
+    padding-left: 0 !important;
+  }
+
   .VPSidebar {
-    width: var(--vp-sidebar-width);
-    padding: 20px 14px 96px 18px;
+    left: 0 !important;
+    width: var(--vp-sidebar-width) !important;
+    padding: 32px 20px 96px 24px;
     border-right: 1px solid var(--sp-soft-border);
-    background: var(--vp-c-bg-alt);
-    transition: transform 0.25s ease, opacity 0.2s ease;
+    background: var(--vp-sidebar-bg-color);
+    transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s;
   }
 
   .VPDoc.has-sidebar .container {
-    max-width: calc(var(--sp-doc-max-width) + var(--vp-aside-width) + 64px);
-    margin-inline: auto;
-    padding-inline: 28px;
+    max-width: none;
+    margin-inline: 0;
+    padding: 0 32px 64px 28px;
   }
 
   .VPDoc .content {
@@ -53,16 +65,12 @@
     margin-inline: auto;
   }
 
-  .VPDoc .content-container {
-    margin-inline: auto;
-  }
-
   .VPDoc .aside-container {
     width: var(--vp-aside-width);
     flex-shrink: 0;
+    padding-left: 16px;
   }
 
-  /* Collapsed sidebar */
   html.sidebar-collapsed {
     --vp-sidebar-width: 0px;
   }
@@ -70,36 +78,35 @@
   html.sidebar-collapsed .VPSidebar {
     transform: translateX(-100%);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    border-right-color: transparent;
   }
 
   html.sidebar-collapsed .VPDoc.has-sidebar .container {
-    max-width: min(1100px, calc(100vw - 80px));
+    padding-left: 48px;
   }
 
   html.sidebar-collapsed .VPDoc .content {
     max-width: min(var(--sp-doc-max-width), 960px);
   }
 
-  /* Toggle gumb */
   .sidebar-collapse-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
     position: fixed;
-    top: calc(var(--vp-nav-height) + 14px);
-    left: calc(var(--vp-sidebar-width) - 13px);
-    z-index: 40;
-    width: 26px;
-    height: 26px;
+    top: calc(var(--vp-nav-height) + 12px);
+    left: calc(var(--vp-sidebar-width) - 14px);
+    z-index: 35;
+    width: 28px;
+    height: 28px;
     border: 1px solid var(--sp-soft-border);
     border-radius: 999px;
     background: var(--vp-c-bg);
     color: var(--vp-c-text-2);
     cursor: pointer;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    transition: left 0.25s ease, color 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: left 0.2s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
   .sidebar-collapse-toggle:hover {
@@ -108,7 +115,7 @@
   }
 
   .sidebar-collapse-toggle.is-collapsed {
-    left: 14px;
+    left: 10px;
   }
 
   .sidebar-collapse-toggle.is-collapsed svg {
@@ -116,7 +123,14 @@
   }
 
   .sidebar-collapse-toggle svg {
-    transition: transform 0.25s ease;
+    transition: transform 0.2s ease;
+  }
+}
+
+@media (min-width: 1440px) {
+  .VPContent.has-sidebar {
+    padding-left: var(--vp-sidebar-width) !important;
+    padding-right: 0 !important;
   }
 }
 
