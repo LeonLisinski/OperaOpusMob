@@ -8,6 +8,14 @@ export default withMermaid({
   lastUpdated: true,
   cleanUrls: true,
 
+  head: [
+    [
+      'script',
+      {},
+      `(function(){try{var v=localStorage.getItem('opera-docs-sidebar-collapsed');if(v==='true')document.documentElement.classList.add('sidebar-collapsed')}catch(e){}})()`,
+    ],
+  ],
+
   markdown: {
     config(md) {
       md.renderer.rules.table_open = (tokens, idx, options, env, self) =>
@@ -66,6 +74,7 @@ export default withMermaid({
       '/ai/': [
         {
           text: 'Projekt',
+          collapsed: false,
           items: [
             { text: 'Kontekst projekta', link: '/ai/PROJECT_CONTEXT' },
             { text: 'Karta sustava', link: '/ai/SYSTEM_MAP' },
@@ -73,6 +82,7 @@ export default withMermaid({
         },
         {
           text: 'Arhitektura',
+          collapsed: false,
           items: [
             { text: 'Trenutna arhitektura', link: '/ai/CURRENT_ARCHITECTURE' },
             { text: 'Ciljna arhitektura', link: '/ai/TARGET_ARCHITECTURE' },
@@ -80,6 +90,7 @@ export default withMermaid({
         },
         {
           text: 'Migracija',
+          collapsed: false,
           items: [
             { text: 'Strategija migracije', link: '/ai/MIGRATION_STRATEGY' },
             { text: 'Matrica pariteta funkcionalnosti', link: '/ai/FEATURE_PARITY_MATRIX' },
@@ -87,6 +98,7 @@ export default withMermaid({
         },
         {
           text: 'Upravljanje projektom',
+          collapsed: false,
           items: [
             { text: 'Zapisnik odluka', link: '/ai/DECISION_LOG' },
             { text: 'Poznati rizici', link: '/ai/KNOWN_RISKS' },
