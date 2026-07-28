@@ -27,6 +27,7 @@ ERP-IONIC7/
 | [JSON layouti](./json-layouti) | Kako konfiguracija definira UI |
 | [API i state](./api-i-state) | Pozivi na backend, Redux slice-ovi |
 | [Build i testiranje](./build) | Android/iOS build, ograničenja web preview-a |
+| [Održavanje dokumentacije](./odrzavanje-dokumentacije) | Kada i gdje ažurirati docs nakon promjena u kodu |
 
 ## Brzi start
 
@@ -54,3 +55,4 @@ U terminalu odaberite platformu (development build, emulator, web).
 - **`src/`** je produkcijska referenca - ne mijenjati bez eksplicitnog zadatka
 - **`MobLayoutsControls/`** se ne mijenja bez odobrenog zadatka za konkretan layout
 - Backend API **nije u ovom repozitoriju** - ponašanje se ne izmišlja
+- **Dokumentacija** se održava uz svaku funkcionalnu promjenu - v. [Održavanje dokumentacije](./odrzavanje-dokumentacije)

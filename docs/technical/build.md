@@ -69,10 +69,13 @@ Kad bude potrebno:
 
 ## Dokumentacija promjena
 
-Nakon funkcionalne promjene ažurirati:
+Nakon funkcionalne promjene prođi checklist u **[Održavanje dokumentacije](./odrzavanje-dokumentacije)**.
+
+Ukratko:
 
 - `docs/ai/FEATURE_PARITY_MATRIX.md` - status pariteta
-- `docs/user/` - ako se mijenja korisnički tok
-- `docs/technical/` - ako se mijenja struktura ili setup
+- `docs/user/` - korisnički tok
+- `docs/technical/` - struktura, API, setup
+- `docs/ai/` - arhitektura, odluke, rizici, otvorena pitanja
 
-Ne ažurirati dokumentaciju za čisto vizualne promjene osim ako korisnik eksplicitno traži.
+Ne ažurirati dokumentaciju samo za vizualne promjene osim ako tim eksplicitno traži.

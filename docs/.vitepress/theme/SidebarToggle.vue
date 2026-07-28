@@ -1,23 +1,41 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vitepress'
+import {
+  pathHasSidebar,
+  readCollapsedPreference,
+  syncSidebarCollapsedClass,
+  writeCollapsedPreference,
+} from './sidebarState'
 
-const STORAGE_KEY = 'opera-docs-sidebar-collapsed'
+const route = useRoute()
 const collapsed = ref(false)
 
+const hasSidebar = computed(() => pathHasSidebar(route.path))
+
+function applyState() {
+  syncSidebarCollapsedClass(collapsed.value, hasSidebar.value)
+}
+
 onMounted(() => {
-  collapsed.value = localStorage.getItem(STORAGE_KEY) === 'true'
-  document.documentElement.classList.toggle('sidebar-collapsed', collapsed.value)
+  collapsed.value = readCollapsedPreference()
+  applyState()
 })
 
+watch(hasSidebar, applyState)
+watch(collapsed, applyState)
+
 function toggle() {
+  if (!hasSidebar.value) return
   collapsed.value = !collapsed.value
-  localStorage.setItem(STORAGE_KEY, String(collapsed.value))
-  document.documentElement.classList.toggle('sidebar-collapsed', collapsed.value)
+  writeCollapsedPreference(collapsed.value)
+  applyState()
 }
 </script>
 
 <template>
   <button
+    v-if="hasSidebar"
     type="button"
     class="sidebar-collapse-toggle"
     :class="{ 'is-collapsed': collapsed }"

@@ -51,6 +51,7 @@ Dokumentacija za developere: razvojno okruženje, struktura koda, JSON layouti, 
 | [JSON layouti](technical/json-layouti.md) | MobLayoutsControls, queries.json |
 | [API i state](technical/api-i-state.md) | Endpointi, slice-ovi, storage |
 | [Build](technical/build.md) | Native build, testiranje, ograničenja |
+| [Održavanje dokumentacije](technical/odrzavanje-dokumentacije.md) | Kada i gdje ažurirati docs nakon promjena |
 
 ### `docs/ai/`
 
@@ -74,6 +75,12 @@ Kanonski izvor istine o sustavu: potvrđene činjenice, arhitektonske odluke, po
 
 ## Kada se dokumentacija ažurira
 
-Dokumentacija se mijenja samo kad se promijeni **stvarno ponašanje, arhitektura ili način održavanja** - ne za svaku sitnu izmjenu koda. Svaki plan promjene (`.cursor/skills/plan-project-change`) mora navesti dokumentacijski utjecaj; svaki pregled (`.cursor/skills/review-and-document`) provjerava da je dokumentacija usklađena sa stvarnom implementacijom, ne s planom.
+Dokumentacija mora **pratiti stvarno ponašanje** - dodavanja, brisanja, izmjene logike, API-ja, layouta i arhitekture. Detaljan popis mjesta i checklist: **[Održavanje dokumentacije](technical/odrzavanje-dokumentacije.md)**.
 
-Nepotvrđeno se ne piše kao potvrđeno. Ono što nije provjereno ide u `OPEN_QUESTIONS.md`, ne u opis arhitekture.
+Sažetak:
+
+- Svaka **funkcionalna** promjena ide kroz checklist (matrica pariteta, `technical/`, `user/`, po potrebi `docs/ai/`).
+- **Arhitektonske odluke** → `DECISION_LOG.md`; **nepoznato** → `OPEN_QUESTIONS.md`; **rizici** → `KNOWN_RISKS.md`.
+- **`docs/ai/`** je kanonski izvor; `technical/` i `user/` ga ne smiju proturječiti.
+- Samo vizualne promjene ne zahtijevaju docs osim ako tim eksplicitno traži.
+- Plan većih promjena mora navesti dokumentacijski utjecaj; review provjerava usklađenost s **implementacijom**, ne s planom.
