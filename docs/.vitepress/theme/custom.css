@@ -181,9 +181,11 @@
     overflow-y: auto;
   }
 
-  /* Doc layout (960–1279): sadrzaj puna sirina, bez desnog outlinea */
+  /* Doc layout (960–1279): centriran sadrzaj, bez desnog outlinea */
   .VPDoc.has-sidebar .container {
-    display: block !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) min(var(--sp-doc-content-max), calc(100% - 64px)) minmax(0, 1fr) !important;
+    align-items: start !important;
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
@@ -191,6 +193,8 @@
   }
 
   .VPDoc.has-sidebar .container > .content {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
@@ -198,8 +202,8 @@
   }
 
   .VPDoc.has-sidebar .container > .content .content-container {
-    max-width: var(--sp-doc-content-max) !important;
-    margin-inline: auto !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
   }
 
   .VPDoc.has-sidebar .container > .aside {
@@ -207,7 +211,14 @@
   }
 
   html.sidebar-collapsed .VPDoc.has-sidebar .container {
-    padding-left: 32px !important;
+    padding-inline: 32px !important;
+    margin-inline: auto !important;
+    max-width: min(var(--vp-layout-max-width), calc(100vw - 64px)) !important;
+  }
+
+  html.sidebar-collapsed .VPContent.has-sidebar {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   html.sidebar-collapsed {
@@ -285,13 +296,13 @@
 
   .VPDoc.has-sidebar .container {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) var(--sp-aside-width) !important;
-    column-gap: var(--sp-doc-gap) !important;
+    grid-template-columns: minmax(0, 1fr) min(var(--sp-doc-content-max), 100%) minmax(0, 1fr) var(--sp-aside-width) !important;
+    column-gap: 0 !important;
     align-items: start !important;
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
-    padding: 0 40px 64px 32px !important;
+    padding: 0 32px 64px !important;
   }
 
   .VPDoc.has-sidebar .content,
@@ -303,7 +314,7 @@
   }
 
   .VPDoc.has-sidebar .container > .content {
-    grid-column: 1 !important;
+    grid-column: 2 !important;
     grid-row: 1 !important;
     order: unset !important;
     flex: unset !important;
@@ -315,12 +326,12 @@
   }
 
   .VPDoc.has-sidebar .container > .content .content-container {
-    max-width: var(--sp-doc-content-max) !important;
-    margin-inline: auto !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
   }
 
   .VPDoc.has-sidebar .container > .aside {
-    grid-column: 2 !important;
+    grid-column: 4 !important;
     grid-row: 1 !important;
     order: unset !important;
     flex: unset !important;
@@ -337,6 +348,7 @@
   .VPDoc.has-sidebar .container > .aside .aside-container {
     border-left: 1px solid var(--sp-soft-border) !important;
     padding-left: 28px !important;
+    margin-left: var(--sp-doc-gap) !important;
   }
 
   /* VitePress default crta unutar outlinea - ukloni duplikat */
@@ -362,8 +374,39 @@
     display: none !important;
   }
 
+  /* Sklopljen sidebar: sadrzaj u sredini viewporta, outline desno kad stane */
   html.sidebar-collapsed .VPDoc.has-sidebar .container {
-    padding-left: 40px !important;
+    grid-template-columns: minmax(0, 1fr) min(var(--sp-doc-content-max), calc(100% - 64px)) minmax(0, 1fr) !important;
+    padding-inline: 32px !important;
+  }
+
+  html.sidebar-collapsed .VPDoc.has-sidebar .container > .content {
+    grid-column: 2 !important;
+  }
+
+  html.sidebar-collapsed .VPDoc.has-sidebar .container > .aside {
+    grid-column: unset !important;
+    position: fixed !important;
+    top: calc(var(--vp-nav-height) + 24px) !important;
+    left: calc(
+      50% + min(var(--sp-doc-content-max), calc(100vw - 96px)) / 2 + var(--sp-doc-gap)
+    ) !important;
+    right: auto !important;
+    width: var(--sp-aside-width) !important;
+    max-width: calc(100vw - 64px) !important;
+    z-index: 10 !important;
+  }
+
+  html.sidebar-collapsed .VPDoc.has-sidebar .container > .aside .aside-container {
+    margin-left: 0 !important;
+    max-height: calc(100vh - var(--vp-nav-height) - 32px) !important;
+  }
+
+  /* Uzi desktop + sklopljen sidebar: outline bi preklopio centrirani sadrzaj */
+  @media (max-width: 1539px) {
+    html.sidebar-collapsed .VPDoc.has-sidebar .container > .aside {
+      display: none !important;
+    }
   }
 
   .outline-link {
@@ -402,7 +445,7 @@
   }
 
   html.sidebar-collapsed .VPContent.has-sidebar {
-    padding-left: 0 !important;
+    padding-left: max(24px, calc((100vw - var(--vp-layout-max-width)) / 2)) !important;
     padding-right: max(24px, calc((100vw - var(--vp-layout-max-width)) / 2)) !important;
   }
 
