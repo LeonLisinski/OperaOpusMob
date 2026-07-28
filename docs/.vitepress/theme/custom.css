@@ -7,7 +7,8 @@
   --vp-sidebar-width: var(--sp-sidebar-width);
   --sp-aside-width: 240px;
   --vp-aside-width: var(--sp-aside-width);
-  --sp-doc-max-width: none;
+  --sp-doc-content-max: 820px;
+  --sp-doc-gap: 48px;
   --vp-layout-max-width: 1440px;
   --sp-nav-search-max: 360px;
 
@@ -153,38 +154,42 @@
   .VPSidebar {
     left: 0 !important;
     width: var(--vp-sidebar-width) !important;
-    padding: 32px 20px 96px 24px;
+    padding: 32px 28px 96px 24px !important;
     border-right: 1px solid var(--sp-soft-border);
     background: var(--vp-sidebar-bg-color);
     transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s;
+    z-index: 25 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
-  /* Doc layout (960–1279): puni sadrzaj, bez desnog outlinea */
+  /* Doc layout (960–1279): sadrzaj puna sirina, bez desnog outlinea */
   .VPDoc.has-sidebar .container {
     display: block !important;
-    max-width: none !important;
     width: 100% !important;
+    max-width: none !important;
     margin: 0 !important;
-    padding: 0 24px 64px !important;
+    padding: 0 32px 64px !important;
   }
 
-  .VPDoc .content {
+  .VPDoc.has-sidebar .container > .content {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
     padding: 0 0 128px !important;
   }
 
-  .VPDoc .content-container {
-    max-width: none !important;
+  .VPDoc.has-sidebar .container > .content .content-container {
+    max-width: var(--sp-doc-content-max) !important;
+    margin-inline: auto !important;
   }
 
-  .VPDoc .aside {
+  .VPDoc.has-sidebar .container > .aside {
     display: none !important;
   }
 
   html.sidebar-collapsed .VPDoc.has-sidebar .container {
-    padding-left: 20px !important;
+    padding-left: 32px !important;
   }
 
   html.sidebar-collapsed {
@@ -198,22 +203,23 @@
     pointer-events: none;
   }
 
+  /* Gumb na rubu sidebara - ne prekriva tekst */
   .sidebar-collapse-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
     position: fixed;
-    top: calc(var(--vp-nav-height) + 12px);
-    left: calc(var(--vp-sidebar-width) - 14px);
-    z-index: 35;
-    width: 28px;
-    height: 28px;
+    top: calc(var(--vp-nav-height) + 16px);
+    left: calc(var(--vp-sidebar-width) - 12px);
+    z-index: 40;
+    width: 24px;
+    height: 24px;
     border: 1px solid var(--sp-soft-border);
     border-radius: 999px;
     background: var(--vp-c-bg);
     color: var(--vp-c-text-2);
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
     transition: left 0.2s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
@@ -222,8 +228,9 @@
     border-color: var(--vp-c-brand-1);
   }
 
-  .sidebar-collapse-toggle.is-collapsed {
-    left: 10px;
+  .sidebar-collapse-toggle.is-collapsed,
+  html.sidebar-collapsed .sidebar-collapse-toggle {
+    left: 16px !important;
   }
 
   .sidebar-collapse-toggle.is-collapsed svg {
@@ -231,6 +238,8 @@
   }
 
   .sidebar-collapse-toggle svg {
+    width: 14px;
+    height: 14px;
     transition: transform 0.2s ease;
   }
 }
@@ -247,48 +256,64 @@
   }
 }
 
-/* Siroki desktop: sadrzaj + desni outline */
+/* Siroki desktop: sadrzaj u sredini + outline desno s razmakom */
 @media (min-width: 1280px) {
   :root {
     --sp-aside-width: 240px;
     --vp-aside-width: var(--sp-aside-width);
     --sp-nav-search-max: 300px;
+    --sp-doc-gap: 56px;
   }
 
   .VPDoc.has-sidebar .container {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: flex-start !important;
-    justify-content: flex-start !important;
-    gap: 24px;
-    max-width: none !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) var(--sp-aside-width) !important;
+    column-gap: var(--sp-doc-gap) !important;
+    align-items: start !important;
     width: 100% !important;
+    max-width: none !important;
     margin: 0 !important;
-    padding: 0 24px 64px !important;
+    padding: 0 40px 64px 32px !important;
   }
 
-  .VPDoc .content {
-    order: 1 !important;
-    flex: 1 1 auto !important;
+  .VPDoc.has-sidebar .content,
+  .VPDoc.has-sidebar .aside {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+
+  .VPDoc.has-sidebar .container > .content {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    order: unset !important;
+    flex: unset !important;
+    width: 100% !important;
     min-width: 0 !important;
-    width: auto !important;
     max-width: none !important;
     margin: 0 !important;
     padding: 0 0 128px !important;
   }
 
-  .VPDoc .content-container {
-    max-width: none !important;
+  .VPDoc.has-sidebar .container > .content .content-container {
+    max-width: var(--sp-doc-content-max) !important;
+    margin-inline: auto !important;
   }
 
-  .VPDoc .aside {
-    order: 2 !important;
+  .VPDoc.has-sidebar .container > .aside {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    order: unset !important;
+    flex: unset !important;
     display: block !important;
-    flex: 0 0 var(--sp-aside-width) !important;
-    width: var(--sp-aside-width) !important;
-    max-width: var(--sp-aside-width) !important;
-    padding: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 0 0 28px !important;
+    margin: 0 !important;
     position: relative !important;
+    border-left: 1px solid var(--sp-soft-border) !important;
+    box-sizing: border-box !important;
   }
 
   .VPDoc .aside-container {
@@ -296,7 +321,7 @@
     top: calc(var(--vp-nav-height) + 24px) !important;
     left: auto !important;
     right: auto !important;
-    width: var(--sp-aside-width) !important;
+    width: 100% !important;
     height: auto !important;
     max-height: calc(100vh - var(--vp-nav-height) - 32px) !important;
     overflow-x: hidden !important;
@@ -306,6 +331,10 @@
 
   .VPDoc .aside-curtain {
     display: none !important;
+  }
+
+  html.sidebar-collapsed .VPDoc.has-sidebar .container {
+    padding-left: 40px !important;
   }
 
   .outline-link {
@@ -324,19 +353,28 @@
   .outline-title {
     font-size: 13px !important;
     font-weight: 600 !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 10px !important;
+    color: var(--vp-c-text-2) !important;
   }
 }
 
 @media (min-width: 1440px) {
   :root {
-    --sp-aside-width: 280px;
+    --sp-aside-width: 260px;
     --vp-aside-width: var(--sp-aside-width);
     --sp-nav-search-max: 360px;
+    --sp-doc-content-max: 860px;
+    --sp-doc-gap: 64px;
   }
+
   .VPContent.has-sidebar {
     padding-left: var(--vp-sidebar-width) !important;
-    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2) !important;
+    padding-right: max(24px, calc((100vw - var(--vp-layout-max-width)) / 2)) !important;
+  }
+
+  html.sidebar-collapsed .VPContent.has-sidebar {
+    padding-left: 0 !important;
+    padding-right: max(24px, calc((100vw - var(--vp-layout-max-width)) / 2)) !important;
   }
 
   .VPNavBar.has-sidebar .container > .title {
@@ -351,12 +389,15 @@
   }
 
   .VPDoc.has-sidebar .container {
-    max-width: calc(var(--vp-layout-max-width) - var(--vp-sidebar-width)) !important;
+    max-width: min(
+      calc(var(--vp-layout-max-width) - var(--vp-sidebar-width)),
+      calc(100vw - var(--vp-sidebar-width) - 48px)
+    ) !important;
     margin-inline: auto !important;
   }
 
   html.sidebar-collapsed .VPDoc.has-sidebar .container {
-    max-width: var(--vp-layout-max-width) !important;
+    max-width: min(var(--vp-layout-max-width), calc(100vw - 48px)) !important;
   }
 }
 
