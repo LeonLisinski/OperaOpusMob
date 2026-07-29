@@ -67,6 +67,9 @@ export default function LoginScreen() {
           <Text style={[styles.reactivateText, { color: colors.primary }]}>Ponovno unesi Core PIN</Text>
         </Pressable>
       }
+      primaryAction={
+        <PrimaryButton label="Prijava" onPress={handleSubmit} loading={loading} disabled={!canSubmit} />
+      }
     >
       <ErrorMessage message={error} />
 
@@ -94,8 +97,6 @@ export default function LoginScreen() {
           onSubmitEditing={handleSubmit}
         />
       </View>
-
-      <PrimaryButton label="Prijava" onPress={handleSubmit} loading={loading} disabled={!canSubmit} />
     </AuthLayout>
   );
 }

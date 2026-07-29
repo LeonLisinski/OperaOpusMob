@@ -61,11 +61,15 @@ export default function DocumentInfoScreen() {
       style={styles.screen}
       scroll
       contentStyle={[styles.content, canEdit ? styles.contentWithFab : null]}
+      overlay={
+        canEdit ? (
+          <Fab icon="pencil" bottomOffset={spacing.sm} onPress={onEditPress} accessibilityLabel="Uredi dokument" />
+        ) : null
+      }
     >
       {layout.viewItems.map((section, index) => (
         <DetailSection key={`${section.caption}-${index}`} section={section} item={item} />
       ))}
-      {canEdit ? <Fab icon="pencil" onPress={onEditPress} accessibilityLabel="Uredi dokument" /> : null}
     </Screen>
   );
 }

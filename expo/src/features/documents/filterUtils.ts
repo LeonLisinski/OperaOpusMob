@@ -1,4 +1,5 @@
 import type { DocumentFilter, StatusFilterItem } from './types';
+import { daysAgoIso, formatDisplayDate, todayIso } from './format';
 
 /** Zamjena dijakritike — ista logika kao dgl/gen store setSearchText. */
 export function normalizeSearchText(text: string): string {
@@ -51,20 +52,12 @@ export function parseSearchFields(raw: unknown): string[] {
 }
 
 export function createDefaultFilter(): DocumentFilter {
-  const today = new Date();
-  const from = new Date();
-  from.setDate(from.getDate() - 100);
   return {
-    datumod: toIso(from),
-    datumdo: toIso(today),
+    datumod: daysAgoIso(100),
+    datumdo: todayIso(),
     samomoje: true,
     statuses: [],
   };
-}
-
-function toIso(date: Date): string {
-  const pad = (value: number) => (value < 10 ? `0${value}` : String(value));
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
 export function cloneFilter(filter: DocumentFilter): DocumentFilter {
@@ -96,10 +89,7 @@ export function countActiveFilters(filter: DocumentFilter, baseline: DocumentFil
 }
 
 export function buildFilterSummary(filter: DocumentFilter): { line1: string; line2: string } {
-  const formatHr = (iso: string) => {
-    const [year, month, day] = iso.split('-');
-    return `${day}.${month}.${year}.`;
-  };
+  const formatHr = (iso: string) => formatDisplayDate(iso) ?? iso;
   const statusesText = filter.statuses
     .filter((item) => item.checked)
     .map((item) => item.name)
@@ -118,7 +108,11 @@ export type FilterChip = { id: string; label: string; icon: 'calendar-outline' |
  */
 export function buildFilterChips(filter: DocumentFilter): FilterChip[] {
   const formatShort = (iso: string) => {
-    const [, month, day] = iso.split('-');
+    const display = formatDisplayDate(iso);
+    if (!display) {
+      return iso;
+    }
+    const [day, month] = display.split('.');
     return `${day}.${month}.`;
   };
   const [year] = filter.datumdo.split('-');

@@ -11,6 +11,7 @@ import type {
   ViewFieldDef,
   ViewSection,
 } from './types';
+import { mergeRouteLayoutFallback } from './layoutContentPatches';
 
 export type LayoutValidationResult = { ok: true; layout: ModuleLayout } | { ok: false; error: string };
 
@@ -26,23 +27,32 @@ export function normalizeModuleLayout(raw: unknown, route: ModuleRoute): LayoutV
     return { ok: false, error: 'Layout modula nije pronađen ili je prazan.' };
   }
 
-  const record = raw as Record<string, unknown>;
+  const record = mergeRouteLayoutFallback(raw as Record<string, unknown>, route);
 
   const listQuery = readListQuery(record.queries, route.queryGroupKey);
   if (!listQuery) {
     return { ok: false, error: 'Definicija upita za listu nedostaje u layoutu modula.' };
   }
 
+  const dstListQuery = readNamedQuery(record.queries, 'dst', 'list') ?? undefined;
+  const dstAzurQuery = readNamedQuery(record.queries, 'dst', 'azur') ?? undefined;
+
   return {
     ok: true,
     layout: {
-      listItems: readListItemGroups(record[route.listItemKey]),
-      viewItems: readViewSections(record[route.viewItemsKey]),
+      listItems: readListItemGroups(
+        resolveLayoutArray(record, route.listItemKey, route.kind === 'gen' ? ['listItem', 'ListItem'] : []),
+        { required: true, label: route.listItemKey },
+      ),
+      viewItems: readViewSections(resolveLayoutArray(record, route.viewItemsKey, route.kind === 'gen' ? ['viewItems', 'ViewItems'] : [])),
       listQuery,
       filterDefaultsQuery: readNamedQuery(record.queries, route.queryGroupKey, 'filterdefaults') ?? undefined,
       statusiQuery: readNamedQuery(record.queries, route.queryGroupKey, 'statusi') ?? undefined,
       settingsQuery: readNamedQuery(record.queries, 'core', 'settings') ?? undefined,
-      editItems: readEditFields(record[route.editItemsKey]),
+      editItems: readEditFields(
+        resolveLayoutArray(record, route.editItemsKey, route.kind === 'gen' ? ['editItems', 'EditItems'] : []),
+        { required: true, label: route.editItemsKey },
+      ),
       editItemsExtends: readPlainObject(record[route.editItemsExtendsKey]),
       // `queries.dgl.azur`/`queries.dgl.sifarnici` postoje u nekim JSON layoutima (npr.
       // ERVadmin), ali src/pages/dgl/store saveDGL i src/components/search/simple/search.jsx
@@ -53,14 +63,21 @@ export function normalizeModuleLayout(raw: unknown, route: ModuleRoute): LayoutV
       azurQuery: route.kind === 'gen' ? (readNamedQuery(record.queries, route.queryGroupKey, 'azur') ?? undefined) : undefined,
       sifarniciQuery:
         route.kind === 'gen' ? (readNamedQuery(record.queries, route.queryGroupKey, 'sifarnici') ?? undefined) : undefined,
-      dstListQuery: readNamedQuery(record.queries, 'dst', 'list') ?? undefined,
-      dstListItems: readListItemGroups(record.dstListItem),
-      dstListItemsRad: readListItemGroups(record.dstListItemRad),
-      dstAzurQuery: readNamedQuery(record.queries, 'dst', 'azur') ?? undefined,
+      dstListQuery,
+      // dst* layouti su opcionalni — gen moduli (npr. CRM/Upiti) ih nemaju; ne warnati.
+      dstListItems: readListItemGroups(record.dstListItem, {
+        required: !!dstListQuery,
+        label: 'dstListItem',
+      }),
+      dstListItemsRad: readListItemGroups(record.dstListItemRad, { required: false }),
+      dstAzurQuery,
       dstDeleteQuery: readNamedQuery(record.queries, 'dst', 'delete') ?? undefined,
-      dstEditItems: readEditFields(record.dstEditItems),
+      dstEditItems: readEditFields(record.dstEditItems, {
+        required: !!dstAzurQuery,
+        label: 'dstEditItems',
+      }),
       dstEditItemsExtends: readPlainObject(record.dstEditItemsExtends),
-      dstEditItemsRad: readEditFields(record.dstEditItemsRad),
+      dstEditItemsRad: readEditFields(record.dstEditItemsRad, { required: false }),
       dstEditItemsRadExtends: readPlainObject(record.dstEditItemsRadExtends),
       priloziQuery: readNamedQuery(record.queries, route.queryGroupKey, 'prilozi') ?? undefined,
       properties: readSignatureProperties(record.properties),
@@ -88,6 +105,22 @@ function devWarn(message: string, detail?: unknown) {
   if (__DEV__) {
     console.warn(`[documents/layoutContract] ${message}`, detail);
   }
+}
+
+function resolveLayoutArray(record: Record<string, unknown>, primaryKey: string, alternateKeys: string[]): unknown {
+  const keys = [primaryKey, ...alternateKeys];
+  for (const key of keys) {
+    const value = record[key];
+    if (Array.isArray(value) && value.length > 0) {
+      return value;
+    }
+  }
+  for (const key of keys) {
+    if (Array.isArray(record[key])) {
+      return record[key];
+    }
+  }
+  return undefined;
 }
 
 function readListQuery(rawQueries: unknown, group: 'dgl' | 'gla'): QueryDef | null {
@@ -138,9 +171,17 @@ function readNamedQuery(
   return { sp, params: params && typeof params === 'object' ? (params as Record<string, unknown>) : undefined };
 }
 
-function readListItemGroups(raw: unknown): ListItemLayoutGroup[] {
+function readListItemGroups(
+  raw: unknown,
+  options: { required?: boolean; label?: string } = {},
+): ListItemLayoutGroup[] {
   if (!Array.isArray(raw)) {
-    devWarn('ListItem layout nije niz — lista će se prikazati bez definiranih polja.', raw);
+    if (options.required) {
+      devWarn(
+        `${options.label ?? 'ListItem'} layout nije niz — lista će se prikazati bez definiranih polja.`,
+        raw,
+      );
+    }
     return [];
   }
   return raw
@@ -249,9 +290,14 @@ function readPlainObject(raw: unknown): Record<string, unknown> {
   return raw as Record<string, unknown>;
 }
 
-function readEditFields(raw: unknown): EditFieldDef[] {
+function readEditFields(
+  raw: unknown,
+  options: { required?: boolean; label?: string } = {},
+): EditFieldDef[] {
   if (!Array.isArray(raw)) {
-    devWarn('EditItems layout nije niz — forma će se prikazati bez polja.', raw);
+    if (options.required) {
+      devWarn(`${options.label ?? 'EditItems'} layout nije niz — forma će se prikazati bez polja.`, raw);
+    }
     return [];
   }
   return raw

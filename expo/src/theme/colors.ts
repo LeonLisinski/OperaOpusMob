@@ -55,6 +55,8 @@ export const colors = {
     warningSoft: '#FEF3E2',
     danger: '#D92D20',
     dangerSoft: '#FBEAE9',
+    dangerFab: '#6C0000',
+    dangerFabPressed: '#5A0000',
     info: '#2E90FA',
     infoSoft: '#E8F2FE',
 
@@ -100,6 +102,8 @@ export const colors = {
     warningSoft: '#2B2109',
     danger: '#F97066',
     dangerSoft: '#2C1512',
+    dangerFab: '#6C0000',
+    dangerFabPressed: '#5A0000',
     info: '#53B1FD',
     infoSoft: '#101F30',
 

@@ -1,16 +1,20 @@
 import { Modal, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { useMemo, useState } from 'react';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
+import { DateField } from '@/components/DateField';
+import { DatePickerSheet } from '@/components/DatePickerSheet';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
-import { TextField } from '@/components/TextField';
+import { StickyFooter } from '@/components/StickyFooter';
 import {
   applyDocumentFilters,
   toggleFilterTempStatus,
   updateFilterTempField,
   resetFilterTemp,
 } from '@/features/documents/documentsSlice';
+import { parseIsoDateParts, toIsoDate } from '@/features/documents/format';
 import { statusToneFromColor } from '@/features/documents/statusTone';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { radius, spacing, typography, useTheme } from '@/theme';
@@ -31,6 +35,8 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  const [activeDateField, setActiveDateField] = useState<'datumod' | 'datumdo' | null>(null);
+  const [dateDraft, setDateDraft] = useState<Date>(() => new Date());
   const statusColor = (indcolor: string | null | undefined) =>
     ({
       neutral: colors.borderStrong,
@@ -49,6 +55,28 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
       onClose();
     }
   };
+
+  const openDatePicker = (field: 'datumod' | 'datumdo') => {
+    if (!filterTemp) {
+      return;
+    }
+    setDateDraft(parseIsoDateParts(filterTemp[field]) ?? new Date());
+    setActiveDateField(field);
+  };
+
+  const closeDatePicker = () => {
+    setActiveDateField(null);
+  };
+
+  const confirmDatePicker = (date: Date) => {
+    if (!activeDateField) {
+      return;
+    }
+    dispatch(updateFilterTempField({ [activeDateField]: toIsoDate(date) ?? '' }));
+    closeDatePicker();
+  };
+
+  const pickerValue = useMemo(() => dateDraft, [dateDraft]);
 
   if (!filterTemp) {
     return null;
@@ -73,9 +101,9 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
           keyboardAware
           contentStyle={styles.body}
           footer={
-            <View style={[styles.footer, { borderTopColor: colors.border, backgroundColor: colors.background }]}>
-              <PrimaryButton label="Primijeni" onPress={handleApply} loading={listStatus.loading} style={styles.footerButton} />
-            </View>
+            <StickyFooter>
+              <PrimaryButton label="Primijeni" onPress={handleApply} loading={listStatus.loading} />
+            </StickyFooter>
           }
         >
           {filterTemp.statuses.length > 0 ? (
@@ -104,25 +132,30 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
           <FilterSection title="Razdoblje">
             <View style={styles.dateRow}>
               <View style={styles.dateField}>
-                <TextField
+                <DateField
                   label="Datum od"
                   value={filterTemp.datumod}
-                  onChangeText={(value) => dispatch(updateFilterTempField({ datumod: value }))}
-                  keyboardType="numbers-and-punctuation"
-                  returnKeyType="next"
+                  externalPicker={{
+                    open: activeDateField === 'datumod',
+                    onOpen: () => openDatePicker('datumod'),
+                    onClose: closeDatePicker,
+                  }}
+                  onChangeIso={(iso) => dispatch(updateFilterTempField({ datumod: iso ?? '' }))}
                 />
               </View>
               <View style={styles.dateField}>
-                <TextField
+                <DateField
                   label="Datum do"
                   value={filterTemp.datumdo}
-                  onChangeText={(value) => dispatch(updateFilterTempField({ datumdo: value }))}
-                  keyboardType="numbers-and-punctuation"
-                  returnKeyType="done"
+                  externalPicker={{
+                    open: activeDateField === 'datumdo',
+                    onOpen: () => openDatePicker('datumdo'),
+                    onClose: closeDatePicker,
+                  }}
+                  onChangeIso={(iso) => dispatch(updateFilterTempField({ datumdo: iso ?? '' }))}
                 />
               </View>
             </View>
-            <Text style={[styles.hint, { color: colors.textSubtle }]}>Format: GGGG-MM-DD</Text>
           </FilterSection>
 
           <FilterSection title="Ostalo">
@@ -139,6 +172,14 @@ export function DocumentFilterModal({ visible, onClose }: DocumentFilterModalPro
             </View>
           </FilterSection>
         </Screen>
+        <DatePickerSheet
+          visible={activeDateField !== null}
+          value={pickerValue}
+          asOverlay
+          onChange={setDateDraft}
+          onClose={closeDatePicker}
+          onConfirm={confirmDatePicker}
+        />
       </SafeAreaView>
     </Modal>
   );
@@ -157,6 +198,7 @@ function FilterSection({ title, children }: { title: string; children: React.Rea
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   header: {
     flexDirection: 'row',
@@ -183,6 +225,7 @@ const styles = StyleSheet.create({
   },
   section: {
     gap: spacing.sm,
+    marginBottom: spacing.md,
   },
   sectionTitle: {
     fontSize: typography.size.xs,
@@ -216,9 +259,6 @@ const styles = StyleSheet.create({
   dateField: {
     flex: 1,
   },
-  hint: {
-    fontSize: typography.size.xs,
-  },
   toggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -227,14 +267,5 @@ const styles = StyleSheet.create({
   },
   toggleLabel: {
     fontSize: typography.size.md,
-  },
-  footer: {
-    flexDirection: 'row',
-    gap: spacing.md,
-    padding: spacing.lg,
-    borderTopWidth: 1,
-  },
-  footerButton: {
-    flex: 1,
   },
 });

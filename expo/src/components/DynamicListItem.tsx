@@ -135,19 +135,19 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    gap: 2,
-  },
-  bodyCompact: {
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
+    gap: spacing.xs,
+  },
+  bodyCompact: {
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.md,
+    gap: 2,
   },
   metaRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
-    marginBottom: 2,
+    gap: spacing.xs,
   },
   metaSpacer: {
     flex: 1,
@@ -159,16 +159,16 @@ const styles = StyleSheet.create({
   primary: {
     fontSize: typography.size.md,
     fontWeight: typography.weight.semibold,
-    lineHeight: typography.lineHeight.md,
+    lineHeight: 20,
   },
   primaryCompact: {
     fontSize: typography.size.sm,
     fontWeight: typography.weight.semibold,
-    lineHeight: typography.lineHeight.sm,
+    lineHeight: 17,
   },
   secondary: {
     fontSize: typography.size.sm,
-    lineHeight: typography.lineHeight.sm,
+    lineHeight: 17,
   },
   label: {
     fontWeight: typography.weight.medium,

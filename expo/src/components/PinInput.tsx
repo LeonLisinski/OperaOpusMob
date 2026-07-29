@@ -1,6 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useId, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View, type TextInputProps } from 'react-native';
-
 import { useRegisterKeyboardField } from '@/components/Screen';
 import { controlHeight, radius, spacing, typography, useTheme } from '@/theme';
 
@@ -34,14 +34,14 @@ export function PinInput({
   const [hidden, setHidden] = useState(true);
   const [focused, setFocused] = useState(false);
   const fieldId = useId();
-  const { handleLayout, handleFocus: scrollToFieldOnFocus } = useRegisterKeyboardField(fieldId);
+  const { viewRef, handleFocus: scrollToFieldOnFocus } = useRegisterKeyboardField(fieldId);
 
   const handleChange = (text: string) => {
     onChangeText(text.slice(0, PIN_LENGTH));
   };
 
   return (
-    <View style={styles.container} onLayout={handleLayout}>
+    <View ref={viewRef} style={styles.container}>
       <Text style={[styles.label, { color: colors.textMuted }]}>{label}</Text>
       <View
         style={[
@@ -79,10 +79,10 @@ export function PinInput({
           accessibilityRole="button"
           accessibilityLabel={hidden ? 'Prikaži šifru' : 'Sakrij šifru'}
           hitSlop={8}
+          style={styles.toggleButton}
         >
-          <Text style={[styles.toggle, { color: colors.primary }]}>{hidden ? 'Prikaži' : 'Sakrij'}</Text>
-        </Pressable>
-      </View>
+          <Ionicons name={hidden ? 'eye-outline' : 'eye-off-outline'} size={22} color={colors.primary} />
+        </Pressable>      </View>
     </View>
   );
 }
@@ -110,9 +110,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: spacing.sm,
   },
-  toggle: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    paddingLeft: spacing.sm,
+  toggleButton: {
+    paddingLeft: spacing.xs,
+    minWidth: 44,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

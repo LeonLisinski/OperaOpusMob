@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
 import { Screen } from '@/components/Screen';
+import { StickyFooter } from '@/components/StickyFooter';
 import { radius, shadows, spacing, typography, useTheme } from '@/theme';
 
 const logoSource = require('@/assets/images/operaopus-logo.png');
@@ -16,6 +17,8 @@ interface AuthLayoutProps {
   heroBadge?: ReactNode;
   /** Sekundarna akcija ispod kartice (npr. ponovna aktivacija Core PIN-a). */
   footer?: ReactNode;
+  /** Primarna akcija fiksirana iznad tipkovnice (npr. gumb Prijava). */
+  primaryAction?: ReactNode;
 }
 
 /**
@@ -23,12 +26,17 @@ interface AuthLayoutProps {
  * koja pluta preko njegove granice. Ista vizualna logika kao hero na Kontrolnom centru,
  * pa ulaz u aplikaciju i njezin prvi ekran izgledaju kao isti proizvod.
  */
-export function AuthLayout({ title, subtitle, heroBadge, footer, children }: PropsWithChildren<AuthLayoutProps>) {
+export function AuthLayout({ title, subtitle, heroBadge, footer, primaryAction, children }: PropsWithChildren<AuthLayoutProps>) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
-    <Screen scroll keyboardAware contentStyle={styles.content}>
+    <Screen
+      scroll
+      keyboardAware
+      contentStyle={styles.content}
+      footer={primaryAction ? <StickyFooter>{primaryAction}</StickyFooter> : undefined}
+    >
       <View style={[styles.hero, { backgroundColor: colors.brandChrome, paddingTop: insets.top + spacing.xxxl }]}>
         <Image source={logoSource} style={styles.logo} contentFit="contain" />
         {heroBadge ? <View style={styles.heroBadge}>{heroBadge}</View> : null}

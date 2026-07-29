@@ -1,6 +1,8 @@
 import { Linking, StyleSheet, Text, View } from 'react-native';
 
+import { RichDetailText } from '@/components/RichDetailText';
 import { formatDateValue, isEmptyValue } from '@/features/documents/format';
+import { isHtmlValue } from '@/features/documents/htmlValue';
 import type { ViewFieldDef } from '@/features/documents/types';
 import { spacing, typography, useTheme } from '@/theme';
 
@@ -49,6 +51,10 @@ function renderValue(field: ViewFieldDef, rawValue: unknown, textColor: string, 
         {field.urlcaption || url}
       </Text>
     );
+  }
+
+  if (field.type === 'multiline' || isHtmlValue(rawValue)) {
+    return <RichDetailText value={rawValue} textColor={textColor} linkColor={linkColor} />;
   }
 
   return (

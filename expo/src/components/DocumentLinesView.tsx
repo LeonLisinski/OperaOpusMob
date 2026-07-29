@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Alert, FlatList, StyleSheet, View } from 'react-native';
 
 import { EmptyState } from '@/components/EmptyState';
@@ -55,6 +55,12 @@ export function DocumentLinesView({ kind }: { kind: DstLineKind }) {
   }, [layout, kind]);
 
   const visibleLines = useMemo(() => filterDstLinesByKind(dstLines, kind), [dstLines, kind]);
+  const [pullRefreshing, setPullRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setPullRefreshing(true);
+    void dispatch(loadDocumentLines()).finally(() => setPullRefreshing(false));
+  }, [dispatch]);
 
   const onNewPress = () => {
     dispatch(startDstEditForm({ item: null, kind }));
@@ -156,8 +162,8 @@ export function DocumentLinesView({ kind }: { kind: DstLineKind }) {
         data={visibleLines}
         keyExtractor={(row, index) => String(row.dstid ?? row.id ?? index)}
         contentContainerStyle={[styles.listContent, canEditLines ? styles.listContentWithFab : null]}
-        refreshing={dstLinesStatus.loading}
-        onRefresh={() => dispatch(loadDocumentLines())}
+        refreshing={pullRefreshing}
+        onRefresh={onRefresh}
         ListHeaderComponent={dstLinesStatus.error ? <ErrorMessage message={dstLinesStatus.error} /> : <View />}
         ListEmptyComponent={
           <EmptyState
@@ -212,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContent: {
-    gap: spacing.xs,
+    gap: spacing.md,
     paddingHorizontal: spacing.md,
     paddingTop: spacing.sm,
     paddingBottom: spacing.xxl,

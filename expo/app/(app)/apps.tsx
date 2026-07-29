@@ -2,14 +2,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppCard } from '@/components/AppCard';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
+import { Fab } from '@/components/Fab';
 import { Screen } from '@/components/Screen';
 import { SectionHeader } from '@/components/SectionHeader';
+import { logout } from '@/features/auth/authSlice';
 import { fetchMenu, selectApp } from '@/features/core/coreSlice';
 import type { AppMenuEntry } from '@/features/core/types';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -47,10 +49,36 @@ export default function AppsScreen() {
     router.push('/(app)/settings');
   };
 
+  const onLogoutPress = () => {
+    Alert.alert('Odjava', 'Želite li se odjaviti?', [
+      { text: 'Odustani', style: 'cancel' },
+      {
+        text: 'Potvrdi',
+        style: 'destructive',
+        onPress: async () => {
+          await dispatch(logout());
+          router.replace('/(auth)/login');
+        },
+      },
+    ]);
+  };
+
   const gridData: GridEntry[] = apps.length % 2 === 1 ? [...apps, { code: '__placeholder', placeholder: true }] : apps;
 
   return (
-    <Screen edges={['left', 'right', 'bottom']} style={styles.screen}>
+    <Screen
+      edges={['left', 'right', 'bottom']}
+      style={styles.screen}
+      overlay={
+        <Fab
+          icon="power"
+          variant="danger"
+          size="sm"
+          onPress={onLogoutPress}
+          accessibilityLabel="Odjava"
+        />
+      }
+    >
       <View style={[styles.heroBand, { backgroundColor: colors.brandChrome, paddingTop: insets.top + spacing.sm }]}>
         <View style={styles.heroTopRow}>
           {korime ? (
@@ -174,7 +202,7 @@ const styles = StyleSheet.create({
   list: {
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
-    paddingBottom: spacing.xl,
+    paddingBottom: spacing.xxxl,
     flexGrow: 1,
   },
   gridRow: {

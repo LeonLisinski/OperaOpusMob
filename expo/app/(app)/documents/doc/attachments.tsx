@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContent: {
-    gap: spacing.sm,
+    gap: spacing.md,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     // Zadnji privitak ne smije ostati ispod FAB-a (56px + odmak od dna).

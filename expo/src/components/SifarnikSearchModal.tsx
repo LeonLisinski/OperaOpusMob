@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -24,8 +24,8 @@ interface SifarnikSearchModalProps {
 
 /**
  * Generički šifrarnik pretraživač za "simple"/"advanced" kontrole — replicira
- * src/components/search/simple/search.jsx: "simple" učita cijelu listu odmah i filtrira
- * lokalno po unosu, "advanced" čeka minimalno 2 znaka i traži server-side uz debounce.
+ * src/components/search/simple/search.jsx. Fokus na search polje ide kroz Modal.onShow
+ * (bez setTimeout kašnjenja) da animacija modala i tipkovnice djeluju kao jedan prijelaz.
  */
 export function SifarnikSearchModal({ visible, field, onClose, onSelect }: SifarnikSearchModalProps) {
   const { colors } = useTheme();
@@ -49,15 +49,16 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
 
   const isAdvanced = field?.type === 'advanced';
 
-  // Reset na promjenu polja se postiže remountom preko `key` u form.tsx (v. Ionic
-  // search.jsx useEffect deps [entity, azurFieldKey]) — ovaj efekt se izvrši samo jednom
-  // po mountu, bez sinkronog setState-a za "reset" (izbjegava cascading renders).
+  const focusSearchInput = useCallback(() => {
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+  }, []);
+
   useEffect(() => {
     if (field && !isAdvanced) {
       void loadRows(undefined);
     }
-    const focusTimeout = setTimeout(() => inputRef.current?.focus(), 300);
-    return () => clearTimeout(focusTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -121,7 +122,13 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
   const showEmpty = !loading && !error && rows.length === 0;
 
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle="pageSheet"
+      onRequestClose={onClose}
+      onShow={focusSearchInput}
+    >
       <SafeAreaView
         edges={['left', 'right', 'bottom']}
         style={[styles.container, { backgroundColor: colors.background }]}
@@ -145,6 +152,7 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
               placeholder={placeholder}
               placeholderTextColor={colors.textSubtle}
               autoCorrect={false}
+              showSoftInputOnFocus
               style={[styles.searchInput, { color: colors.text }]}
             />
           </View>
@@ -175,6 +183,8 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
             data={rows}
             keyExtractor={(item, index) => String(item.id ?? index)}
             keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+            automaticallyAdjustKeyboardInsets
             contentContainerStyle={styles.list}
             renderItem={({ item }) => (
               <Pressable

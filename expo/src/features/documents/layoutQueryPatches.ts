@@ -15,14 +15,19 @@ type LayoutQueryPatch = {
   };
 };
 
-/** Ključ: `{layoutprefix}/{sifdv}` — dgl folder može biti `RNint/{sifgrupe}`. */
-const LAYOUT_QUERY_PATCHES: Record<string, LayoutQueryPatch> = {
-  'zjukic/RNint': {
-    dst: {
-      azur: { sp: 'spMob_ZJUKIC_DST_Azur', params: {} },
-      delete: { sp: 'spMob_DST_RadniNalozi_Azur', params: {} },
-    },
+const ZJUKIC_RN_DST_PATCH: LayoutQueryPatch = {
+  dst: {
+    azur: { sp: 'spMob_ZJUKIC_DST_Azur', params: {} },
+    delete: { sp: 'spMob_DST_RadniNalozi_Azur', params: {} },
   },
+};
+
+/** Ključ: `{layoutprefix}/{sifdv}` ili `{folder}` — dgl folder može biti `InterRN/{sifgrupe}`. */
+const LAYOUT_QUERY_PATCHES: Record<string, LayoutQueryPatch> = {
+  'zjukic/RNint': ZJUKIC_RN_DST_PATCH,
+  RNint: ZJUKIC_RN_DST_PATCH,
+  'zjukic/InterRN': ZJUKIC_RN_DST_PATCH,
+  InterRN: ZJUKIC_RN_DST_PATCH,
 };
 
 function readQueryNode(raw: unknown): Record<string, unknown> | null {
@@ -33,19 +38,50 @@ function readQueryNode(raw: unknown): Record<string, unknown> | null {
   return typeof sp === 'string' && sp.length > 0 ? (raw as Record<string, unknown>) : null;
 }
 
+function normalizeFolderPath(folder: string): string {
+  return folder.replace(/\\/g, '/');
+}
+
 function resolvePatchKeys(layoutPrefix: string | null, folder: string, moduleKey?: string): string[] {
   const keys = new Set<string>();
+  const normalizedFolder = normalizeFolderPath(folder);
   if (layoutPrefix) {
-    keys.add(`${layoutPrefix}/${folder}`);
+    keys.add(`${layoutPrefix}/${normalizedFolder}`);
     if (moduleKey) {
-      keys.add(`${layoutPrefix}/${moduleKey}`);
+      keys.add(`${layoutPrefix}/${normalizeFolderPath(moduleKey)}`);
     }
   }
-  keys.add(folder);
+  keys.add(normalizedFolder);
   if (moduleKey) {
-    keys.add(moduleKey);
+    keys.add(normalizeFolderPath(moduleKey));
   }
   return [...keys];
+}
+
+function findQueryPatch(layoutPrefix: string | null, folder: string, moduleKey?: string): LayoutQueryPatch | null {
+  for (const key of resolvePatchKeys(layoutPrefix, folder, moduleKey)) {
+    const patch = LAYOUT_QUERY_PATCHES[key];
+    if (patch) {
+      return patch;
+    }
+  }
+
+  const folderLower = normalizeFolderPath(folder).toLowerCase();
+  const moduleLower = moduleKey ? normalizeFolderPath(moduleKey).toLowerCase() : null;
+
+  for (const [key, patch] of Object.entries(LAYOUT_QUERY_PATCHES)) {
+    const keyLower = key.toLowerCase();
+    if (
+      keyLower === folderLower ||
+      keyLower === moduleLower ||
+      folderLower.startsWith(`${keyLower}/`) ||
+      (moduleLower !== null && moduleLower.startsWith(`${keyLower}/`))
+    ) {
+      return patch;
+    }
+  }
+
+  return null;
 }
 
 function applyPatch(raw: Record<string, unknown>, patch: LayoutQueryPatch): Record<string, unknown> | null {
@@ -96,18 +132,18 @@ export function overlayMissingLayoutQueries(
   folder: string,
   moduleKey?: string,
 ): Record<string, unknown> {
-  for (const key of resolvePatchKeys(layoutPrefix, folder, moduleKey)) {
-    const patch = LAYOUT_QUERY_PATCHES[key];
-    if (!patch) {
-      continue;
-    }
-    const merged = applyPatch(raw, patch);
-    if (merged) {
-      if (__DEV__) {
-        console.info(`[documents/layoutQueryPatches] Dopunjen queries.dst za ${key}`);
-      }
-      return merged;
-    }
+  const patch = findQueryPatch(layoutPrefix, folder, moduleKey);
+  if (!patch) {
+    return raw;
   }
+
+  const merged = applyPatch(raw, patch);
+  if (merged) {
+    if (__DEV__) {
+      console.info(`[documents/layoutQueryPatches] Dopunjen queries.dst za ${normalizeFolderPath(folder)}`);
+    }
+    return merged;
+  }
+
   return raw;
 }

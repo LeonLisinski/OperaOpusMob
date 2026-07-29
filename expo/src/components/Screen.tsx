@@ -1,44 +1,43 @@
-import type { PropsWithChildren, ReactNode } from 'react';
-import { createContext, useContext, useMemo, useRef } from 'react';
+import type { PropsWithChildren, ReactNode, RefObject } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import {
   Keyboard,
+  Platform,
   ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
   type LayoutChangeEvent,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
+import { STICKY_FOOTER_HEIGHT } from '@/components/StickyFooter';
+import { ScreenKeyboardPadContext } from '@/contexts/ScreenKeyboardPadContext';
+import { useContainerKeyboardPad } from '@/hooks/useContainerKeyboardPad';
 import { spacing, useTheme } from '@/theme';
 
 type ScreenProps = PropsWithChildren<{
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
-  /**
-   * Zadano bez `top` jer navigacijski header već zauzima gornji safe area — ponovno
-   * dodavanje istog odmaka je stvaralo prazan pojas ispod headera. Ekrani bez headera
-   * (auth, bootstrap) eksplicitno uključuju `top`.
-   */
   edges?: Edge[];
   scroll?: boolean;
-  /** Scroll do fokusiranog polja kad se otvori tipkovnica — bez podizanja cijelog ekrana. */
+  scrollEnabled?: boolean;
   keyboardAware?: boolean;
-  /** Fiksni sadržaj ispod glavnog tijela (npr. tab bar na detalju dokumenta). */
   footer?: ReactNode;
+  overlay?: ReactNode;
 }>;
 
-/**
- * Ekran unutar tab navigatora: donji safe area nosi tab bar, gornji header —
- * ekran ne smije dodati ni jedan od njih ponovno.
- */
 export const TAB_SCREEN_EDGES: Edge[] = ['left', 'right'];
 
 type KeyboardAwareContextValue = {
-  registerField: (id: string, y: number, height: number) => void;
+  registerField: (id: string, ref: RefObject<View | null>) => void;
+  unregisterField: (id: string) => void;
   scrollToField: (id: string) => void;
+  setFocusedField: (id: string | null) => void;
 };
 
 const KeyboardAwareContext = createContext<KeyboardAwareContextValue | null>(null);
@@ -48,8 +47,8 @@ export function useKeyboardAwareScroll() {
 }
 
 /**
- * Zajednička podloga ekrana. Kad je `keyboardAware`, ScrollView samo pomakne fokusirano
- * polje iznad tipkovnice — header i ostatak forme ostaju na mjestu.
+ * Zajednička podloga. Kad ima footer ili keyboardAware:
+ * paddingBottom = preklapanje tipkovnice (isti mehanizam kao potpis) — digne scroll + gumb.
  */
 export function Screen({
   children,
@@ -57,46 +56,114 @@ export function Screen({
   contentStyle,
   edges = ['left', 'right', 'bottom'],
   scroll = false,
+  scrollEnabled = true,
   keyboardAware = false,
   footer,
+  overlay,
 }: ScreenProps) {
   const { colors } = useTheme();
+  const layoutRef = useRef<View>(null);
   const scrollRef = useRef<ScrollView>(null);
-  const fieldPositions = useRef(new Map<string, { y: number; height: number }>());
+  const contentRef = useRef<View>(null);
+  const fieldRefs = useRef(new Map<string, RefObject<View | null>>());
+  const focusedFieldId = useRef<string | null>(null);
+  const scrollOffsetY = useRef(0);
+  const viewportHeight = useRef(0);
   const safeEdges = footer ? edges.filter((edge) => edge !== 'bottom') : edges;
+  const footerReserve = footer ? STICKY_FOOTER_HEIGHT : 0;
+  const liftForKeyboard = Boolean(footer) || keyboardAware;
+  const keyboardPad = useContainerKeyboardPad(layoutRef, liftForKeyboard);
+
+  const scrollToField = useCallback(
+    (id: string) => {
+      if (!scroll || !keyboardAware) {
+        return;
+      }
+      const fieldRef = fieldRefs.current.get(id);
+      const contentNode = contentRef.current;
+      if (!fieldRef?.current || !contentNode) {
+        return;
+      }
+      fieldRef.current.measureLayout(
+        contentNode,
+        (_x, y, _width, height) => {
+          const visibleBottom = scrollOffsetY.current + viewportHeight.current - footerReserve - spacing.lg;
+          const fieldBottom = y + height;
+          if (fieldBottom > visibleBottom) {
+            scrollRef.current?.scrollTo({
+              y: Math.max(0, scrollOffsetY.current + (fieldBottom - visibleBottom) + spacing.sm),
+              animated: true,
+            });
+          }
+        },
+        () => undefined,
+      );
+    },
+    [footerReserve, keyboardAware, scroll],
+  );
+
+  useEffect(() => {
+    if (keyboardPad > 0 && keyboardAware && focusedFieldId.current) {
+      const id = focusedFieldId.current;
+      scrollToField(id);
+      if (Platform.OS === 'android') {
+        const timer = setTimeout(() => scrollToField(id), 120);
+        return () => clearTimeout(timer);
+      }
+    }
+    return undefined;
+  }, [keyboardPad, keyboardAware, scrollToField]);
 
   const keyboardContext = useMemo<KeyboardAwareContextValue>(
     () => ({
-      registerField: (id, y, height) => {
-        fieldPositions.current.set(id, { y, height });
+      registerField: (id, ref) => {
+        fieldRefs.current.set(id, ref);
       },
-      scrollToField: (id) => {
-        if (!scroll || !keyboardAware) {
-          return;
+      unregisterField: (id) => {
+        fieldRefs.current.delete(id);
+        if (focusedFieldId.current === id) {
+          focusedFieldId.current = null;
         }
-        const field = fieldPositions.current.get(id);
-        if (!field) {
-          return;
-        }
-        scrollRef.current?.scrollTo({
-          y: Math.max(0, field.y - spacing.lg),
-          animated: true,
-        });
+      },
+      scrollToField,
+      setFocusedField: (id) => {
+        focusedFieldId.current = id;
       },
     }),
-    [keyboardAware, scroll],
+    [scrollToField],
   );
+
+  const scrollBottomPad = footer ? spacing.lg + footerReserve : keyboardAware ? spacing.xxl : 0;
+  /** Kad sami dižemo kontejner, ne duplirati inset na ScrollView. */
+  const useNativeKeyboardInsets = keyboardAware && !footer;
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    scrollOffsetY.current = event.nativeEvent.contentOffset.y;
+  };
+
+  const onScrollLayout = (event: LayoutChangeEvent) => {
+    viewportHeight.current = event.nativeEvent.layout.height;
+  };
 
   const body = scroll ? (
     <ScrollView
       ref={scrollRef}
-      contentContainerStyle={[styles.scrollContent, contentStyle]}
+      style={footer || keyboardAware ? styles.scrollFill : undefined}
+      scrollEnabled={scrollEnabled}
+      onLayout={onScrollLayout}
+      onScroll={onScroll}
+      scrollEventThrottle={16}
+      contentContainerStyle={[
+        styles.scrollContent,
+        contentStyle,
+        scrollBottomPad > 0 ? { paddingBottom: scrollBottomPad } : null,
+      ]}
+      automaticallyAdjustKeyboardInsets={useNativeKeyboardInsets}
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
-      automaticallyAdjustKeyboardInsets={keyboardAware}
       showsVerticalScrollIndicator={false}
     >
-      {children}
+      <View ref={contentRef}>{children}</View>
     </ScrollView>
   ) : (
     <View style={[styles.content, contentStyle]}>{children}</View>
@@ -111,7 +178,7 @@ export function Screen({
 
   const dismissableBody = keyboardAware ? (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>{wrappedBody}</View>
+      <View style={[styles.container, footer || keyboardAware ? styles.scrollFill : null]}>{wrappedBody}</View>
     </TouchableWithoutFeedback>
   ) : (
     wrappedBody
@@ -119,30 +186,55 @@ export function Screen({
 
   return (
     <SafeAreaView edges={safeEdges} style={[styles.container, { backgroundColor: colors.background }, style]}>
-      {dismissableBody}
-      {footer}
+      <ScreenKeyboardPadContext.Provider value={keyboardPad}>
+        <View
+          ref={layoutRef}
+          style={[styles.container, footer ? styles.containerWithFooter : null, { paddingBottom: keyboardPad }]}
+        >
+          {dismissableBody}
+          {footer}
+        </View>
+      </ScreenKeyboardPadContext.Provider>
+      {overlay ? (
+        <View style={styles.overlay} pointerEvents="box-none">
+          {overlay}
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
 
-/** Helper za TextField/PinInput — registrira Y poziciju i scrolla na fokus. */
 export function useRegisterKeyboardField(fieldId: string, onFocus?: () => void) {
   const keyboard = useKeyboardAwareScroll();
+  const viewRef = useRef<View>(null);
 
-  const handleLayout = (event: LayoutChangeEvent) => {
-    keyboard?.registerField(fieldId, event.nativeEvent.layout.y, event.nativeEvent.layout.height);
-  };
+  useEffect(() => {
+    if (!keyboard) {
+      return undefined;
+    }
+    keyboard.registerField(fieldId, viewRef);
+    return () => keyboard.unregisterField(fieldId);
+  }, [fieldId, keyboard]);
 
   const handleFocus = () => {
     onFocus?.();
-    requestAnimationFrame(() => keyboard?.scrollToField(fieldId));
+    keyboard?.setFocusedField(fieldId);
+    requestAnimationFrame(() => {
+      keyboard?.scrollToField(fieldId);
+      if (Platform.OS === 'android') {
+        setTimeout(() => keyboard?.scrollToField(fieldId), 120);
+      }
+    });
   };
 
-  return { handleLayout, handleFocus };
+  return { viewRef, handleFocus };
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  containerWithFooter: {
     flex: 1,
   },
   content: {
@@ -150,5 +242,11 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+  },
+  scrollFill: {
+    flex: 1,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
   },
 });

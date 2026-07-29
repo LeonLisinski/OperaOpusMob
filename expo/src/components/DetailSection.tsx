@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   card: {
     gap: spacing.xs,
     paddingVertical: spacing.md,
+    marginBottom: spacing.md,
   },
   caption: {
     fontSize: typography.size.xs,

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import {
   loadDocumentLines,
@@ -17,15 +17,24 @@ export function useDocumentLinesLoader(): void {
   const route = useAppSelector((state) => state.documents.route);
   const dstLinesForItemId = useAppSelector((state) => state.documents.dstLinesForItemId);
   const dstLinesStatus = useAppSelector((state) => state.documents.dstLinesStatus);
+  const dstRefreshAttemptedFor = useRef<string | null>(null);
+
+  const routeKey = route ? `${route.kind}:${route.folder}` : null;
 
   useEffect(() => {
-    if (!route) {
+    if (!route || !routeKey) {
       return;
     }
-    if (!layoutHasDstActions(layout)) {
-      void dispatch(refreshLayoutDstQueries());
+    if (layoutHasDstActions(layout)) {
+      dstRefreshAttemptedFor.current = routeKey;
+      return;
     }
-  }, [dispatch, layout, route]);
+    if (dstRefreshAttemptedFor.current === routeKey) {
+      return;
+    }
+    dstRefreshAttemptedFor.current = routeKey;
+    void dispatch(refreshLayoutDstQueries());
+  }, [dispatch, layout, route, routeKey]);
 
   useEffect(() => {
     if (!moduleHasDstLines(layout) || !item || !route) {

@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useId, useState, type RefObject } from 'react';
 import {
   Pressable,
@@ -8,7 +9,6 @@ import {
   type KeyboardTypeOptions,
   type TextInputProps,
 } from 'react-native';
-
 import { useRegisterKeyboardField } from '@/components/Screen';
 import { controlHeight, radius, spacing, typography, useTheme } from '@/theme';
 
@@ -47,13 +47,13 @@ export function TextField({
   onFocus,
 }: TextFieldProps) {
   const { colors } = useTheme();
-  const [hidden, setHidden] = useState(secureEntry);
+  const [hidden, setHidden] = useState(() => (secureEntry ? true : false));
   const [focused, setFocused] = useState(false);
   const fieldId = useId();
-  const { handleLayout, handleFocus: scrollToFieldOnFocus } = useRegisterKeyboardField(fieldId, onFocus);
+  const { viewRef, handleFocus: scrollToFieldOnFocus } = useRegisterKeyboardField(fieldId, onFocus);
 
   return (
-    <View style={styles.container} onLayout={handleLayout}>
+    <View ref={viewRef} style={styles.container}>
       <Text style={[styles.label, { color: colors.textMuted }]}>{label}</Text>
       <View
         style={[
@@ -94,8 +94,9 @@ export function TextField({
             accessibilityRole="button"
             accessibilityLabel={hidden ? 'Prikaži unos' : 'Sakrij unos'}
             hitSlop={8}
+            style={styles.toggleButton}
           >
-            <Text style={[styles.toggle, { color: colors.primary }]}>{hidden ? 'Prikaži' : 'Sakrij'}</Text>
+            <Ionicons name={hidden ? 'eye-outline' : 'eye-off-outline'} size={22} color={colors.primary} />
           </Pressable>
         ) : null}
       </View>
@@ -123,9 +124,11 @@ const styles = StyleSheet.create({
     fontSize: typography.size.md,
     paddingVertical: spacing.sm,
   },
-  toggle: {
-    fontSize: typography.size.sm,
-    fontWeight: typography.weight.medium,
-    paddingLeft: spacing.sm,
+  toggleButton: {
+    paddingLeft: spacing.xs,
+    minWidth: 44,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

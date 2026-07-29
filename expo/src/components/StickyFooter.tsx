@@ -2,16 +2,28 @@ import type { PropsWithChildren } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { spacing, useTheme } from '@/theme';
+import { useScreenKeyboardPad } from '@/contexts/ScreenKeyboardPadContext';
+import { controlHeight, spacing, useTheme } from '@/theme';
 
-/**
- * Fiksna zona primarne akcije na dnu ekrana — gumb "Spremi" ostaje dohvatljiv bez
- * scrollanja do kraja forme. Sam nosi donji safe area odmak (v. Screen: kad je zadan
- * `footer`, Screen prepušta donji rub footeru).
- */
-export function StickyFooter({ children }: PropsWithChildren) {
+/** Procjena visine footera (gumb + padding) — rezerva u Screen scrollu kad je footer prisutan. */
+export const STICKY_FOOTER_HEIGHT = controlHeight.lg + spacing.md * 2 + StyleSheet.hairlineWidth;
+
+type StickyFooterProps = PropsWithChildren<{
+  /** false na tab ekranima — tab bar već nosi donji safe area. */
+  safeBottom?: boolean;
+}>;
+
+/** Fiksna zona primarne akcije — Screen diže cijeli layout iznad tipkovnice. */
+export function StickyFooter({ children, safeBottom = true }: StickyFooterProps) {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
+  const keyboardPad = useScreenKeyboardPad();
+  const keyboardOpen = keyboardPad > 0;
+  const bottomPad = keyboardOpen
+    ? spacing.sm
+    : safeBottom
+      ? Math.max(insets.bottom, spacing.md)
+      : spacing.sm;
 
   return (
     <View
@@ -20,7 +32,7 @@ export function StickyFooter({ children }: PropsWithChildren) {
         {
           backgroundColor: colors.surface,
           borderTopColor: colors.border,
-          paddingBottom: Math.max(insets.bottom, spacing.md),
+          paddingBottom: bottomPad,
         },
       ]}
     >

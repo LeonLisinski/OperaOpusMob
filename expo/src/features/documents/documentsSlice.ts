@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import type { ModuleMenuEntry } from '@/features/core/types';
-import { fetchAttachmentRequest, uploadAttachmentsRequest, type AttachmentUploadFile } from '@/services/api/attachmentsApi';
+import { fetchAttachmentRequest, fetchFileFromPathRequest, resolveAttachmentFileName, resolveAttachmentId, uploadAttachmentsRequest, type AttachmentUploadFile } from '@/services/api/attachmentsApi';
 import { fetchDocumentListRequest } from '@/services/api/documentsApi';
 import { fetchModuleLayout } from '@/services/api/layoutsApi';
 import { generateReportRequest } from '@/services/api/reportsApi';
@@ -25,6 +25,7 @@ import {
   parseSearchFields,
 } from './filterUtils';
 import { normalizeModuleLayout } from './layoutContract';
+import { overlayMissingLayoutContent } from './layoutContentPatches';
 import { overlayMissingLayoutQueries } from './layoutQueryPatches';
 import { layoutHasDstActions } from './dstLineHelpers';
 import { resolveModuleRoute } from './moduleRouting';
@@ -116,6 +117,11 @@ function getTenantDb(state: RootState): string {
     state.auth.connection as Record<string, unknown> | undefined,
     state.auth.core?.db ?? '',
   );
+}
+
+/** Ionic `/getatt` i `/saveatt` šalju `auth.db` iz core PIN-a, ne `connection.database` (v. dataHelper.js). */
+function getAttachmentDb(state: RootState): string {
+  return state.auth.core?.db ?? getTenantDb(state);
 }
 
 async function runSpQuery(
@@ -261,11 +267,19 @@ export const loadDocumentModule = createAsyncThunk<
       fallbackFolder: route.fallbackFolder,
     });
 
-    const mergedLayout = overlayMissingLayoutQueries(
-      rawLayout,
+    const folder = route.folder.replace(/\\/g, '/');
+    const layoutModuleKey = route.kind === 'dgl' ? route.sifdv : folder;
+
+    const mergedLayout = overlayMissingLayoutContent(
+      overlayMissingLayoutQueries(
+        rawLayout,
+        core.layoutprefix,
+        folder,
+        layoutModuleKey,
+      ),
       core.layoutprefix,
-      route.folder,
-      route.kind === 'dgl' ? route.sifdv : undefined,
+      folder,
+      layoutModuleKey,
     );
 
     const validation = normalizeModuleLayout(mergedLayout, route);
@@ -676,11 +690,19 @@ export const refreshLayoutDstQueries = createAsyncThunk<
       folder: route.folder,
       fallbackFolder: route.fallbackFolder,
     });
-    const mergedLayout = overlayMissingLayoutQueries(
-      rawLayout,
+    const folder = route.folder.replace(/\\/g, '/');
+    const layoutModuleKey = route.kind === 'dgl' ? route.sifdv : folder;
+
+    const mergedLayout = overlayMissingLayoutContent(
+      overlayMissingLayoutQueries(
+        rawLayout,
+        core.layoutprefix,
+        folder,
+        layoutModuleKey,
+      ),
       core.layoutprefix,
-      route.folder,
-      route.kind === 'dgl' ? route.sifdv : undefined,
+      folder,
+      layoutModuleKey,
     );
     const validation = normalizeModuleLayout(mergedLayout, route);
     if (!validation.ok) {
@@ -753,7 +775,7 @@ export const uploadAttachments = createAsyncThunk<
   try {
     await uploadAttachmentsRequest({
       apiBaseUrl: core.apiBaseUrl,
-      tenantDb: getTenantDb(state),
+      tenantDb: getAttachmentDb(state),
       itemId,
       files,
     });
@@ -777,15 +799,50 @@ export const openAttachment = createAsyncThunk<
   if (!core) {
     return rejectWithValue('Sesija nije spremna.');
   }
-  const id = item.id;
-  if (typeof id !== 'string' && typeof id !== 'number') {
-    return rejectWithValue('Privitak nema identifikator.');
-  }
+
+  let attachmentId: string | number;
   try {
-    const response = await fetchAttachmentRequest({ apiBaseUrl: core.apiBaseUrl, tenantDb: getTenantDb(state), id });
-    await saveAndOpenFile(response.FileName, response.Base64String);
+    attachmentId = resolveAttachmentId(item);
   } catch (error) {
     return rejectWithValue(toUserMessage(error));
+  }
+
+  const fileName = resolveAttachmentFileName(item);
+  const putanja = typeof item.putanja === 'string' && item.putanja.trim().length > 0 ? item.putanja.trim() : null;
+
+  if (__DEV__) {
+    console.log('[attachments] open', { attachmentId, fileName, putanja, keys: Object.keys(item) });
+  }
+
+  try {
+    const response = await fetchAttachmentRequest({
+      apiBaseUrl: core.apiBaseUrl,
+      tenantDb: getAttachmentDb(state),
+      id: attachmentId,
+      fileName,
+    });
+    await saveAndOpenFile(response.FileName, response.Base64String);
+    return;
+  } catch (getAttError) {
+    if (!putanja) {
+      return rejectWithValue(toUserMessage(getAttError));
+    }
+    try {
+      const fromPath = await fetchFileFromPathRequest({
+        apiBaseUrl: core.apiBaseUrl,
+        path: putanja,
+        fileName,
+      });
+      await saveAndOpenFile(fromPath.FileName, fromPath.Base64String);
+    } catch (pathError) {
+      const detail = toUserMessage(pathError);
+      if (/pristup|dohvat.*datotek|putanj/i.test(detail)) {
+        return rejectWithValue(
+          'Datoteka je na mrežnom disku poslužitelja, ali API nema pristup toj putanji. Provjerite prava servisa na \\\\Zj-server-bravo\\ ili otvorite privitak iz Ionic aplikacije na istom okruženju.',
+        );
+      }
+      return rejectWithValue(toUserMessage(getAttError));
+    }
   }
 });
 
@@ -1101,8 +1158,11 @@ const documentsSlice = createSlice({
         state.attachmentUploadStatus = { loading: false, error: action.payload ?? 'Slanje privitka nije uspjelo.' };
       })
       .addCase(openAttachment.pending, (state, action) => {
-        const id = action.meta.arg.id;
-        state.attachmentOpeningId = typeof id === 'string' || typeof id === 'number' ? id : null;
+        try {
+          state.attachmentOpeningId = resolveAttachmentId(action.meta.arg);
+        } catch {
+          state.attachmentOpeningId = null;
+        }
         state.attachmentOpenError = null;
       })
       .addCase(openAttachment.fulfilled, (state) => {

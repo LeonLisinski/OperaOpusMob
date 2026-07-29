@@ -1,6 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useId } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { DateField } from '@/components/DateField';
+import { useRegisterKeyboardField } from '@/components/Screen';
 import { TextField } from '@/components/TextField';
 import { updateEditFormData, updateEditValues } from '@/features/documents/documentsSlice';
 import type { EditFieldDef } from '@/features/documents/types';
@@ -16,8 +19,7 @@ interface EditFormFieldProps {
 
 /**
  * Jedna kontrola forme prema *EditItems.json (v. .cursor/rules/30-api-database-layouts.mdc).
- * Datum ostaje ručni YYYY-MM-DD unos, dosljedno s DocumentFilterModal (D018) — bez novog
- * date-picker dependencyja dok se ne odobri i runtime-potvrdi.
+ * Datumi koriste DateField (prikaz dd.MM.yyyy, API ISO) — ekvivalent legacy DatePicker modala.
  */
 export function EditFormField({ field, editingExisting, onOpenSearch }: EditFormFieldProps) {
   const dispatch = useAppDispatch();
@@ -44,30 +46,13 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
   }
 
   if (field.type === 'memo') {
-    const value = String(values[field.selectFieldKey] ?? '');
     return (
-      <View style={styles.container}>
-        <Text style={[styles.label, { color: colors.textMuted }]}>{field.caption}</Text>
-        <TextInput
-          value={value}
-          onChangeText={(text) => setValue({ [field.selectFieldKey]: text }, text)}
-          editable={!disabled}
-          multiline
-          textAlignVertical="top"
-          placeholderTextColor={colors.textSubtle}
-          style={[
-            styles.memo,
-            {
-              color: colors.text,
-              backgroundColor: disabled ? colors.surfaceMuted : colors.surface,
-              borderColor: colors.border,
-            },
-          ]}
-        />
-        {value.length > 0 ? (
-          <Text style={[styles.counter, { color: colors.textSubtle }]}>{`${value.length} znakova`}</Text>
-        ) : null}
-      </View>
+      <MemoField
+        label={field.caption}
+        value={String(values[field.selectFieldKey] ?? '')}
+        editable={!disabled}
+        onChangeText={(text) => setValue({ [field.selectFieldKey]: text }, text)}
+      />
     );
   }
 
@@ -75,13 +60,11 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
     const raw = values[field.selectFieldKey];
     const iso = typeof raw === 'string' ? raw.slice(0, 10) : '';
     return (
-      <TextField
-        label={`${field.caption} (GGGG-MM-DD)`}
+      <DateField
+        label={field.caption}
         value={iso}
-        onChangeText={(text) => setValue({ [field.selectFieldKey]: text }, text || null)}
         editable={!disabled}
-        keyboardType="numbers-and-punctuation"
-        autoComplete="off"
+        onChangeIso={(next) => setValue({ [field.selectFieldKey]: next ?? '' }, next)}
       />
     );
   }
@@ -117,6 +100,48 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
         </Text>
         {!disabled ? <Ionicons name="chevron-forward" size={18} color={colors.textSubtle} /> : null}
       </Pressable>
+    </View>
+  );
+}
+
+function MemoField({
+  label,
+  value,
+  editable,
+  onChangeText,
+}: {
+  label: string;
+  value: string;
+  editable: boolean;
+  onChangeText: (text: string) => void;
+}) {
+  const { colors } = useTheme();
+  const fieldId = useId();
+  const { viewRef, handleFocus } = useRegisterKeyboardField(fieldId);
+
+  return (
+    <View ref={viewRef} style={styles.container}>
+      <Text style={[styles.label, { color: colors.textMuted }]}>{label}</Text>
+      <TextInput
+        value={value}
+        onChangeText={onChangeText}
+        onFocus={handleFocus}
+        editable={editable}
+        multiline
+        textAlignVertical="top"
+        placeholderTextColor={colors.textSubtle}
+        style={[
+          styles.memo,
+          {
+            color: colors.text,
+            backgroundColor: editable ? colors.surface : colors.surfaceMuted,
+            borderColor: colors.border,
+          },
+        ]}
+      />
+      {value.length > 0 ? (
+        <Text style={[styles.counter, { color: colors.textSubtle }]}>{`${value.length} znakova`}</Text>
+      ) : null}
     </View>
   );
 }

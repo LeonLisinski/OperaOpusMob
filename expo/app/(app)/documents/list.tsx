@@ -4,13 +4,13 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { DocumentFilterModal } from '@/components/DocumentFilterModal';
 import { DocumentListToolbar } from '@/components/DocumentListToolbar';
-import { DynamicListItem } from '@/components/DynamicListItem';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { Fab } from '@/components/Fab';
 import { LoadingState } from '@/components/LoadingState';
 import { RetryState } from '@/components/RetryState';
 import { Screen } from '@/components/Screen';
+import { SwipeableDocumentRow } from '@/components/SwipeableDocumentRow';
 import {
   loadDocumentModule,
   openFilterEditor,
@@ -18,6 +18,7 @@ import {
   selectListItem,
   startEditForm,
 } from '@/features/documents/documentsSlice';
+import { isTruthyApiField } from '@/features/documents/dstLineHelpers';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { spacing } from '@/theme';
 
@@ -54,6 +55,12 @@ export default function DocumentsListScreen() {
   const onItemPress = (item: Record<string, unknown>) => {
     dispatch(selectListItem(item));
     router.push('/(app)/documents/doc');
+  };
+
+  const onEditItem = (item: Record<string, unknown>) => {
+    dispatch(selectListItem(item));
+    dispatch(startEditForm(item));
+    router.push('/(app)/documents/form');
   };
 
   const onOpenFilter = () => {
@@ -93,7 +100,10 @@ export default function DocumentsListScreen() {
   const isListEmpty = list.length === 0 && !listStatus.loading;
 
   return (
-    <Screen style={styles.screen}>
+    <Screen
+      style={styles.screen}
+      overlay={canCreateNew ? <Fab onPress={onNewPress} accessibilityLabel="Novi dokument" /> : null}
+    >
       <DocumentListToolbar onOpenFilter={onOpenFilter} />
 
       <FlatList
@@ -105,6 +115,7 @@ export default function DocumentsListScreen() {
         onRefresh={() => dispatch(refreshDocumentList())}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        automaticallyAdjustKeyboardInsets
         ListHeaderComponent={listStatus.error ? <ErrorMessage message={listStatus.error} /> : null}
         ListEmptyComponent={
           isSearchEmpty ? (
@@ -121,12 +132,17 @@ export default function DocumentsListScreen() {
             />
           )
         }
-        renderItem={({ item }) => (
-          <DynamicListItem groups={layout?.listItems ?? []} item={item} onPress={() => onItemPress(item)} />
+        renderItem={({ item, index }) => (
+          <SwipeableDocumentRow
+            groups={layout?.listItems ?? []}
+            item={item}
+            index={index}
+            editable={isTruthyApiField(item.editable)}
+            onPress={() => onItemPress(item)}
+            onEdit={() => onEditItem(item)}
+          />
         )}
       />
-
-      {canCreateNew ? <Fab onPress={onNewPress} accessibilityLabel="Novi dokument" /> : null}
 
       <DocumentFilterModal visible={filterVisible} onClose={() => setFilterVisible(false)} />
     </Screen>
@@ -141,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContent: {
-    gap: spacing.sm,
+    gap: spacing.md,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     paddingBottom: spacing.xxl,

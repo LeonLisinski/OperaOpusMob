@@ -31,8 +31,8 @@ export function toUserMessage(error: unknown): string {
   if (isApiError(error)) {
     return error.message;
   }
-  if (error instanceof Error) {
-    return 'Došlo je do neočekivane greške. Pokušajte ponovno.';
+  if (error instanceof Error && error.message.trim().length > 0) {
+    return error.message;
   }
   return 'Došlo je do neočekivane greške. Pokušajte ponovno.';
 }

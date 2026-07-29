@@ -6,7 +6,7 @@ import { Card } from '@/components/Card';
 import { EditFormField } from '@/components/EditFormField';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { HeaderTextButton } from '@/components/HeaderTextButton';
+import { HeaderCloseButton } from '@/components/HeaderCloseButton';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { SifarnikSearchModal } from '@/components/SifarnikSearchModal';
@@ -40,7 +40,9 @@ export default function DstFormScreen() {
   useEffect(() => {
     navigation.setOptions({
       title: isExistingRecord ? 'Editiranje stavke' : isSubItem ? 'Unos nove podstavke' : 'Unos nove stavke',
-      headerLeft: () => <HeaderTextButton label="Odustani" onPress={handleCancel} />,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      headerRight: () => <HeaderCloseButton onPress={handleCancel} />,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, isExistingRecord, isSubItem]);

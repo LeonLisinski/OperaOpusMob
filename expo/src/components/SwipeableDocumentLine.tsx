@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRef, type ComponentRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 
 import { DynamicListItem } from '@/components/DynamicListItem';
@@ -140,9 +140,9 @@ export function SwipeableDocumentLine({
 
   const rowContent =
     onPress && !locked ? (
-      <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+      <Pressable onPress={onPress} accessibilityRole="button">
         {listItem}
-      </TouchableOpacity>
+      </Pressable>
     ) : (
       listItem
     );

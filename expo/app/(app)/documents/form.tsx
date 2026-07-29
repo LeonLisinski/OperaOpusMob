@@ -6,7 +6,7 @@ import { Card } from '@/components/Card';
 import { EditFormField } from '@/components/EditFormField';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { HeaderTextButton } from '@/components/HeaderTextButton';
+import { HeaderCloseButton } from '@/components/HeaderCloseButton';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { SifarnikSearchModal } from '@/components/SifarnikSearchModal';
@@ -38,7 +38,9 @@ export default function DocumentFormScreen() {
   useEffect(() => {
     navigation.setOptions({
       title: isExistingRecord ? 'Uređivanje' : 'Novi zapis',
-      headerLeft: () => <HeaderTextButton label="Odustani" onPress={handleCancel} />,
+      headerBackVisible: false,
+      headerLeft: () => null,
+      headerRight: () => <HeaderCloseButton onPress={handleCancel} />,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigation, isExistingRecord]);

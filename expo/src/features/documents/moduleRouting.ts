@@ -13,7 +13,7 @@ const GEN_URL_PATTERN = /^\/gen\/list\/([^/]+)\/([^/]+)/i;
 export function resolveModuleRoute(module: ModuleMenuEntry, sifgrupe: string | number | undefined): ModuleRoute | null {
   const url = typeof module.url === 'string' ? module.url : '';
 
-  const dglMatch = DGL_URL_PATTERN.exec(url);
+  const dglMatch = DGL_URL_PATTERN.exec(url.trim().replace(/\/+$/, ''));
   if (dglMatch) {
     const sifdv = dglMatch[1];
     const group = sifgrupe !== undefined && sifgrupe !== null ? String(sifgrupe) : '';
@@ -31,7 +31,8 @@ export function resolveModuleRoute(module: ModuleMenuEntry, sifgrupe: string | n
     };
   }
 
-  const genMatch = GEN_URL_PATTERN.exec(url);
+  const normalizedUrl = url.trim().replace(/\/+$/, '');
+  const genMatch = GEN_URL_PATTERN.exec(normalizedUrl);
   if (genMatch) {
     const [, app, mod] = genMatch;
     return {
