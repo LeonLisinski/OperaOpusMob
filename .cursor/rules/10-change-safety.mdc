@@ -12,11 +12,12 @@ Ovo su granice, ne preporuke. Prekoračenje traži eksplicitno odobrenje korisni
 3. **Nijedan layout u `MobLayoutsControls/` se ne mijenja** bez eksplicitno odobrenog zadatka za taj konkretan layout.
 4. **Produkcijske konfiguracije se ne mijenjaju** — `src/constants.ts`, `capacitor.config.ts`, `android/**`, `vite.config.ts`, `package.json` ovisnosti.
 5. **Git write operacije** — ne izvršavaj `git add`, commit, push, reset, rebase, checkout s odbacivanjem promjena ili druge Git write operacije bez eksplicitnog zahtjeva korisnika.
-6. **Nove ovisnosti** smiju se dodati samo uz: dokazanu potrebu, provjeru postoji li već odgovarajuće rješenje, procjenu održavanja i kompatibilnosti, te eksplicitno odobrenje.
-7. **Nema usputnih refactora** izvan opsega zadatka. Loš obrazac koji se primijeti usput se prijavljuje, ne popravlja.
-8. **Postojeće ponašanje se ne uklanja** dok zamjena nije potvrđena kao funkcionalno jednaka.
-9. **Autentikacija se ne mijenja** dok se ne razriješi backend strana (`/login` shema, Basic auth) — v. `docs/ai/OPEN_QUESTIONS.md`.
-10. **`API/` ne dirati** osim ako endpoint stvarno ne radi ili nedostaje — prilagodbe idu kroz **`MobLayoutsControls/` JSON** i **`spMob_*` procedure** (isti princip kao web). Referenca ponašanja: radni Ionic klijent (`dataHelper.js`), ne nužno svaki file u `API/`.
+6. **Push samo na GitHub** — dok Expo migracija nije spremna za firmu, `git push` ide **isključivo** na remote `github` (`LeonLisinski/OperaOpusMob`). Remote `origin` je TFS (`devops:8080`) — **nikad** pushati na `origin` bez eksplicitnog odobrenja za TFS deploy; kad Expo bude gotov, ide u **novi** TFS repo, ne u postojeći `ERP-IONIC7`.
+7. **Nove ovisnosti** smiju se dodati samo uz: dokazanu potrebu, provjeru postoji li već odgovarajuće rješenje, procjenu održavanja i kompatibilnosti, te eksplicitno odobrenje.
+8. **Nema usputnih refactora** izvan opsega zadatka. Loš obrazac koji se primijeti usput se prijavljuje, ne popravlja.
+9. **Postojeće ponašanje se ne uklanja** dok zamjena nije potvrđena kao funkcionalno jednaka.
+10. **Autentikacija se ne mijenja** dok se ne razriješi backend strana (`/login` shema, Basic auth) — v. `docs/ai/OPEN_QUESTIONS.md`.
+11. **`API/` ne dirati** osim ako endpoint stvarno ne radi ili nedostaje — prilagodbe idu kroz **`MobLayoutsControls/` JSON** i **`spMob_*` procedure** (isti princip kao web). Referenca ponašanja: radni Ionic klijent (`dataHelper.js`), ne nužno svaki file u `API/`.
 
 ## Kad nešto nije potvrđeno
 
