@@ -82,7 +82,9 @@ export function SifarnikSearchModal({ visible, field, onClose, onSelect }: Sifar
         korime: user.korime,
         search,
         parentId,
-        extraParams: { ...extraParams, azurFieldKey: field.azurFieldKey },
+        // azurFieldKey je ključ forme, ne SP parametar — TFS spMob_CRM_Sifarnici_Query ga nema
+        // (Ionic search.jsx ga šalje, ali server ga odbija).
+        extraParams,
       });
       const data = normalizeDocumentList(raw);
       setOriginalRows(data);

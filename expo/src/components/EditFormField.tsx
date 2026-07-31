@@ -6,9 +6,35 @@ import { DateField } from '@/components/DateField';
 import { useRegisterKeyboardField } from '@/components/Screen';
 import { TextField } from '@/components/TextField';
 import { updateEditFormData, updateEditValues } from '@/features/documents/documentsSlice';
+import { parseIsoDateParts, toIsoDate } from '@/features/documents/format';
 import type { EditFieldDef } from '@/features/documents/types';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { controlHeight, radius, spacing, typography, useTheme } from '@/theme';
+
+/** Normalizira datum iz SP-a (ISO, datetime, dd.MM.yyyy) u YYYY-MM-DD za DateField. */
+function toEditIsoDate(raw: unknown): string {
+  if (typeof raw !== 'string' && !(raw instanceof Date)) {
+    return '';
+  }
+  if (raw instanceof Date) {
+    return Number.isNaN(raw.getTime()) ? '' : toIsoDate(raw);
+  }
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return '';
+  }
+  const fromIso = parseIsoDateParts(trimmed.slice(0, 10));
+  if (fromIso) {
+    return toIsoDate(fromIso);
+  }
+  const dmy = /^(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(trimmed);
+  if (dmy) {
+    const date = new Date(Number(dmy[3]), Number(dmy[2]) - 1, Number(dmy[1]));
+    return Number.isNaN(date.getTime()) ? '' : toIsoDate(date);
+  }
+  const parsed = new Date(trimmed);
+  return Number.isNaN(parsed.getTime()) ? '' : toIsoDate(parsed);
+}
 
 interface EditFormFieldProps {
   field: EditFieldDef;
@@ -35,12 +61,15 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
 
   if (field.type === 'text') {
     const value = String(values[field.selectFieldKey] ?? '');
+    const isHoursField = field.azurFieldKey.toLowerCase() === 'dstdatum2temp';
     return (
       <TextField
         label={field.caption}
         value={value}
         onChangeText={(text) => setValue({ [field.selectFieldKey]: text }, text)}
         editable={!disabled}
+        keyboardType={isHoursField ? 'number-pad' : 'default'}
+        placeholder={isHoursField ? 'npr. 2 ili 0200 (HHmm)' : undefined}
       />
     );
   }
@@ -57,8 +86,7 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
   }
 
   if (field.type === 'date') {
-    const raw = values[field.selectFieldKey];
-    const iso = typeof raw === 'string' ? raw.slice(0, 10) : '';
+    const iso = toEditIsoDate(values[field.selectFieldKey]);
     return (
       <DateField
         label={field.caption}

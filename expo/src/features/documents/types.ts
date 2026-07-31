@@ -118,15 +118,15 @@ export interface ModuleLayout {
   azurQuery?: QueryDef;
   /** queries.{group}.sifarnici — override zadanog spMob_DGL_Sifarnici (v. search.jsx). */
   sifarniciQuery?: QueryDef;
+  /** queries.gla.createdoc — gen tab Akcije (v. gen/tabs/TabAkcije.jsx, npr. CRM Upiti). */
+  createDocQuery?: QueryDef;
   /** queries.dst.list — dohvat stavki dokumenta (v. dgl/store getListItem). Opcionalno; gen moduli često nemaju dst. */
   dstListQuery?: QueryDef;
   dstListItems: ListItemLayoutGroup[];
   dstListItemsRad: ListItemLayoutGroup[];
   /**
-   * queries.dst.azur — spremanje stavke. NAMJERNO nema hardkodiranog fallbacka (za razliku od
-   * Ionic src/pages/dgl/store saveDoc koji uvijek zove spMob_ZJUKIC_DST_Azur bez obzira na
-   * tenanta — v. DECISION_LOG.md D025). Ako nedostaje, spremanje stavke se odbija s jasnom
-   * porukom umjesto tihog poziva tuđeg tenant SP-a.
+   * queries.dst.azur — spremanje stavke. Ako JSON nema ključ, runtime patch iz
+   * layoutQueryPatches.ts izvodi SP iz queries.dst.list (Ionic hardkod paritet).
    */
   dstAzurQuery?: QueryDef;
   /**

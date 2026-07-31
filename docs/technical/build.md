@@ -20,9 +20,10 @@ Prvi native build traje duže (preuzimanje Gradle/CocoaPods ovisnosti).
 | Polje | Vrijednost |
 |---|---|
 | Android package | `com.opera.mobile` |
+| iOS bundle ID | `com.opera.mobile` |
+| EAS konfiguracija | `expo/eas.json` (development / preview / production profile) |
 | Scheme | `operamobile` |
 | Orientacija | portrait |
-| iOS bundle ID | **nije postavljen** - potrebno prije App Store builda |
 
 Verzija: `expo.version` (trenutno `1.0.0`).
 

@@ -8,6 +8,7 @@
     "scheme": "operamobile",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "bundleIdentifier": "com.opera.mobile",
       "icon": "./assets/expo.icon"
     },
     "android": {

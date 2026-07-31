@@ -11,24 +11,27 @@ import {
   normalizeMenuResponse,
   normalizeModuleSettings,
   normalizeSingleRow,
+  readRowField,
 } from '@/services/api/responseNormalizers';
 import { saveAndOpenFile } from '@/services/files/fileViewer';
 import type { RootState } from '@/store';
 import { toUserMessage } from '@/types/api';
 
 import {
+  applyCachedFilterPreferences,
   buildListRequestParams,
   cloneFilter,
   createDefaultFilter,
   filterListBySearch,
   mergeStatusesWithDefaults,
+  moduleFilterCacheKey,
   parseSearchFields,
 } from './filterUtils';
 import { normalizeModuleLayout } from './layoutContract';
 import { overlayMissingLayoutContent } from './layoutContentPatches';
 import { overlayMissingLayoutQueries } from './layoutQueryPatches';
 import { layoutHasDstActions } from './dstLineHelpers';
-import { resolveModuleRoute } from './moduleRouting';
+import { resolveModuleRoute, buildDglModuleRoute } from './moduleRouting';
 import type { DocumentFilter, DstLineKind, EditControlValues, EditFieldDef, ModuleLayout, ModuleRoute, QueryDef, StatusFilterItem } from './types';
 
 interface RequestStatus {
@@ -47,6 +50,8 @@ interface DocumentsState {
   filter: DocumentFilter;
   filterBaseline: DocumentFilter;
   filterTemp: DocumentFilter | null;
+  /** Aktivni filter po modulu — pamti se pri prelasku Upiti↔RN i povratku u isti modul. */
+  filterCache: Record<string, DocumentFilter>;
   searchQuery: string;
   searchFields: string[];
   settings: Record<string, unknown>;
@@ -92,6 +97,7 @@ const initialState: DocumentsState = {
   filter: createDefaultFilter(),
   filterBaseline: createDefaultFilter(),
   filterTemp: null,
+  filterCache: {},
   searchQuery: '',
   searchFields: [],
   settings: {},
@@ -136,6 +142,100 @@ async function runSpQuery(
     sp: query.sp,
     params: { ...query.params, ...params },
   });
+}
+
+/**
+ * spMob_UpdateDstRow pretvara dstdatum2temp (HHmm) u datetime:
+ * `'1900-01-01 ' + HH + ':' + mm`. Unos "2" → "1900-01-01 2:" → CAST fail → 3930.
+ */
+function normalizeHhmmHours(raw: unknown): string | null {
+  if (raw === null || raw === undefined) {
+    return null;
+  }
+  const text = String(raw).trim().replace(',', '.');
+  if (!text) {
+    return null;
+  }
+  const colon = /^(\d{1,2}):(\d{1,2})$/.exec(text);
+  if (colon) {
+    const hh = Math.min(23, Number(colon[1]));
+    const mm = Math.min(59, Number(colon[2]));
+    return `${String(hh).padStart(2, '0')}${String(mm).padStart(2, '0')}`;
+  }
+  const digits = text.replace(/\D/g, '');
+  if (!digits) {
+    return null;
+  }
+  if (digits.length <= 2) {
+    const hh = Math.min(23, Number(digits));
+    return `${String(hh).padStart(2, '0')}00`;
+  }
+  if (digits.length === 3) {
+    return `0${digits}`;
+  }
+  return digits.slice(0, 4);
+}
+
+/** Priprema jsonUpdatedValues: HHmm normalizacija, bez praznih stringova. */
+function sanitizeDstJsonPayload(formData: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(formData)) {
+    if (value === null || value === undefined) {
+      continue;
+    }
+    if (typeof value === 'string' && value.trim() === '') {
+      continue;
+    }
+    if (key.toLowerCase() === 'dstdatum2temp') {
+      const hhmm = normalizeHhmmHours(value);
+      if (hhmm) {
+        out[key] = hhmm;
+      }
+      continue;
+    }
+    out[key] = value;
+  }
+  return out;
+}
+
+/**
+ * CreateDoc (zjukic) SELECT vraća samo DGLID/BrojDokumenta; SifDV je na DGL retku.
+ * spMob_DGL_Query nema action getSifDv (samo 'rn') — Ionic getSifDvById je mrtav kod.
+ * ZJUKIC lista vraća SifDV kao "Vrsta radnog naloga".
+ */
+function readSifdvFromDglRow(row: Record<string, unknown> | null): string | null {
+  if (!row) {
+    return null;
+  }
+  const sifdv = readRowField(row, 'sifdv', 'vrsta radnog naloga');
+  return typeof sifdv === 'string' && sifdv.trim().length > 0 ? sifdv.trim() : null;
+}
+
+async function resolveSifdvForCreatedRn(
+  apiBaseUrl: string,
+  tenantDb: string,
+  dglid: string | number,
+  korime: string,
+): Promise<string | null> {
+  const lookups: Array<{ sp: string; params: Record<string, unknown> }> = [
+    { sp: 'spMob_ZJUKIC_DGL_Query', params: { action: 'get', dglid, korime } },
+    { sp: 'spMob_DGL_RadniNalozi_Query', params: { action: 'get', dglid, korime } },
+  ];
+
+  for (const lookup of lookups) {
+    try {
+      const raw = await runSpQuery(apiBaseUrl, tenantDb, { sp: lookup.sp }, lookup.params);
+      const row = normalizeDocumentList(raw)[0] ?? normalizeSingleRow(raw);
+      const sifdv = readSifdvFromDglRow(row);
+      if (sifdv) {
+        return sifdv;
+      }
+    } catch {
+      // nastavi na sljedeći SP
+    }
+  }
+
+  return null;
 }
 
 function mapStatusRows(raw: unknown): StatusFilterItem[] {
@@ -210,6 +310,28 @@ async function bootstrapFilters(
   return filter;
 }
 
+async function resolveFilterForModule(
+  layout: ModuleLayout,
+  route: ModuleRoute,
+  apiBaseUrl: string,
+  tenantDb: string,
+  korime: string,
+  cached: DocumentFilter | undefined,
+): Promise<{ filter: DocumentFilter; filterBaseline: DocumentFilter }> {
+  const filterBaseline = await bootstrapFilters(layout, route, apiBaseUrl, tenantDb, korime);
+  const filter = cached
+    ? applyCachedFilterPreferences(filterBaseline, cached)
+    : cloneFilter(filterBaseline);
+  return { filter, filterBaseline };
+}
+
+function rememberFilterInCache(state: DocumentsState) {
+  if (!state.route) {
+    return;
+  }
+  state.filterCache[moduleFilterCacheKey(state.route)] = cloneFilter(state.filter);
+}
+
 export const applyDocumentFilters = createAsyncThunk<
   { filter: DocumentFilter; list: Record<string, unknown>[] },
   void,
@@ -237,12 +359,23 @@ export const applyDocumentFilters = createAsyncThunk<
   }
 });
 
+function isSameDocumentModule(current: ModuleRoute | null, next: ModuleRoute | null): boolean {
+  if (!current || !next || current.kind !== next.kind) {
+    return false;
+  }
+  if (current.kind === 'dgl' && next.kind === 'dgl') {
+    return current.sifdv === next.sifdv && current.folder === next.folder;
+  }
+  return current.folder === next.folder;
+}
+
 export const loadDocumentModule = createAsyncThunk<
   {
     route: ModuleRoute;
     layout: ModuleLayout;
     list: Record<string, unknown>[];
     filter: DocumentFilter;
+    filterBaseline: DocumentFilter;
     searchFields: string[];
     settings: Record<string, unknown>;
   },
@@ -301,7 +434,16 @@ export const loadDocumentModule = createAsyncThunk<
       searchFields = parseSearchFields(settings.searchfields);
     }
 
-    const filter = await bootstrapFilters(validation.layout, route, core.apiBaseUrl, tenantDb, user.korime);
+    const cacheKey = moduleFilterCacheKey(route);
+    const cached = getState().documents.filterCache[cacheKey];
+    const { filter, filterBaseline } = await resolveFilterForModule(
+      validation.layout,
+      route,
+      core.apiBaseUrl,
+      tenantDb,
+      user.korime,
+      cached,
+    );
     const list = await fetchListForModule(
       route,
       validation.layout,
@@ -312,10 +454,21 @@ export const loadDocumentModule = createAsyncThunk<
       user.sifosobe as string | number | undefined,
     );
 
-    return { route, layout: validation.layout, list, filter, searchFields, settings };
+    return { route, layout: validation.layout, list, filter, filterBaseline, searchFields, settings };
   } catch (error) {
     return rejectWithValue(toUserMessage(error));
   }
+}, {
+  // Nakon Akcije→RN već je učitan isti dgl modul — ne briši selectedItem/route reloadom liste.
+  condition: (module, { getState }) => {
+    const state = getState();
+    if (state.documents.layoutStatus.loading) {
+      return false;
+    }
+    const sifgrupe = state.auth.user?.sifgrupe as string | number | undefined;
+    const next = resolveModuleRoute(module, sifgrupe);
+    return !isSameDocumentModule(state.documents.route, next);
+  },
 });
 
 export const refreshDocumentList = createAsyncThunk<Record<string, unknown>[], void, { state: RootState; rejectValue: string }>(
@@ -549,7 +702,19 @@ export const saveDstLine = createAsyncThunk<void, void, { state: RootState; reje
     }
 
     const extendsItems = dstEditContext.kind === 'rad' ? layout.dstEditItemsRadExtends : layout.dstEditItemsExtends;
-    const jsonUpdatedValues = JSON.stringify({ ...editFormData, ...extendsItems });
+    // Ionic DetailAzurNew stavlja parentdstid/s u formData → jsonUpdatedValues,
+    // ne kao top-level SP parametre (spMob_*_DST_Azur ih nema — v. TFS SP potpis).
+    const payload: Record<string, unknown> = {
+      ...sanitizeDstJsonPayload(editFormData),
+      ...extendsItems,
+    };
+    if (dstEditContext.parentId !== null) {
+      payload.parentdstid = dstEditContext.parentId;
+      payload.s = 2;
+    }
+    if (dstEditContext.dstId != null) {
+      payload.dstid = dstEditContext.dstId;
+    }
 
     const params: Record<string, unknown> = {
       ...layout.dstAzurQuery.params,
@@ -558,11 +723,11 @@ export const saveDstLine = createAsyncThunk<void, void, { state: RootState; reje
       dstid: dstEditContext.dstId ?? undefined,
       korime: user.korime,
       sifosobe: user.sifosobe,
-      jsonUpdatedValues,
+      jsonUpdatedValues: JSON.stringify(payload),
     };
-    if (dstEditContext.parentId !== null) {
-      params.parentdstid = dstEditContext.parentId;
-      params.s = 2;
+
+    if (__DEV__) {
+      console.info('[documents/saveDstLine] jsonUpdatedValues', payload);
     }
 
     try {
@@ -718,6 +883,175 @@ export const refreshLayoutDstQueries = createAsyncThunk<
 export function moduleHasAttachments(route: ModuleRoute | null, layout: ModuleLayout | null): boolean {
   return route?.kind === 'dgl' && !!layout?.priloziQuery;
 }
+
+/** gen tab Akcije — v. src/pages/gen/tabs/TabAkcije.jsx (queries.gla.createdoc). */
+export function moduleHasActions(route: ModuleRoute | null, layout: ModuleLayout | null): boolean {
+  return route?.kind === 'gen' && !!layout?.createDocQuery;
+}
+
+/**
+ * Kreira povezani dokument (npr. radni nalog iz CRM upita) — gen/store createDoc.
+ * Vraća prvi redak SP odgovora (brojdokumenta, dglid, sifdv…).
+ */
+export const createLinkedDocument = createAsyncThunk<
+  { dglid: string | number; brojdokumenta: string; sifdv: string },
+  void,
+  { state: RootState; rejectValue: string }
+>('documents/createLinkedDocument', async (_, { getState, rejectWithValue }) => {
+  const state = getState();
+  const { route, layout, selectedItem } = state.documents;
+  const { core, user } = state.auth;
+  if (!route || route.kind !== 'gen' || !layout?.createDocQuery || !selectedItem || !core || !user) {
+    return rejectWithValue('Kreiranje povezanog dokumenta nije dostupno.');
+  }
+  const itemId = readItemId(route, selectedItem);
+  if (itemId === undefined) {
+    return rejectWithValue('Zapis nema identifikator za kreiranje dokumenta.');
+  }
+  if (!route.app || !route.module) {
+    return rejectWithValue('Modul nema app/module parametre.');
+  }
+
+  try {
+    const tenantDb = getTenantDb(state);
+    const raw = await runSpQuery(core.apiBaseUrl, tenantDb, layout.createDocQuery, {
+      ...layout.createDocQuery.params,
+      app: route.app,
+      module: route.module,
+      korime: user.korime,
+      sifosobe: user.sifosobe,
+      id: itemId,
+    });
+    if (__DEV__) {
+      console.info('[documents/createLinkedDocument] raw', raw);
+    }
+    const rows = normalizeDocumentList(raw);
+    const created = rows[0];
+    if (!created) {
+      return rejectWithValue('Server nije vratio podatke o kreiranom dokumentu.');
+    }
+
+    const dglidRaw = readRowField(created, 'dglid');
+    const dglid =
+      typeof dglidRaw === 'number' || typeof dglidRaw === 'string' ? dglidRaw : undefined;
+    if (dglid === undefined) {
+      return rejectWithValue('Server nije vratio dglid kreiranog dokumenta.');
+    }
+
+    let sifdv = readSifdvFromDglRow(created);
+    if (!sifdv) {
+      sifdv = await resolveSifdvForCreatedRn(core.apiBaseUrl, tenantDb, dglid, user.korime);
+    }
+    if (!sifdv) {
+      return rejectWithValue(
+        `Radni nalog je kreiran (broj=${readRowField(created, 'brojdokumenta') ?? dglid}), ali nije moguće pročitati vrstu dokumenta (sifdv) za otvaranje. Otvorite ga iz modula Radni nalozi.`,
+      );
+    }
+
+    const broj = String(readRowField(created, 'brojdokumenta', 'broj') ?? '');
+    return { dglid, brojdokumenta: broj, sifdv };
+  } catch (error) {
+    return rejectWithValue(toUserMessage(error));
+  }
+});
+
+/**
+ * Otvara kreirani radni nalog u dgl kontekstu — Ionic TabAkcije openSRN:
+ * selectApp(servis-mobile) + selectModuleBySifDv + layout/list + copyRNfromUpit.
+ * Bez prebacivanja selectedModule ostaje "Upiti" u headeru, a route/layout postanu RN
+ * → korisnik vidi upite u listi s RN tabovima (Info/Stavke/Privitci).
+ */
+export const openRadniNalogFromUpit = createAsyncThunk<
+  {
+    route: ModuleRoute;
+    layout: ModuleLayout;
+    selectedItem: Record<string, unknown>;
+    filter: DocumentFilter;
+    filterBaseline: DocumentFilter;
+    list: Record<string, unknown>[];
+    searchFields: string[];
+    settings: Record<string, unknown>;
+  },
+  { sifdv: string; dglid: string | number },
+  { state: RootState; rejectValue: string }
+>('documents/openRadniNalogFromUpit', async ({ sifdv, dglid }, { getState, rejectWithValue }) => {
+  const state = getState();
+  const { core, user } = state.auth;
+  if (!core || !user) {
+    return rejectWithValue('Sesija nije spremna.');
+  }
+
+  const route = buildDglModuleRoute(sifdv, user.sifgrupe as string | number | undefined);
+
+  try {
+    const rawLayout = await fetchModuleLayout({
+      apiBaseUrl: core.apiBaseUrl,
+      layoutPrefix: core.layoutprefix,
+      folder: route.folder,
+      fallbackFolder: route.fallbackFolder,
+    });
+
+    const folder = route.folder.replace(/\\/g, '/');
+    const mergedLayout = overlayMissingLayoutContent(
+      overlayMissingLayoutQueries(rawLayout, core.layoutprefix, folder, route.sifdv),
+      core.layoutprefix,
+      folder,
+      route.sifdv,
+    );
+    const validation = normalizeModuleLayout(mergedLayout, route);
+    if (!validation.ok) {
+      return rejectWithValue(validation.error);
+    }
+
+    const layout = validation.layout;
+    const tenantDb = getTenantDb(state);
+
+    let settings: Record<string, unknown> = {};
+    let searchFields: string[] = [];
+    if (layout.settingsQuery) {
+      const settingsRaw = await runSpQuery(core.apiBaseUrl, tenantDb, layout.settingsQuery, {
+        korime: user.korime,
+        sifosobe: user.sifosobe,
+        sifdv: route.sifdv,
+      });
+      settings = normalizeModuleSettings(settingsRaw);
+      searchFields = parseSearchFields(settings.searchfields);
+    }
+
+    const cacheKey = moduleFilterCacheKey(route);
+    const cached = getState().documents.filterCache[cacheKey];
+    const { filter, filterBaseline } = await resolveFilterForModule(
+      layout,
+      route,
+      core.apiBaseUrl,
+      tenantDb,
+      user.korime,
+      cached,
+    );
+    const list = await fetchListForModule(
+      route,
+      layout,
+      filter,
+      core.apiBaseUrl,
+      tenantDb,
+      user.korime,
+      user.sifosobe as string | number | undefined,
+    );
+
+    const raw = await runSpQuery(core.apiBaseUrl, tenantDb, layout.listQuery, {
+      korime: user.korime,
+      dglid,
+    });
+    const selectedItem = normalizeDocumentList(raw)[0];
+    if (!selectedItem) {
+      return rejectWithValue('Radni nalog nije pronađen.');
+    }
+
+    return { route, layout, selectedItem, filter, filterBaseline, list, searchFields, settings };
+  } catch (error) {
+    return rejectWithValue(toUserMessage(error));
+  }
+});
 
 /**
  * Dohvat privitaka dokumenta — ekvivalent Ionic dgl/store getPrivitci (queries.dgl.prilozi
@@ -906,14 +1240,14 @@ export const submitSignature = createAsyncThunk<
   const tenantDb = getTenantDb(state);
 
   try {
+    // TFS spMob_DGL_Azur (insertSignature) prima samo Signature/SignatureText/SignatureTextField
+    // — signatureEmail ide u REPX mailTo, ne u SP (Ionic store šalje email param, ali SP ga nema).
     await runSpQuery(core.apiBaseUrl, tenantDb, { sp: 'spMob_DGL_Azur' }, {
       action: 'insertSignature',
       dglid,
       signature: data.signature,
       signatureText: data.signatureText,
       signatureTextField: layout.properties.signatureTextAzurField,
-      signatureEmail: data.signatureEmail,
-      signatureEmailField: layout.properties.signatureEmailAzurField,
     });
   } catch (error) {
     return rejectWithValue(toUserMessage(error));
@@ -1039,6 +1373,7 @@ const documentsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loadDocumentModule.pending, (state) => {
+        rememberFilterInCache(state);
         state.layoutStatus = { loading: true, error: null };
         state.listStatus = { loading: false, error: null };
         state.route = null;
@@ -1062,8 +1397,9 @@ const documentsSlice = createSlice({
         state.route = action.payload.route;
         state.layout = action.payload.layout;
         state.filter = action.payload.filter;
-        state.filterBaseline = cloneFilter(action.payload.filter);
+        state.filterBaseline = cloneFilter(action.payload.filterBaseline);
         state.filterTemp = null;
+        state.filterCache[moduleFilterCacheKey(action.payload.route)] = cloneFilter(action.payload.filter);
         state.settings = action.payload.settings;
         state.searchFields = action.payload.searchFields;
         state.originalList = action.payload.list;
@@ -1092,6 +1428,7 @@ const documentsSlice = createSlice({
         state.originalList = action.payload.list;
         applySearchToState(state);
         state.listStatus = { loading: false, error: null };
+        rememberFilterInCache(state);
       })
       .addCase(applyDocumentFilters.rejected, (state, action) => {
         state.listStatus = { loading: false, error: action.payload ?? 'Primjena filtera nije uspjela.' };
@@ -1188,6 +1525,35 @@ const documentsSlice = createSlice({
       })
       .addCase(submitSignature.rejected, (state, action) => {
         state.signatureStatus = { loading: false, error: action.payload ?? 'Spremanje potpisa nije uspjelo.' };
+      })
+      .addCase(openRadniNalogFromUpit.pending, (state) => {
+        rememberFilterInCache(state);
+      })
+      .addCase(openRadniNalogFromUpit.fulfilled, (state, action) => {
+        state.route = action.payload.route;
+        state.layout = action.payload.layout;
+        state.selectedItem = action.payload.selectedItem;
+        state.filter = action.payload.filter;
+        state.filterBaseline = cloneFilter(action.payload.filterBaseline);
+        state.filterTemp = null;
+        state.filterCache[moduleFilterCacheKey(action.payload.route)] = cloneFilter(action.payload.filter);
+        state.settings = action.payload.settings;
+        state.searchFields = action.payload.searchFields;
+        state.originalList = action.payload.list;
+        state.list = action.payload.list;
+        state.searchQuery = '';
+        state.layoutStatus = { loading: false, error: null };
+        state.listStatus = { loading: false, error: null };
+        state.dstLines = [];
+        state.dstLinesStatus = { loading: false, error: null };
+        state.dstLinesForItemId = null;
+        state.dstEditContext = null;
+        state.attachments = [];
+        state.attachmentsStatus = { loading: false, error: null };
+        state.attachmentsForItemId = null;
+        state.attachmentOpenError = null;
+        state.signatureStatus = { loading: false, error: null };
+        state.signatureSavedFileName = null;
       });
   },
 });

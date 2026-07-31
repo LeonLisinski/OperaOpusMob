@@ -174,10 +174,46 @@ export function normalizeDocumentList(raw: unknown): Record<string, unknown>[] {
     return raw.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object');
   }
   if (raw && typeof raw === 'object') {
-    const table1 = (raw as Record<string, unknown>).table1;
+    const record = raw as Record<string, unknown>;
+    const table1 = record.table1;
     if (Array.isArray(table1)) {
       return table1.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object');
     }
+    if (table1 && typeof table1 === 'object' && Array.isArray((table1 as { value?: unknown }).value)) {
+      return ((table1 as { value: unknown[] }).value).filter(
+        (row): row is Record<string, unknown> => !!row && typeof row === 'object',
+      );
+    }
+    if (Array.isArray(record.value)) {
+      return record.value.filter((row): row is Record<string, unknown> => !!row && typeof row === 'object');
+    }
+    // Jedan redak (npr. createDoc) — objekt s poslovnim ključevima, ne envelope.
+    if (
+      record.dglid !== undefined ||
+      record.DglId !== undefined ||
+      record.DGLID !== undefined ||
+      record.brojdokumenta !== undefined ||
+      record.id !== undefined
+    ) {
+      return [record];
+    }
   }
   return [];
+}
+
+/** Čita polje iz SP retka bez obzira na casing (API ponekad vrati DglId / dglid). */
+export function readRowField(row: Record<string, unknown>, ...keys: string[]): unknown {
+  for (const key of keys) {
+    if (row[key] !== undefined && row[key] !== null) {
+      return row[key];
+    }
+  }
+  const lowerMap = new Map(Object.keys(row).map((k) => [k.toLowerCase(), k]));
+  for (const key of keys) {
+    const actual = lowerMap.get(key.toLowerCase());
+    if (actual !== undefined && row[actual] !== undefined && row[actual] !== null) {
+      return row[actual];
+    }
+  }
+  return undefined;
 }

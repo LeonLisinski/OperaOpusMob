@@ -51,3 +51,20 @@ export function resolveModuleRoute(module: ModuleMenuEntry, sifgrupe: string | n
 
   return null;
 }
+
+/** Gradi dgl rutu iz sifdv (npr. nakon CRM Akcije → otvori RN) — isti obrazac kao resolveModuleRoute. */
+export function buildDglModuleRoute(sifdv: string, sifgrupe: string | number | undefined): ModuleRoute {
+  const group = sifgrupe !== undefined && sifgrupe !== null ? String(sifgrupe) : '';
+  return {
+    kind: 'dgl',
+    folder: group ? `${sifdv}/${group}` : sifdv,
+    fallbackFolder: group ? sifdv : undefined,
+    listItemKey: 'dglListItem',
+    viewItemsKey: 'dglViewItems',
+    editItemsKey: 'dglEditItems',
+    editItemsExtendsKey: 'dglEditItemsExtends',
+    queryGroupKey: 'dgl',
+    idField: 'dglid',
+    sifdv,
+  };
+}

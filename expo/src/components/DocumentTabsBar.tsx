@@ -3,7 +3,7 @@ import type { BottomTabBarProps } from 'expo-router/js-tabs';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { moduleHasAttachments, moduleHasDstLines, moduleHasSignature } from '@/features/documents/documentsSlice';
+import { moduleHasAttachments, moduleHasDstLines, moduleHasSignature, moduleHasActions } from '@/features/documents/documentsSlice';
 import { isTruthyApiField } from '@/features/documents/dstLineHelpers';
 import { useAppSelector } from '@/store/hooks';
 import { radius, spacing, typography, useTheme } from '@/theme';
@@ -12,6 +12,7 @@ type IconName = keyof typeof Ionicons.glyphMap;
 
 const TAB_CONFIG: Record<string, { label: string; icon: IconName; activeIcon: IconName }> = {
   index: { label: 'Info', icon: 'information-circle-outline', activeIcon: 'information-circle' },
+  actions: { label: 'Akcije', icon: 'layers-outline', activeIcon: 'layers' },
   lines: { label: 'Stavke', icon: 'list-outline', activeIcon: 'list' },
   work: { label: 'Rad', icon: 'construct-outline', activeIcon: 'construct' },
   attachments: { label: 'Privitci', icon: 'attach-outline', activeIcon: 'attach' },
@@ -35,6 +36,7 @@ export function DocumentTabsBar({ state, navigation }: BottomTabBarProps) {
   const hasLines = moduleHasDstLines(layout);
   const visibility: Record<string, boolean> = {
     index: true,
+    actions: moduleHasActions(route, layout),
     lines: hasLines,
     work: hasLines && isTruthyApiField(item?.tabradvisible),
     attachments: moduleHasAttachments(route, layout),

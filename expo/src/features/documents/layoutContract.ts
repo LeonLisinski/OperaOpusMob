@@ -63,6 +63,8 @@ export function normalizeModuleLayout(raw: unknown, route: ModuleRoute): LayoutV
       azurQuery: route.kind === 'gen' ? (readNamedQuery(record.queries, route.queryGroupKey, 'azur') ?? undefined) : undefined,
       sifarniciQuery:
         route.kind === 'gen' ? (readNamedQuery(record.queries, route.queryGroupKey, 'sifarnici') ?? undefined) : undefined,
+      createDocQuery:
+        route.kind === 'gen' ? (readNamedQuery(record.queries, route.queryGroupKey, 'createdoc') ?? undefined) : undefined,
       dstListQuery,
       // dst* layouti su opcionalni — gen moduli (npr. CRM/Upiti) ih nemaju; ne warnati.
       dstListItems: readListItemGroups(record.dstListItem, {

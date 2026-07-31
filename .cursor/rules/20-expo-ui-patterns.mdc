@@ -1,0 +1,44 @@
+---
+description: Expo UI obrasci — tipkovnica, datumi, modali, potpis, swipe (expo/ samo)
+globs: expo/**/*
+alwaysApply: false
+---
+
+# Expo UI obrasci
+
+Pravila za `expo/` migraciju. Ionic (`src/`) ostaje referenca ponašanja, ne uzor za ove komponente.
+
+## Tipkovnica
+
+- Ekrani s unosom teksta koriste **`Screen` s `scroll` + `keyboardAware`**.
+- Akcijski gumbi ispod forme idu u **`StickyFooter`** (unutar `Screen` prop `footer`) — pomak iznad tipkovnice preko `useKeyboardInset`.
+- Polja registriraju fokus preko **`useRegisterKeyboardField`** (`TextField`, `PinInput`, `MemoField` u `EditFormField`).
+- **`TouchableWithoutFeedback` + dismiss** dolazi iz `Screen` kad je `keyboardAware` — ne duplicirati po ekranima.
+- **Potpis (`signature.tsx`)**: canvas **mora** ostati izvan `ScrollView` (WebView gesture); samo tekstualna polja u nested `Screen scroll keyboardAware`.
+- **Liste s inline pretragom** (`DocumentListToolbar`): `FlatList` s `automaticallyAdjustKeyboardInsets`.
+- Ne koristiti proizvoljne `setTimeout` za scroll/fokus — `requestAnimationFrame` + lifecycle (`Modal.onShow`) su dopušteni.
+
+## Datumi
+
+- Prikaz korisniku: **`dd.MM.yyyy`** — `DISPLAY_DATE_FORMAT` / `formatDisplayDate` u `@/features/documents/format`.
+- API/SP: interno **`YYYY-MM-DD`** (`toIsoDate`, `parseIsoDateParts`) — ne mijenjati bez provjere ugovora.
+- Unos: **`DateField`** (`@/components/DateField`) — native picker, bez slobodnog tekstualnog unosa.
+- `EditFormField` (`type: date`) i filteri (`DocumentFilterModal`) koriste `DateField`.
+- Parsiranje datuma lokalno (bez UTC pomaka za jedan dan).
+
+## Modalne pretrage (šifrarnik)
+
+- **`SifarnikSearchModal`**: fokus tražilice na **`Modal.onShow`** + `requestAnimationFrame`, ne `setTimeout(300)`.
+- `FlatList` unutar modala: `automaticallyAdjustKeyboardInsets`, `keyboardShouldPersistTaps="handled"`.
+
+## Potpis
+
+- Legacy referenca: `src/pages/dgl/tabs/Tab4.jsx` — `getTrimmedCanvas().toDataURL("image/png")`, transparentan canvas.
+- Expo: `react-native-signature-canvas` s **`backgroundColor="rgba(0,0,0,0)"`** i transparentnim webStyle; vizualni okvir samo u RN `View`, ne u PNG.
+- API polje i base64 struktura ostaju kompatibilni s backendom.
+
+## Swipe kartice
+
+- **`SwipeableDocumentLine`** + **`DocumentLinesView`**: nakon swipe akcije ne smije se pojaviti nepotrebni refresh/highlight.
+- Tihi reload nakon brisanja: lokalni `pullRefreshing`, ne `dstLinesStatus.loading` na `FlatList.refreshing`.
+- Ne koristiti `TouchableOpacity activeOpacity` na retku ako daje flash nakon zatvaranja swipea — `Pressable`.

@@ -71,10 +71,13 @@ export function DocumentListToolbar({ onOpenFilter }: DocumentListToolbarProps) 
           <View style={styles.searchSpacer} />
         )}
 
-        <View>
+        <View style={styles.filterWrap}>
           <IconButton icon="options-outline" variant="onBrand" onPress={onOpenFilter} accessibilityLabel="Filter" />
           {activeFilterCount > 0 ? (
-            <View style={[styles.filterBadge, { backgroundColor: colors.surface }]}>
+            <View
+              style={[styles.filterBadge, { backgroundColor: colors.surface, borderColor: colors.brandChrome }]}
+              pointerEvents="none"
+            >
               <Text style={[styles.filterBadgeText, { color: colors.primary }]}>{activeFilterCount}</Text>
             </View>
           ) : null}
@@ -111,9 +114,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
     paddingHorizontal: spacing.lg,
+    paddingTop: spacing.xs,
     paddingBottom: spacing.md,
     borderBottomLeftRadius: radius.xl,
     borderBottomRightRadius: radius.xl,
+    overflow: 'visible',
+    zIndex: 1,
+  },
+  filterWrap: {
+    position: 'relative',
+    overflow: 'visible',
+    zIndex: 2,
   },
   searchPill: {
     flex: 1,
@@ -134,14 +145,17 @@ const styles = StyleSheet.create({
   },
   filterBadge: {
     position: 'absolute',
-    top: -2,
-    right: -2,
+    top: 2,
+    right: 2,
     minWidth: 18,
     height: 18,
     borderRadius: radius.pill,
+    borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 4,
+    zIndex: 3,
+    elevation: 3,
   },
   filterBadgeText: {
     fontSize: 11,

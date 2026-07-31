@@ -22,6 +22,7 @@ interface TextFieldProps {
   autoComplete?: TextInputProps['autoComplete'];
   textContentType?: TextInputProps['textContentType'];
   editable?: boolean;
+  placeholder?: string;
   accessibilityLabel?: string;
   onSubmitEditing?: () => void;
   returnKeyType?: TextInputProps['returnKeyType'];
@@ -40,6 +41,7 @@ export function TextField({
   autoComplete,
   textContentType,
   editable = true,
+  placeholder,
   accessibilityLabel,
   onSubmitEditing,
   returnKeyType = 'done',
@@ -81,6 +83,7 @@ export function TextField({
           textContentType={textContentType}
           autoCorrect={false}
           editable={editable}
+          placeholder={placeholder}
           accessibilityLabel={accessibilityLabel ?? label}
           placeholderTextColor={colors.textSubtle}
           returnKeyType={returnKeyType}

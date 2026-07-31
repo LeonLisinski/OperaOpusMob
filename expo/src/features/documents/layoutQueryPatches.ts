@@ -1,6 +1,7 @@
 /**
  * Dopuna /doclayouts odgovora kad server nema queries.dst.azur/delete.
- * Ionic te SP-ove hardkodira u store-u; Expo ih čita iz JSON-a (D026).
+ * Ionic dgl/store hardkodira SP-ove (spMob_ZJUKIC_DST_Azur, spMob_DST_RadniNalozi_Azur)
+ * bez obzira na JSON — Expo patch-ira iz poznatih mapa i iz queries.dst.list SP imena.
  * Patch se primjenjuje samo za nedostajuće ključe — produkcijski layout na serveru ima prednost.
  */
 type QueryPatch = {
@@ -15,10 +16,13 @@ type LayoutQueryPatch = {
   };
 };
 
+/** Ionic dgl/store deleteDst — fiksni SP za brisanje stavke (Tab3.jsx). */
+const IONIC_DST_DELETE_SP = 'spMob_DST_RadniNalozi_Azur';
+
 const ZJUKIC_RN_DST_PATCH: LayoutQueryPatch = {
   dst: {
     azur: { sp: 'spMob_ZJUKIC_DST_Azur', params: {} },
-    delete: { sp: 'spMob_DST_RadniNalozi_Azur', params: {} },
+    delete: { sp: IONIC_DST_DELETE_SP, params: {} },
   },
 };
 
@@ -36,6 +40,50 @@ function readQueryNode(raw: unknown): Record<string, unknown> | null {
   }
   const sp = (raw as Record<string, unknown>).sp;
   return typeof sp === 'string' && sp.length > 0 ? (raw as Record<string, unknown>) : null;
+}
+
+function readListSp(raw: Record<string, unknown>): string | null {
+  const queries = raw.queries;
+  if (!queries || typeof queries !== 'object' || Array.isArray(queries)) {
+    return null;
+  }
+  const dst = (queries as Record<string, unknown>).dst;
+  if (!dst || typeof dst !== 'object' || Array.isArray(dst)) {
+    return null;
+  }
+  const listNode = readQueryNode((dst as Record<string, unknown>).list);
+  const sp = listNode?.sp;
+  return typeof sp === 'string' && sp.length > 0 ? sp : null;
+}
+
+/**
+ * Iz queries.dst.list SP imena izvedi azur/delete — isti obrazac imenovanja kao u MobLayoutsControls
+ * (npr. spMob_ZJUKIC_DST_Query → spMob_ZJUKIC_DST_Azur). Delete prati Ionic Tab3 (RadniNalozi Azur).
+ */
+function deriveDstPatchFromListSp(listSp: string): LayoutQueryPatch | null {
+  const patch: LayoutQueryPatch = { dst: {} };
+
+  if (/_Query$/i.test(listSp)) {
+    patch.dst!.azur = { sp: listSp.replace(/_Query$/i, '_Azur'), params: {} };
+  }
+
+  if (/_DST_/i.test(listSp)) {
+    patch.dst!.delete = { sp: IONIC_DST_DELETE_SP, params: {} };
+  }
+
+  if (!patch.dst!.azur && !patch.dst!.delete) {
+    return null;
+  }
+
+  return patch;
+}
+
+function deriveDstPatchFromLayout(raw: Record<string, unknown>): LayoutQueryPatch | null {
+  const listSp = readListSp(raw);
+  if (!listSp) {
+    return null;
+  }
+  return deriveDstPatchFromListSp(listSp);
 }
 
 function normalizeFolderPath(folder: string): string {
@@ -58,7 +106,7 @@ function resolvePatchKeys(layoutPrefix: string | null, folder: string, moduleKey
   return [...keys];
 }
 
-function findQueryPatch(layoutPrefix: string | null, folder: string, moduleKey?: string): LayoutQueryPatch | null {
+function findStaticQueryPatch(layoutPrefix: string | null, folder: string, moduleKey?: string): LayoutQueryPatch | null {
   for (const key of resolvePatchKeys(layoutPrefix, folder, moduleKey)) {
     const patch = LAYOUT_QUERY_PATCHES[key];
     if (patch) {
@@ -132,18 +180,28 @@ export function overlayMissingLayoutQueries(
   folder: string,
   moduleKey?: string,
 ): Record<string, unknown> {
-  const patch = findQueryPatch(layoutPrefix, folder, moduleKey);
-  if (!patch) {
-    return raw;
-  }
+  let result = raw;
 
-  const merged = applyPatch(raw, patch);
-  if (merged) {
-    if (__DEV__) {
-      console.info(`[documents/layoutQueryPatches] Dopunjen queries.dst za ${normalizeFolderPath(folder)}`);
+  const staticPatch = findStaticQueryPatch(layoutPrefix, folder, moduleKey);
+  if (staticPatch) {
+    const merged = applyPatch(result, staticPatch);
+    if (merged) {
+      result = merged;
     }
-    return merged;
   }
 
-  return raw;
+  const derivedPatch = deriveDstPatchFromLayout(result);
+  if (derivedPatch) {
+    const merged = applyPatch(result, derivedPatch);
+    if (merged) {
+      if (__DEV__) {
+        console.info(
+          `[documents/layoutQueryPatches] Dopunjen queries.dst (derive) za ${normalizeFolderPath(folder)}`,
+        );
+      }
+      result = merged;
+    }
+  }
+
+  return result;
 }

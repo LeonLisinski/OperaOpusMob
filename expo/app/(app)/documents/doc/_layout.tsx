@@ -22,6 +22,7 @@ export default function DocumentTabsLayout() {
       <DocumentContextStrip />
       <Tabs tabBar={(props) => <DocumentTabsBar {...props} />} screenOptions={{ headerShown: false }}>
         <Tabs.Screen name="index" />
+        <Tabs.Screen name="actions" />
         <Tabs.Screen name="lines" />
         <Tabs.Screen name="work" />
         <Tabs.Screen name="attachments" />

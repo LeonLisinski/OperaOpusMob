@@ -1,4 +1,4 @@
-import type { DocumentFilter, StatusFilterItem } from './types';
+import type { DocumentFilter, ModuleRoute, StatusFilterItem } from './types';
 import { daysAgoIso, formatDisplayDate, todayIso } from './format';
 
 /** Zamjena dijakritike — ista logika kao dgl/gen store setSearchText. */
@@ -64,6 +64,39 @@ export function cloneFilter(filter: DocumentFilter): DocumentFilter {
   return {
     ...filter,
     statuses: filter.statuses.map((item) => ({ ...item })),
+  };
+}
+
+/** Ključ predmemorije filtera po modulu (gen folder ili dgl sifdv). */
+export function moduleFilterCacheKey(route: ModuleRoute): string {
+  if (route.kind === 'dgl') {
+    return `dgl:${route.sifdv ?? route.folder}`;
+  }
+  return `gen:${route.folder}`;
+}
+
+/**
+ * Primijeni spremljene korisničke odabire na svježi katalog statusa / default datume.
+ * Baseline ostaje serverski; ovo samo gradi aktivni filter pri povratku u modul.
+ */
+export function applyCachedFilterPreferences(
+  freshDefaults: DocumentFilter,
+  cached: DocumentFilter,
+): DocumentFilter {
+  const checkedIds = new Set(
+    cached.statuses.filter((item) => item.checked).map((item) => String(item.id)),
+  );
+  return {
+    datumod: cached.datumod || freshDefaults.datumod,
+    datumdo: cached.datumdo || freshDefaults.datumdo,
+    samomoje: cached.samomoje,
+    statuses:
+      freshDefaults.statuses.length > 0
+        ? freshDefaults.statuses.map((item) => ({
+            ...item,
+            checked: checkedIds.has(String(item.id)),
+          }))
+        : cloneFilter(cached).statuses,
   };
 }
 

@@ -1,4 +1,4 @@
-import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { controlHeight, radius, spacing, typography, useTheme } from '@/theme';
@@ -13,18 +13,11 @@ interface DatePickerSheetProps {
   asOverlay?: boolean;
 }
 
-function handleAndroidPickerChange(
-  event: DateTimePickerEvent,
-  selected: Date | undefined,
-  onConfirm: (date: Date) => void,
-  fallback: Date,
-) {
-  if (event.type === 'set') {
-    onConfirm(selected ?? fallback);
-  }
-}
-
-/** Bottom-sheet odabir datuma (iOS) ili native dijalog (Android — bez duplih OK/Cancel gumbi). */
+/**
+ * Bottom-sheet odabir datuma (iOS) ili native dijalog (Android).
+ * datetimepicker 9.x: onValueChange = potvrđen odabir (bez event.type);
+ * onDismiss = otkazano. Ne koristiti event.type s onValueChange — type ne postoji.
+ */
 export function DatePickerSheet({
   visible,
   value,
@@ -47,7 +40,9 @@ export function DatePickerSheet({
         display="default"
         locale="hr-HR"
         themeVariant={scheme}
-        onValueChange={(event, selected) => handleAndroidPickerChange(event, selected, onConfirm, value)}
+        onValueChange={(_event, selected) => {
+          onConfirm(selected ?? value);
+        }}
         onDismiss={onClose}
       />
     );
