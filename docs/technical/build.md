@@ -29,7 +29,9 @@ Prvi native build traje duže (preuzimanje Gradle/CocoaPods ovisnosti).
 | Encryption export | `ITSAppUsesNonExemptEncryption: false` |
 | Plugins | router, splash, secure-store, sharing, document-picker, datetimepicker |
 
-Verzija: `expo.version` (trenutno `1.0.0`). Native folderi `/ios` i `/android` su u `.gitignore` — EAS radi managed prebuild.
+Verzija: `expo.version` (trenutno `1.0.0`). Native folderi `expo/ios` i `expo/android` su u `.gitignore` — EAS radi managed prebuild.
+
+**Upload opseg:** repo je monorepo — EAS inače pakira **cijeli git root**. Root `.easignore` zato blacklist-a Ionic/`MobLayoutsControls`/`API`/`OperaWeb`/Capacitor `android` itd. Provjera: `npx eas-cli@latest build:inspect --platform android --stage archive --profile preview --output ./eas-archive-check` iz `expo/` — u arhivi smiju biti fajlovi samo pod `expo/`. EAS naredbe uvijek iz `expo/`.
 
 ## Provjere prije builda (zadnji check 2026-07-31)
 

@@ -1,0 +1,56 @@
+# EAS pakira od git root-a. Ova datoteka zamjenjuje .gitignore za upload.
+# Blacklist: Ionic/legacy/docs van Expo appa + teški folderi.
+
+# --- Root Ionic / legacy / infrastruktura (NE šalji) ---
+/MobLayoutsControls/
+/src/
+/API/
+/OperaWeb/
+/android/
+/cypress/
+/docs/
+/public/
+/scripts/
+/assets/
+/.cursor/
+/.github/
+/.vscode/
+/.expo/
+/node_modules/
+/coverage/
+/dist/
+/capacitor.config.ts
+/ionic.config.json
+/vite.config.ts
+/index.html
+/cypress.config.ts
+/tsconfig.json
+/tsconfig.node.json
+/package.json
+/package-lock.json
+/yarn.lock
+/.browserslistrc
+/.eslintrc.js
+/.cursorignore
+/.nx/
+
+# --- Unutar expo/ ---
+/expo/node_modules/
+/expo/.expo/
+/expo/dist/
+/expo/web-build/
+/expo/ios/
+/expo/android/
+/expo/.kotlin/
+/expo/*.jks
+/expo/*.p8
+/expo/*.p12
+/expo/*.key
+/expo/*.mobileprovision
+/expo/.env*.local
+/expo/*.tsbuildinfo
+/expo/npm-debug.*
+/expo/yarn-debug.*
+/expo/yarn-error.*
+/expo/.DS_Store
+/expo/eas-archive-check/

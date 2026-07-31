@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Opera Mobile",
-    "slug": "opera-mobile",
+    "slug": "operamobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -54,7 +54,11 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {}
-    }
+      "router": {},
+      "eas": {
+        "projectId": "00e0fcea-dd27-4092-a601-3df534e4ba1d"
+      }
+    },
+    "owner": "svampluss-team"
   }
 }
