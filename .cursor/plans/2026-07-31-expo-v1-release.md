@@ -83,14 +83,14 @@ Svi tenanti koji koriste module s `module.url`:
 
 ## 12. Kriteriji prihvaćanja (v1)
 
-- [ ] Svi `module.url` obrasci koje aktivni tenanti koriste vode na funkcionalan ekran (ne Alert „nije implementiran”)
-- [ ] Stavke: FAB, forma, swipe akcije rade kad Ionic `Tab3` radi (flagovi s backenda)
-- [ ] gen CRM Upiti: tab Akcije + „Kreiraj radni nalog” + navigacija na RN
-- [ ] dgl: Info, Stavke, Rad, Privitci, Potpis — vidljivost kao Ionic `MainTabs.tsx`
+- [ ] Svi `module.url` obrasci koje aktivni tenanti koriste vode na funkcionalan ekran (ne Alert „nije implementiran”) — ovisi o Fazi 4 `/servis/*`
+- [x] Stavke: FAB, forma, swipe akcije rade kad Ionic `Tab3` radi (flagovi s backenda) — Android ooZJUKIC 2026-07-31
+- [x] gen CRM Upiti: tab Akcije + „Kreiraj radni nalog” + navigacija na RN — Android ooZJUKIC 2026-07-31
+- [x] dgl: Info, Stavke, Rad, Privitci, Potpis — vidljivost kao Ionic `MainTabs.tsx` — Android smoke
 - [ ] Android release build prolazi
-- [ ] iOS release build prolazi (`bundleIdentifier` postavljen)
-- [ ] `FEATURE_PARITY_MATRIX.md` ažuriran
-- [ ] v2 stavke u `V2_BACKLOG.md`
+- [ ] iOS release build prolazi (`bundleIdentifier` postavljen; runtime checklist)
+- [x] `FEATURE_PARITY_MATRIX.md` ažuriran — 2026-07-31
+- [x] v2 stavke u `V2_BACKLOG.md`
 
 ## Documentation impact
 
@@ -112,7 +112,7 @@ Expo app se ne deploya na store dok paritet nije potvrđen. Ionic (`src/`) ostaj
 | **0** | Ovaj plan + V2_BACKLOG | ✅ |
 | **1** | Stavke: auto `queries.dst.azur/delete` iz `dst.list` SP | ✅ |
 | **2** | gen tab **Akcije** (`queries.gla.createdoc`) | ✅ |
-| **3** | Paritet review jukic001 + matrica | sljedeće |
+| **3** | Paritet review jukic001 + matrica | ✅ Android review 2026-07-31 (`FEATURE_PARITY_MATRIX.md`); iOS još |
 | **4** | Legacy **servis** (`/servis/*`) — inventar URL pa port | sljedeće |
-| **5** | **iOS/Android build** (bundle ID, EAS) | djelomično (bundle ID + eas.json) |
+| **5** | **iOS/Android build** (bundle ID, EAS) | djelomično (bundle ID + eas.json); treba pravi EAS build |
 | **6** | Repo cleanup (legacy vs mobile folder) | |
