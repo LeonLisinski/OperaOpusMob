@@ -1,0 +1,28 @@
+[
+  {
+    "type": "simple",
+    "label": "Partner",
+    "selectFieldKey": "sifpartnera",
+    "selectFieldText": "nazpartnera",
+    "azurFieldKey": "sifpartnera",
+    "search": { "entity": "partner", "type": "simple" }
+  },
+  {
+    "type": "simple",
+    "label": "Podružnica",
+    "selectFieldKey": "dodadresaid",
+    "selectFieldText": "naz2partnera",
+    "azurFieldKey": "dodadresaid",
+    "parentIdFieldKey": "sifpartnera",
+    "search": { "entity": "podruznica", "type": "simple" }
+  },
+  {
+    "type": "simple",
+    "label": "Ugovor",
+    "selectFieldKey": "sifpred",
+    "selectFieldText": "nazpred",
+    "azurFieldKey": "sifpred",
+    "parentIdFieldKey": "sifpartnera",
+    "search": { "entity": "pred", "type": "simple" }
+  }
+]

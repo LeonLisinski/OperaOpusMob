@@ -32,6 +32,8 @@ import { overlayMissingLayoutContent } from './layoutContentPatches';
 import { overlayMissingLayoutQueries } from './layoutQueryPatches';
 import { layoutHasDstActions } from './dstLineHelpers';
 import { resolveModuleRoute, buildDglModuleRoute } from './moduleRouting';
+import { applyServisDnizLayoutFallback } from './servisDnizFallback';
+import { applyServisRnLayoutFallback } from './servisRnFallback';
 import type { DocumentFilter, DstLineKind, EditControlValues, EditFieldDef, ModuleLayout, ModuleRoute, QueryDef, StatusFilterItem } from './types';
 
 interface RequestStatus {
@@ -144,6 +146,28 @@ async function runSpQuery(
   });
 }
 
+/** /doclayouts + postojeći patch-evi + servis RN fallback kad meni dolazi s /servis/radninalozi. */
+function mergeFetchedModuleLayout(
+  rawLayout: Record<string, unknown>,
+  route: ModuleRoute,
+  layoutPrefix: string | null,
+): Record<string, unknown> {
+  const folder = route.folder.replace(/\\/g, '/');
+  const layoutModuleKey = route.kind === 'dgl' ? route.sifdv : folder;
+  let merged = overlayMissingLayoutContent(
+    overlayMissingLayoutQueries(rawLayout, layoutPrefix, folder, layoutModuleKey),
+    layoutPrefix,
+    folder,
+    layoutModuleKey,
+  );
+  if (route.layoutSource === 'servis-rn') {
+    merged = applyServisRnLayoutFallback(merged);
+  } else if (route.layoutSource === 'servis-dniz') {
+    merged = applyServisDnizLayoutFallback(merged);
+  }
+  return merged;
+}
+
 /**
  * spMob_UpdateDstRow pretvara dstdatum2temp (HHmm) u datetime:
  * `'1900-01-01 ' + HH + ':' + mm`. Unos "2" → "1900-01-01 2:" → CAST fail → 3930.
@@ -217,7 +241,7 @@ async function resolveSifdvForCreatedRn(
   dglid: string | number,
   korime: string,
 ): Promise<string | null> {
-  const lookups: Array<{ sp: string; params: Record<string, unknown> }> = [
+  const lookups: { sp: string; params: Record<string, unknown> }[] = [
     { sp: 'spMob_ZJUKIC_DGL_Query', params: { action: 'get', dglid, korime } },
     { sp: 'spMob_DGL_RadniNalozi_Query', params: { action: 'get', dglid, korime } },
   ];
@@ -400,20 +424,7 @@ export const loadDocumentModule = createAsyncThunk<
       fallbackFolder: route.fallbackFolder,
     });
 
-    const folder = route.folder.replace(/\\/g, '/');
-    const layoutModuleKey = route.kind === 'dgl' ? route.sifdv : folder;
-
-    const mergedLayout = overlayMissingLayoutContent(
-      overlayMissingLayoutQueries(
-        rawLayout,
-        core.layoutprefix,
-        folder,
-        layoutModuleKey,
-      ),
-      core.layoutprefix,
-      folder,
-      layoutModuleKey,
-    );
+    const mergedLayout = mergeFetchedModuleLayout(rawLayout, route, core.layoutprefix);
 
     const validation = normalizeModuleLayout(mergedLayout, route);
     if (!validation.ok) {
@@ -432,6 +443,13 @@ export const loadDocumentModule = createAsyncThunk<
       });
       settings = normalizeModuleSettings(settingsRaw);
       searchFields = parseSearchFields(settings.searchfields);
+    }
+    if (searchFields.length === 0) {
+      if (route.layoutSource === 'servis-rn') {
+        searchFields = ['brojdokumenta', 'nazpartnera', 'nazpred', 'napomena7', 'komentar', 'status'];
+      } else if (route.layoutSource === 'servis-dniz') {
+        searchFields = ['brojdokumenta', 'nazpartnera', 'nazpred', 'komentar'];
+      }
     }
 
     const cacheKey = moduleFilterCacheKey(route);
@@ -633,7 +651,21 @@ export const saveDocumentForm = createAsyncThunk<
   }
 
   const existingId = readItemId(route, selectedItem);
-  const dglJson = JSON.stringify({ ...editFormData, ...layout.editItemsExtends });
+  // Ionic DNIZ Tab1 šalje sifdv+datumdokumenta (YYYYMMDD) u formData — ne ovisi o #today makroima.
+  const formPayload: Record<string, unknown> = {
+    ...editFormData,
+    ...layout.editItemsExtends,
+  };
+  if (route.layoutSource === 'servis-dniz') {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    formPayload.sifdv = 'DNIZ';
+    formPayload.datumdokumenta = `${y}${m}${d}`;
+    formPayload.izradilasifosobe = user.sifosobe;
+  }
+  const dglJson = JSON.stringify(formPayload);
   const tenantDb = getTenantDb(state);
 
   let sp: string;
@@ -716,18 +748,31 @@ export const saveDstLine = createAsyncThunk<void, void, { state: RootState; reje
       payload.dstid = dstEditContext.dstId;
     }
 
-    const params: Record<string, unknown> = {
-      ...layout.dstAzurQuery.params,
-      action: 'azur',
-      [route.idField]: headerId,
-      dstid: dstEditContext.dstId ?? undefined,
-      korime: user.korime,
-      sifosobe: user.sifosobe,
-      jsonUpdatedValues: JSON.stringify(payload),
-    };
+    // Ionic servis/RadniNalozi saveDoc šalje flat action=update + kolicina/sifart/opis
+    // (ne jsonUpdatedValues / action=azur).
+    const params: Record<string, unknown> =
+      route.layoutSource === 'servis-rn'
+        ? {
+            ...layout.dstAzurQuery.params,
+            action: 'update',
+            dglid: headerId,
+            dstid: dstEditContext.dstId ?? undefined,
+            kolicina: payload.kolicina ?? payload.kol,
+            sifart: payload.sifart,
+            opis: payload.opis ?? payload.opisartikla,
+          }
+        : {
+            ...layout.dstAzurQuery.params,
+            action: 'azur',
+            [route.idField]: headerId,
+            dstid: dstEditContext.dstId ?? undefined,
+            korime: user.korime,
+            sifosobe: user.sifosobe,
+            jsonUpdatedValues: JSON.stringify(payload),
+          };
 
     if (__DEV__) {
-      console.info('[documents/saveDstLine] jsonUpdatedValues', payload);
+      console.info('[documents/saveDstLine] params', params);
     }
 
     try {
@@ -855,20 +900,7 @@ export const refreshLayoutDstQueries = createAsyncThunk<
       folder: route.folder,
       fallbackFolder: route.fallbackFolder,
     });
-    const folder = route.folder.replace(/\\/g, '/');
-    const layoutModuleKey = route.kind === 'dgl' ? route.sifdv : folder;
-
-    const mergedLayout = overlayMissingLayoutContent(
-      overlayMissingLayoutQueries(
-        rawLayout,
-        core.layoutprefix,
-        folder,
-        layoutModuleKey,
-      ),
-      core.layoutprefix,
-      folder,
-      layoutModuleKey,
-    );
+    const mergedLayout = mergeFetchedModuleLayout(rawLayout, route, core.layoutprefix);
     const validation = normalizeModuleLayout(mergedLayout, route);
     if (!validation.ok) {
       return rejectWithValue(validation.error);
@@ -991,13 +1023,7 @@ export const openRadniNalogFromUpit = createAsyncThunk<
       fallbackFolder: route.fallbackFolder,
     });
 
-    const folder = route.folder.replace(/\\/g, '/');
-    const mergedLayout = overlayMissingLayoutContent(
-      overlayMissingLayoutQueries(rawLayout, core.layoutprefix, folder, route.sifdv),
-      core.layoutprefix,
-      folder,
-      route.sifdv,
-    );
+    const mergedLayout = mergeFetchedModuleLayout(rawLayout, route, core.layoutprefix);
     const validation = normalizeModuleLayout(mergedLayout, route);
     if (!validation.ok) {
       return rejectWithValue(validation.error);

@@ -200,4 +200,9 @@ export interface ModuleRoute {
   sifdv?: string;
   app?: string;
   module?: string;
+  /**
+   * Legacy `/servis/*` meni — dgl engine + Ionic SP/UI fallback
+   * (v. docs/ai/SERVIS_INVENTORY.md).
+   */
+  layoutSource?: 'servis-rn' | 'servis-dniz';
 }

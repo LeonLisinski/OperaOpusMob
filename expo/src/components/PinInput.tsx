@@ -82,7 +82,8 @@ export function PinInput({
           style={styles.toggleButton}
         >
           <Ionicons name={hidden ? 'eye-outline' : 'eye-off-outline'} size={22} color={colors.primary} />
-        </Pressable>      </View>
+        </Pressable>
+      </View>
     </View>
   );
 }

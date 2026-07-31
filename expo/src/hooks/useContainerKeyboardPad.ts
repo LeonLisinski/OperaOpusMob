@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useState, type RefObject } from 'react';
 import { Keyboard, Platform, type KeyboardEvent, type View } from 'react-native';
 
 /** Gboard/iOS suggestion traka često nije u screenY. */
@@ -23,7 +23,6 @@ export function useContainerKeyboardPad(layoutRef: RefObject<View | null>, enabl
 
   useEffect(() => {
     if (!enabled) {
-      setKeyboardPad(0);
       return undefined;
     }
 
@@ -47,5 +46,6 @@ export function useContainerKeyboardPad(layoutRef: RefObject<View | null>, enabl
     };
   }, [applyPad, enabled]);
 
-  return keyboardPad;
+  // Kad je tipkovnica isključena, ne zovi setState u effectu — vrati 0 iz derivacije.
+  return enabled ? keyboardPad : 0;
 }

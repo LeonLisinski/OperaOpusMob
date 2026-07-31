@@ -1,0 +1,29 @@
+[
+  {
+    "fields": [
+      {
+        "field": "brojdokumenta",
+        "class": "item-bold"
+      },
+      {
+        "field": "fiskvrijemeizdavanja",
+        "type": "date",
+        "format": "DD.MM.YYYY HH:mm"
+      }
+    ]
+  },
+  {
+    "label": "Partner",
+    "fields": [{ "field": "nazpartnera" }],
+    "class": "item-bold"
+  },
+  {
+    "label": "Ugovor",
+    "fields": [{ "field": "nazpred" }]
+  },
+  {
+    "label": "Komentar",
+    "fields": [{ "field": "komentar" }],
+    "classmain": "three-lines"
+  }
+]

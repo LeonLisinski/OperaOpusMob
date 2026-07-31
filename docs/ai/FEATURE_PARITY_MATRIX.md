@@ -27,7 +27,7 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 | ERP login | `Login.tsx` | `/login` | parity-review | ooZJUKIC (Android) | Isti uid/pwd → user/connection | Runtime OK (`svam`); iOS nepotvrđen | §5.2 |
 | App PIN | `UnlockApp.jsx` | `spPinAppAzur` | parity-review | ooZJUKIC (Android) | Otključavanje daje isti unlocked | Runtime OK (`plusplus`); iOS nepotvrđen | §5.2 |
 | Kontrolni centar | `TabAplikacije.jsx` | `spMob_Menu_Query` | parity-review | ooZJUKIC (Android) | Prikaz aplikacija / zaključanost | Favoriti/Profil → v2; Postavke u header ikoni | §5.5, §7.5 |
-| Meni i moduli | `Modules.tsx` | `spMob_Menu_Query` table2 | parity-review | ooZJUKIC (Android) | Navigacija po `module.url` | `dgl`/`gen` OK; `/servis/*` → Alert „nije implementiran” (Faza 4) | §7.5 |
+| Meni i moduli | `Modules.tsx` | `spMob_Menu_Query` table2 | parity-review | ooZJUKIC (Android) | Navigacija po `module.url` | `dgl`/`gen` OK; `/servis/*` → alias dgl + fallback (Faza 4; MIDA runtime nepotvrđen) | §7.5 |
 | Generička lista | `dgl/List`, `gen/List` | `/doclayouts`, `queries.*.list` | parity-review | ooZJUKIC (Android) | Ista lista/polja za isti modul | RNint, RNodr, CRM Upiti potvrđeni na Androidu | §3.1, §7.3 |
 | Filteri i pretraga | dgl/gen store filter | `filterdefaults`, `statusi`, `searchfields` | parity-review | ooZJUKIC (Android) | Isti SP parami; pretraga nad listom | Date picker OK; badge filtera vizualno OK; **filter cache po modulu** (Upiti↔RN) potvrđen u sesiji 2026-07-31 | §8.4 |
 | Detalj dokumenta | `Tab1` / `TabInfo` | `*ViewItems`, `visiblefield` | parity-review | ooZJUKIC (Android) | Isti prikaz polja/sekcija | Info tab na RN i Upiti OK | §7.3 |
@@ -39,7 +39,7 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 | gen Akcije (kreiraj RN) | `TabAkcije.jsx` | `queries.gla.createdoc` | parity-review | ooZJUKIC (Android) | Kreiraj RN → otvori dgl | CreateDoc ne vraća sifdv → lookup preko `spMob_ZJUKIC_DGL_Query`; prebacivanje CC na RN modul; povratak na Upite s filter cache | plan Faza 2 |
 | Postavke | `TabPostavke` | local prefs | parity-review | - | Dark mode, verzija, reset, odjava | Web preview ranije; Android smoke u auth sesiji | §12 |
 | Odjava | `logOut` | Preferences `user` | parity-review | ooZJUKIC (Android) | Briše samo user | OK | §5.4 |
-| Legacy `/servis/*` | `src/pages/servis/` | hardkod SP | analyzed | - | Isti ekrani kao Ionic servis | **Nije u Expo**; inventar menija = sljedeći korak v1 | plan Faza 4 |
+| Legacy `/servis/*` | `src/pages/servis/` | hardkod SP | parity-review | MIDA (SQL meni) | Meni URL vodi na radni ekran | Expo: alias → dgl + runtime SP/UI fallback (`servis-rn` / `servis-dniz`). Komentari tab / DNIZ write-komentar / close-status još ne. Runtime na MIDA uređaju nepotvrđen. v. `SERVIS_INVENTORY.md` | plan Faza 4 |
 | Push | Capacitor push demo | - | v2 | - | - | `V2_BACKLOG.md` | - |
 | CC Favoriti / Profil | CC tabovi | - | v2 | - | - | `V2_BACKLOG.md` | - |
 
@@ -54,8 +54,8 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 
 ### Još za zatvoriti v1 (izvan same matrice)
 1. iOS isti checklist (niti jedna cjelina nije `verified` bez iOS)
-2. Inventar `/servis/*` u aktivnom meniju → port ili potvrda da nije u upotrebi
-3. EAS Android + iOS release/preview build
+2. `/servis/*` runtime na MIDA (kod + inventar gotovi; uređaj nepotvrđen)
+3. EAS Android + iOS preview/production build (**sljedeći korak** — config spreman)
 4. Privitci: svjesni upload + open na uređaju (kratki smoke)
 5. Potpis: end-to-end save + REPX na uređaju (Android već djelomično; iOS obavezno)
 

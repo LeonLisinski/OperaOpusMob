@@ -8,6 +8,6 @@ Stavke koje **nisu** u opsegu prve produkcijske Expo verzije. v1 cilj = 1/1 pari
 | CC tab Favoriti | Prazan ekran (`NoData`) — nema poslovne vrijednosti |
 | CC tab Profil | UX dorada; podaci djelomično u Postavkama |
 | Memo „Odabir teksta” | Vjerojatno mrtav/kriv kod u Ionicu (`OPEN_QUESTIONS.md` #15) |
-| Kamera / photo gallery u privitcima | Zakomentirano u Ionic servisu |
+| Kamera / photo gallery u privitcima | Nije u Ionic dgl privitcima (samo FilePicker); servis put djelomično mrtav. Dogovoreno ostaje v2 (2026-07-31). |
 | EAS OTA updates | Nakon stabilnog v1 store releasea |
 | Generalizacija servis → samo dgl layouti | Dugoročno smanjenje duplog koda |

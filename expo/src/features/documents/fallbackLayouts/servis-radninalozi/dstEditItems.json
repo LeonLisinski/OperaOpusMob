@@ -1,0 +1,22 @@
+[
+  {
+    "type": "simple",
+    "label": "Artikl",
+    "selectFieldKey": "sifart",
+    "selectFieldText": "artikl",
+    "azurFieldKey": "sifart",
+    "search": { "entity": "artikl", "type": "advanced", "debounce": 300 }
+  },
+  {
+    "type": "text",
+    "label": "Količina",
+    "selectFieldKey": "kol",
+    "azurFieldKey": "kolicina"
+  },
+  {
+    "type": "memo",
+    "label": "Opis",
+    "selectFieldKey": "opisartikla",
+    "azurFieldKey": "opis"
+  }
+]

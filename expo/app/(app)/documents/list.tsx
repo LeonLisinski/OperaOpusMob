@@ -1,4 +1,4 @@
-import { useNavigation, useRouter } from 'expo-router';
+import { useNavigation, useRouter, type Href } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
@@ -33,13 +33,17 @@ export default function DocumentsListScreen() {
     (state) => state.documents,
   );
 
-  // "Novi" gumb: gen nema flag u Ionic izvoru (uvijek prikazan), dgl poštuje settings.dglallownew
-  // (v. src/pages/dgl/List.jsx vs src/pages/gen/List.jsx).
-  const canCreateNew = route ? route.kind === 'gen' || Boolean(settings.dglallownew) : false;
+  // "Novi" gumb: gen uvijek; legacy /servis/* uvijek (Ionic FAB); inače dgl po settings.dglallownew.
+  const canCreateNew = route
+    ? route.kind === 'gen' ||
+      route.layoutSource === 'servis-rn' ||
+      route.layoutSource === 'servis-dniz' ||
+      Boolean(settings.dglallownew)
+    : false;
 
   const onNewPress = () => {
     dispatch(startEditForm(null));
-    router.push('/(app)/documents/form');
+    router.push('/documents/form' as Href);
   };
 
   useEffect(() => {
@@ -54,13 +58,13 @@ export default function DocumentsListScreen() {
 
   const onItemPress = (item: Record<string, unknown>) => {
     dispatch(selectListItem(item));
-    router.push('/(app)/documents/doc');
+    router.push('/documents/doc' as Href);
   };
 
   const onEditItem = (item: Record<string, unknown>) => {
     dispatch(selectListItem(item));
     dispatch(startEditForm(item));
-    router.push('/(app)/documents/form');
+    router.push('/documents/form' as Href);
   };
 
   const onOpenFilter = () => {

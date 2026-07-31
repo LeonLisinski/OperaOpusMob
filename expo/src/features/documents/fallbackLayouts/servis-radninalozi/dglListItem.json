@@ -1,0 +1,37 @@
+[
+  {
+    "fields": [
+      {
+        "field": "brojdokumenta"
+      },
+      {
+        "field": "datumotvaranja",
+        "type": "date",
+        "format": "DD.MM.YYYY",
+        "class": "item-bold"
+      }
+    ]
+  },
+  {
+    "label": "Partner",
+    "fields": [{ "field": "nazpartnera" }],
+    "class": "item-bold"
+  },
+  {
+    "label": "Podružnica",
+    "fields": [{ "field": "naz2partnera" }]
+  },
+  {
+    "label": "Ugovor",
+    "fields": [{ "field": "nazpred" }]
+  },
+  {
+    "label": "Kvar",
+    "fields": [{ "field": "napomena7" }],
+    "classmain": "three-lines"
+  },
+  {
+    "label": "Status",
+    "fields": [{ "field": "status" }]
+  }
+]

@@ -14,10 +14,10 @@ Referenca pariteta = **Ionic runtime ponašanje** (meni → URL → ekrani → S
 |---|---|---|
 | Auth | `src/pages/auth/`, `core/cc/UnlockApp` | `expo/app/(auth)/`, `app-unlock.tsx` — parity-review |
 | dgl/gen engine | `src/pages/dgl/`, `src/pages/gen/` | `expo/src/features/documents/` — parity-review |
-| Legacy servis | `src/pages/servis/` | **Nije migrirano** — `moduleRouting.ts` vraća null za `/servis/*` |
-| Stavke swipe | `dgl/tabs/Tab3.jsx`, `dgl/store` hardkod SP | Expo UI + thunkovi postoje; `dstAzurQuery` često nedostaje u JSON-u |
-| gen Akcije | `gen/tabs/TabAkcije.jsx` + `queries.gla.createdoc` | **Nema** u Expo tab bar-u |
-| Build | Capacitor Android `com.opera.mobile` | Expo `app.json` — **nema** `ios.bundleIdentifier`, nema EAS |
+| Legacy servis | `src/pages/servis/` | Alias `/servis/*` → dgl + SP/UI fallback (`servis-rn` / `servis-dniz`) |
+| Stavke swipe | `dgl/tabs/Tab3.jsx`, `dgl/store` hardkod SP | Expo UI + runtime `dst.azur/delete` patch — Android OK |
+| gen Akcije | `gen/tabs/TabAkcije.jsx` + `queries.gla.createdoc` | Tab Akcije + CreateDoc → RN — Android OK |
+| Build | Capacitor Android `com.opera.mobile` | Expo: bundle ID + `eas.json` spremni; EAS build još nije pokrenut |
 
 ## 3. Relevantne datoteke
 
@@ -83,14 +83,15 @@ Svi tenanti koji koriste module s `module.url`:
 
 ## 12. Kriteriji prihvaćanja (v1)
 
-- [ ] Svi `module.url` obrasci koje aktivni tenanti koriste vode na funkcionalan ekran (ne Alert „nije implementiran”) — ovisi o Fazi 4 `/servis/*`
+- [x] `module.url` dgl/gen/servis-rn/servis-dniz vode na ekran (ne Alert) — MIDA runtime još nepotvrđen
 - [x] Stavke: FAB, forma, swipe akcije rade kad Ionic `Tab3` radi (flagovi s backenda) — Android ooZJUKIC 2026-07-31
 - [x] gen CRM Upiti: tab Akcije + „Kreiraj radni nalog” + navigacija na RN — Android ooZJUKIC 2026-07-31
 - [x] dgl: Info, Stavke, Rad, Privitci, Potpis — vidljivost kao Ionic `MainTabs.tsx` — Android smoke
-- [ ] Android release build prolazi
+- [ ] Android release build prolazi (EAS — sljedeći korak)
 - [ ] iOS release build prolazi (`bundleIdentifier` postavljen; runtime checklist)
 - [x] `FEATURE_PARITY_MATRIX.md` ažuriran — 2026-07-31
 - [x] v2 stavke u `V2_BACKLOG.md`
+- [x] typecheck / lint / expo-doctor čisti — 2026-07-31 final check
 
 ## Documentation impact
 
@@ -113,6 +114,6 @@ Expo app se ne deploya na store dok paritet nije potvrđen. Ionic (`src/`) ostaj
 | **1** | Stavke: auto `queries.dst.azur/delete` iz `dst.list` SP | ✅ |
 | **2** | gen tab **Akcije** (`queries.gla.createdoc`) | ✅ |
 | **3** | Paritet review jukic001 + matrica | ✅ Android review 2026-07-31 (`FEATURE_PARITY_MATRIX.md`); iOS još |
-| **4** | Legacy **servis** (`/servis/*`) — inventar URL pa port | sljedeće |
-| **5** | **iOS/Android build** (bundle ID, EAS) | djelomično (bundle ID + eas.json); treba pravi EAS build |
+| **4** | Legacy **servis** (`/servis/*`) — inventar URL pa port | ✅ inventar + alias RN/DNIZ → dgl + SP/UI fallback (`SERVIS_INVENTORY.md`) |
+| **5** | **iOS/Android build** (bundle ID, EAS) | config spreman (app.json + eas.json + doctor); EAS build još nije pokrenut |
 | **6** | Repo cleanup (legacy vs mobile folder) | |

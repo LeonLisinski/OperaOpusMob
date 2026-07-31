@@ -1,0 +1,36 @@
+[
+  {
+    "label": "Osnovno",
+    "fields": [
+      { "label": "Broj", "field": "brojdokumenta" },
+      { "label": "Datum otvaranja", "field": "datumotvaranja", "type": "date", "format": "DD.MM.YYYY" },
+      { "label": "Datum izvršenja", "field": "datumizvrsenja", "type": "date", "format": "DD.MM.YYYY" },
+      { "label": "Status", "field": "status" }
+    ]
+  },
+  {
+    "label": "Partner",
+    "fields": [
+      { "label": "Partner", "field": "nazpartnera" },
+      { "label": "Podružnica", "field": "naz2partnera" },
+      { "label": "Ugovor", "field": "nazpred" }
+    ]
+  },
+  {
+    "label": "Osobe",
+    "fields": [
+      { "label": "Izradio", "field": "izradio" },
+      { "label": "Serviser", "field": "serviser" },
+      { "label": "Nalogodavac", "field": "nalogodavac" }
+    ]
+  },
+  {
+    "label": "Ostalo",
+    "fields": [
+      { "label": "Mjesto troška", "field": "mjestotroska" },
+      { "label": "Uređaj", "field": "uredaj" },
+      { "label": "Kvar", "field": "napomena7", "type": "multiline" },
+      { "label": "Komentar", "field": "komentar", "type": "multiline" }
+    ]
+  }
+]

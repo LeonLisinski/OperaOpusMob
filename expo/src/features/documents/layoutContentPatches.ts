@@ -10,7 +10,7 @@ type LayoutContentPatch = Partial<Record<string, unknown>>;
 /** Metro ponekad wrapa JSON u `{ default: ... }` — uvijek izvuci stvarni payload. */
 function unwrapJson<T>(value: T): T {
   if (value && typeof value === 'object' && 'default' in (value as object)) {
-    return (value as { default: T }).default;
+    return (value as unknown as { default: T }).default;
   }
   return value;
 }

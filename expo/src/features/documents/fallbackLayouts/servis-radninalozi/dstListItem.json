@@ -1,0 +1,9 @@
+[
+  {
+    "fields": [
+      { "field": "artikl", "class": "item-bold" },
+      { "field": "kol" },
+      { "field": "opisartikla" }
+    ]
+  }
+]

@@ -27,5 +27,13 @@ export function useAttachmentsLoader(): void {
       return;
     }
     dispatch(loadAttachments());
-  }, [dispatch, route, layout, item, attachmentsForItemId, attachmentsStatus.loading]);
+  }, [
+    dispatch,
+    route,
+    layout,
+    item,
+    attachmentsForItemId,
+    attachmentsStatus.loading,
+    attachmentsStatus.error,
+  ]);
 }
