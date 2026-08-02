@@ -15,21 +15,18 @@ Prvi native build traje duže (preuzimanje Gradle/CocoaPods ovisnosti).
 
 ## Konfiguracija aplikacije
 
-`expo/app.json`:
+`expo/app.config.ts` (Ionic identitet, Expo pipeline):
 
 | Polje | Vrijednost |
 |---|---|
-| Android package | `com.opera.mobile` |
-| Android versionCode | `1` (EAS production: `autoIncrement`) |
-| iOS bundle ID | `com.opera.mobile` |
-| iOS buildNumber | `1` |
+| Naziv | `Opera Mobile` (isto kao Capacitor) |
+| Ikona / splash | Ionic `assets/icon.png`, `assets/splash.png` |
+| Android/iOS production | `com.opera.mobile` — store update iste app |
+| Android/iOS preview/dev | `com.opera.mobile.preview` — sideload bez konflikta potpisa |
+| Verzija | `2.0.11` / versionCode `20011` (production: `autoIncrement`) |
 | EAS profili | `development` / `preview` (APK) / `production` (AAB) |
-| Scheme | `operamobile` |
-| Orientacija | portrait |
-| Encryption export | `ITSAppUsesNonExemptEncryption: false` |
-| Plugins | router, splash, secure-store, sharing, document-picker, datetimepicker |
 
-Verzija: `expo.version` (trenutno `1.0.0`). Native folderi `expo/ios` i `expo/android` su u `.gitignore` — EAS radi managed prebuild.
+Store: production + **isti signing keystore** kao Ionic na Playu. Preview je samo za interni test.
 
 **Upload opseg:** repo je monorepo — EAS inače pakira **cijeli git root**. Root `.easignore` zato blacklist-a Ionic/`MobLayoutsControls`/`API`/`OperaWeb`/Capacitor `android` itd. Provjera: `npx eas-cli@latest build:inspect --platform android --stage archive --profile preview --output ./eas-archive-check` iz `expo/` — u arhivi smiju biti fajlovi samo pod `expo/`. EAS naredbe uvijek iz `expo/`.
 
