@@ -44,3 +44,8 @@ example
 
 # local EAS archive inspect output
 /eas-archive-check/
+
+# Local signing credentials (never commit)
+credentials.json
+credentials/
+
