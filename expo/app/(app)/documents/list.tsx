@@ -9,7 +9,7 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { Fab } from '@/components/Fab';
 import { LoadingState } from '@/components/LoadingState';
 import { RetryState } from '@/components/RetryState';
-import { Screen } from '@/components/Screen';
+import { Screen, TAB_SCREEN_EDGES } from '@/components/Screen';
 import { SwipeableDocumentRow } from '@/components/SwipeableDocumentRow';
 import {
   loadDocumentModule,
@@ -105,6 +105,7 @@ export default function DocumentsListScreen() {
 
   return (
     <Screen
+      edges={TAB_SCREEN_EDGES}
       style={styles.screen}
       overlay={canCreateNew ? <Fab onPress={onNewPress} accessibilityLabel="Novi dokument" /> : null}
     >
@@ -120,6 +121,7 @@ export default function DocumentsListScreen() {
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         automaticallyAdjustKeyboardInsets
+        removeClippedSubviews={false}
         ListHeaderComponent={listStatus.error ? <ErrorMessage message={listStatus.error} /> : null}
         ListEmptyComponent={
           isSearchEmpty ? (

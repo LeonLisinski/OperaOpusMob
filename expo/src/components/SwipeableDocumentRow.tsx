@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRef, type ComponentRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
-import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { RectButton, Swipeable } from 'react-native-gesture-handler';
 
 import { DynamicListItem } from '@/components/DynamicListItem';
 import type { ListItemLayoutGroup } from '@/features/documents/types';
@@ -19,7 +18,8 @@ interface SwipeableDocumentRowProps {
 
 /**
  * Swipe red dokumenta na listi — samo desno→lijevo, akcija Uredi kad je `editable`.
- * Ekvivalent MasterAzur iz Ionic liste, ali bez lijevog swipe-a (za razliku od stavki).
+ * Legacy Swipeable (ne Reanimated) — izbjegava native crash kad Worklets JS/native
+ * verzije nisu usklađene u development buildu.
  */
 export function SwipeableDocumentRow({
   groups,
@@ -30,7 +30,7 @@ export function SwipeableDocumentRow({
   onEdit,
 }: SwipeableDocumentRowProps) {
   const { colors } = useTheme();
-  const swipeRef = useRef<ComponentRef<typeof ReanimatedSwipeable>>(null);
+  const swipeRef = useRef<ComponentRef<typeof Swipeable>>(null);
 
   const runEdit = () => {
     swipeRef.current?.close();
@@ -65,7 +65,7 @@ export function SwipeableDocumentRow({
   }
 
   return (
-    <ReanimatedSwipeable
+    <Swipeable
       ref={swipeRef}
       friction={2}
       overshootRight={false}
@@ -74,7 +74,7 @@ export function SwipeableDocumentRow({
       renderRightActions={renderRightActions}
     >
       {rowContent}
-    </ReanimatedSwipeable>
+    </Swipeable>
   );
 }
 

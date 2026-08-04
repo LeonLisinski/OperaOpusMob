@@ -1,7 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { radius, shadows, spacing, typography, useTheme } from '@/theme';
+
+/** Visina okruglog FAB-a — za rezervu u scroll listama. */
+export const FAB_SIZE = 56;
+
+/** Donji odmak FAB-a uključujući sistemsku navigacijsku traku (Android). */
+export function useFabBottomOffset(baseOffset: number = spacing.lg) {
+  const insets = useSafeAreaInsets();
+  return baseOffset + insets.bottom;
+}
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -36,6 +46,7 @@ export function Fab({
   size = 'md',
 }: FabProps) {
   const { colors } = useTheme();
+  const bottom = useFabBottomOffset(bottomOffset);
   const extended = typeof label === 'string' && label.length > 0;
   const isSmall = size === 'sm';
 
@@ -51,7 +62,7 @@ export function Fab({
         anchor === 'left' ? styles.fabLeft : styles.fabRight,
         extended ? styles.fabExtended : isSmall ? styles.fabSmall : styles.fabRound,
         {
-          bottom: bottomOffset,
+          bottom,
           backgroundColor:
             variant === 'danger'
               ? pressed

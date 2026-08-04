@@ -9,7 +9,7 @@ import { AppCard } from '@/components/AppCard';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { Fab } from '@/components/Fab';
-import { Screen } from '@/components/Screen';
+import { Screen, TAB_SCREEN_EDGES } from '@/components/Screen';
 import { SectionHeader } from '@/components/SectionHeader';
 import { logout } from '@/features/auth/authSlice';
 import { fetchMenu, selectApp } from '@/features/core/coreSlice';
@@ -67,7 +67,7 @@ export default function AppsScreen() {
 
   return (
     <Screen
-      edges={['left', 'right', 'bottom']}
+      edges={TAB_SCREEN_EDGES}
       style={styles.screen}
       overlay={
         <Fab

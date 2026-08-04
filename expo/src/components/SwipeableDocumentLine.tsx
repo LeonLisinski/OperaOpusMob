@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRef, type ComponentRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
-import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { RectButton, Swipeable } from 'react-native-gesture-handler';
 
 import { DynamicListItem } from '@/components/DynamicListItem';
 import type { DstLineSwipeActions } from '@/features/documents/dstLineHelpers';
@@ -35,7 +34,8 @@ interface SwipeableDocumentLineProps {
 
 /**
  * Swipe red stavke — ekvivalent Ionic Tab3 IonItemSliding + IonItemOptions.
- * ReanimatedSwipeable (RNGH 2.x) — pouzdanije na RN 0.86 / Expo 57 nego legacy Swipeable.
+ * Legacy Swipeable (ne Reanimated) — izbjegava native crash kad Worklets JS/native
+ * verzije nisu usklađene u development buildu.
  * Akcije su ikona + kratka riječ: trolinijski tekst je bio nečitljiv i tražio 100px širine.
  */
 export function SwipeableDocumentLine({
@@ -50,7 +50,7 @@ export function SwipeableDocumentLine({
   onAddSub,
 }: SwipeableDocumentLineProps) {
   const { colors } = useTheme();
-  const swipeRef = useRef<ComponentRef<typeof ReanimatedSwipeable>>(null);
+  const swipeRef = useRef<ComponentRef<typeof Swipeable>>(null);
   const tintTone = toneForIndClass(item.indclassname);
   const indent = isPodstavkaRow(item);
   const locked = isTruthyApiField(item.locked);
@@ -153,7 +153,7 @@ export function SwipeableDocumentLine({
 
   return (
     <View style={indent ? styles.indent : undefined}>
-      <ReanimatedSwipeable
+      <Swipeable
         ref={swipeRef}
         friction={2}
         overshootLeft={false}
@@ -165,7 +165,7 @@ export function SwipeableDocumentLine({
         renderRightActions={renderRightActions}
       >
         {rowContent}
-      </ReanimatedSwipeable>
+      </Swipeable>
     </View>
   );
 }
