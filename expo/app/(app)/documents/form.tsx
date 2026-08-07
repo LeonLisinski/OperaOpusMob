@@ -1,6 +1,6 @@
 import { useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 
 import { Card } from '@/components/Card';
 import { EditFormField } from '@/components/EditFormField';
@@ -61,7 +61,13 @@ export default function DocumentFormScreen() {
     const result = await dispatch(saveDocumentForm());
     if (saveDocumentForm.fulfilled.match(result)) {
       router.back();
+      return;
     }
+    const message =
+      saveDocumentForm.rejected.match(result) && typeof result.payload === 'string'
+        ? result.payload
+        : 'Spremanje nije uspjelo.';
+    Alert.alert('Spremanje', message);
   };
 
   const handleSelectSifarnik = (row: Record<string, unknown>) => {
@@ -76,7 +82,9 @@ export default function DocumentFormScreen() {
       display[field.selectFieldText] = row.name;
     }
     dispatch(updateEditValues(display));
-    dispatch(updateEditFormData({ [field.azurFieldKey]: row.id }));
+    if (field.azurFieldKey) {
+      dispatch(updateEditFormData({ [field.azurFieldKey]: row.id }));
+    }
 
     field.dependencies?.forEach((dependency) => {
       if (dependency.action === 'reset') {
@@ -143,7 +151,7 @@ export default function DocumentFormScreen() {
       <Card style={styles.card}>
         {layout.editItems.map((field, index) => (
           <EditFormField
-            key={`${field.azurFieldKey}-${index}`}
+            key={`${field.azurFieldKey ?? field.selectFieldKey}-${index}`}
             field={field}
             editingExisting={isExistingRecord}
             onOpenSearch={setActiveSearchField}
@@ -154,7 +162,7 @@ export default function DocumentFormScreen() {
       <ErrorMessage message={saveStatus.error} />
 
       <SifarnikSearchModal
-        key={activeSearchField ? `${activeSearchField.entity ?? ''}-${activeSearchField.azurFieldKey}` : 'none'}
+        key={activeSearchField ? `${activeSearchField.entity ?? ''}-${activeSearchField.azurFieldKey ?? activeSearchField.selectFieldKey}` : 'none'}
         visible={activeSearchField !== null}
         field={activeSearchField}
         onClose={() => setActiveSearchField(null)}

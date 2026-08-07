@@ -37,3 +37,6 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+
+# TFS reference clones (zasebni remoti; ne commitati u Opera Mobile / GitHub)
+/Dispecer/

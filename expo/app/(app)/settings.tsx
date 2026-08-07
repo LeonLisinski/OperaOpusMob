@@ -61,7 +61,7 @@ export default function SettingsScreen() {
           text: 'Nastavi',
           onPress: async () => {
             await dispatch(reactivateCore());
-            router.replace('/(auth)/unlock');
+            router.replace('/');
           },
         },
       ],
@@ -79,7 +79,7 @@ export default function SettingsScreen() {
           style: 'destructive',
           onPress: async () => {
             await dispatch(resetApp());
-            router.replace('/(auth)/unlock');
+            router.replace('/');
           },
         },
       ],

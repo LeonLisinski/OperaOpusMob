@@ -36,6 +36,16 @@ function toEditIsoDate(raw: unknown): string {
   return Number.isNaN(parsed.getTime()) ? '' : toIsoDate(parsed);
 }
 
+function normalizeBoolChoice(raw: unknown): 'Da' | 'Ne' | null {
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw === 'boolean') return raw ? 'Da' : 'Ne';
+  const text = String(raw).trim().toLowerCase();
+  if (!text) return null;
+  if (text === 'da' || text === 'true' || text === '1' || text === 'yes') return 'Da';
+  if (text === 'ne' || text === 'false' || text === '0' || text === 'no') return 'Ne';
+  return null;
+}
+
 interface EditFormFieldProps {
   field: EditFieldDef;
   /** true = postojeći zapis se uređuje (za disabled: "edit" — v. src/pages/dgl/components/MasterAzur.jsx checkDisabledValue). */
@@ -52,16 +62,59 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
   const { colors } = useTheme();
   const values = useAppSelector((state) => state.documents.editValues) ?? {};
 
-  const disabled = field.disabled === 'allways' || (field.disabled === 'edit' && editingExisting);
+  const readOnly = !field.azurFieldKey;
+  const disabled =
+    readOnly || field.disabled === 'allways' || (field.disabled === 'edit' && editingExisting);
 
   const setValue = (display: Record<string, unknown>, formValue: unknown) => {
     dispatch(updateEditValues(display));
-    dispatch(updateEditFormData({ [field.azurFieldKey]: formValue }));
+    if (field.azurFieldKey) {
+      dispatch(updateEditFormData({ [field.azurFieldKey]: formValue }));
+    }
   };
+
+  if (field.type === 'bool') {
+    const selected = normalizeBoolChoice(values[field.selectFieldKey]);
+    return (
+      <View style={styles.container}>
+        <Text style={[styles.label, { color: colors.textMuted }]}>{field.caption}</Text>
+        <View style={[styles.boolRow, { borderColor: colors.border, backgroundColor: colors.surfaceMuted }]}>
+          {(['Da', 'Ne'] as const).map((choice) => {
+            const active = selected === choice;
+            return (
+              <Pressable
+                key={choice}
+                disabled={disabled}
+                onPress={() => setValue({ [field.selectFieldKey]: choice }, choice)}
+                accessibilityRole="button"
+                accessibilityState={{ selected: active, disabled }}
+                style={[
+                  styles.boolOption,
+                  active
+                    ? { backgroundColor: colors.surface, borderColor: colors.primaryBorder }
+                    : { borderColor: 'transparent' },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.boolLabel,
+                    { color: active ? colors.primary : colors.textMuted },
+                    active ? styles.boolLabelActive : null,
+                  ]}
+                >
+                  {choice}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+      </View>
+    );
+  }
 
   if (field.type === 'text') {
     const value = String(values[field.selectFieldKey] ?? '');
-    const isHoursField = field.azurFieldKey.toLowerCase() === 'dstdatum2temp';
+    const isHoursField = (field.azurFieldKey ?? '').toLowerCase() === 'dstdatum2temp';
     return (
       <TextField
         label={field.caption}
@@ -97,8 +150,9 @@ export function EditFormField({ field, editingExisting, onOpenSearch }: EditForm
     );
   }
 
-  // simple / advanced — šifrarnik odabir preko SifarnikSearchModal
-  const displayValue = field.selectFieldText ? values[field.selectFieldText] : undefined;
+  // simple / advanced → SifarnikSearchModal; serija → SerijaSearchModal (dst-form grananje).
+  const displayKey = field.selectFieldText ?? field.selectFieldKey;
+  const displayValue = values[displayKey];
   return (
     <View style={styles.container}>
       <Text style={[styles.label, { color: colors.textMuted }]}>{field.caption}</Text>
@@ -212,5 +266,27 @@ const styles = StyleSheet.create({
   },
   pickerValueSelected: {
     fontWeight: typography.weight.medium,
+  },
+  boolRow: {
+    flexDirection: 'row',
+    gap: spacing.xs,
+    padding: spacing.xs,
+    borderWidth: 1,
+    borderRadius: radius.md,
+  },
+  boolOption: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: controlHeight.sm,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    paddingVertical: spacing.sm,
+  },
+  boolLabel: {
+    fontSize: typography.size.md,
+  },
+  boolLabelActive: {
+    fontWeight: typography.weight.semibold,
   },
 });

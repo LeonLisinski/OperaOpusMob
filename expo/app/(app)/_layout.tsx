@@ -35,6 +35,7 @@ export default function AppLayout() {
       <Stack.Screen name="apps" options={{ headerShown: false }} />
       <Stack.Screen name="settings" options={{ title: 'Postavke' }} />
       <Stack.Screen name="modules/[code]" options={{ title: 'Moduli' }} />
+      <Stack.Screen name="raspored/index" options={{ title: 'Raspored' }} />
       <Stack.Screen name="documents/list" options={{ title: 'Popis' }} />
       <Stack.Screen name="documents/doc" options={{ title: 'Dokument' }} />
       <Stack.Screen name="documents/form" options={{ presentation: 'modal', title: 'Forma' }} />

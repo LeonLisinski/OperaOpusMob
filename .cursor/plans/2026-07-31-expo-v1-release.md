@@ -4,7 +4,7 @@ Datum: 2026-07-31 · Opseg: veliki · Status: **odobreno** (korisnik: „ajmo od
 
 ## 1. Zahtjev
 
-Objaviti **Opera Mobile v1** u Expo-u: funkcionalno **1/1** s onim što korisnici stvarno koriste u Ionic app (`src/`), moderniji UI, optimiziran kod, **Android + iOS** build. Push, CC Favoriti/Profil i slične dorade idu u v2.
+Objaviti **Opera Mobile v1** u Expo-u: funkcionalno **1/1** s onim što korisnici stvarno koriste u Ionic app (`src/`), moderniji UI, optimiziran kod, **Android Play**. Push, iOS (TestFlight/App Store), CC Favoriti/Profil i slične dorade idu u v2 (`V2_BACKLOG.md`, D038).
 
 Referenca pariteta = **Ionic runtime ponašanje** (meni → URL → ekrani → SP), ne mrtav kod u izvoru.
 
@@ -63,13 +63,13 @@ Svi tenanti koji koriste module s `module.url`:
 | 2 | Expo gen Akcije tab + thunkovi |
 | 3 | Paritet review + `FEATURE_PARITY_MATRIX` |
 | 4 | Expo `features/servis/` ili potvrda da meni ne koristi `/servis/*` |
-| 5 | `app.json`, EAS, iOS bundle ID |
+| 5 | `app.json`, EAS (**Android** release); iOS bundle ID ostaje u configu za v2 |
 
 ## 10. Rizici
 
 - **Servis-mobile PIN-ovi** bez `/servis/*` implementacije → modul „nije implementiran”
 - **ASURA DST TEH** — `spMob_ASURA_DST_TEH_Query` → azur SP ime **nepotvrđeno** na svim bazama
-- **iOS** — Apple Developer + certifikati nisu u repou
+- **iOS** — v2 (Apple Developer + TestFlight); ne blokira v1
 - **Tenant layouti na klijentskim serverima** mogu se razlikovati od lokalne snimke
 
 ## 11. Plan testiranja
@@ -78,8 +78,9 @@ Svi tenanti koji koriste module s `module.url`:
 2. Modul s stavkama (RNint) — CRUD + swipe
 3. CRM Upiti — Akcije → kreiraj RN → otvori dgl dokument
 4. Privitci, potpis — native Android device
-5. iOS simulator/device — auth, lista, forma, tipkovnica
+5. MEDIVA Android smoke (SRN + serija) — 2026-08-07
 6. `npm run typecheck`, `expo-doctor`
+7. ~~iOS simulator~~ → **v2** (`V2_BACKLOG.md`, D038)
 
 ## 12. Kriteriji prihvaćanja (v1)
 
@@ -87,10 +88,10 @@ Svi tenanti koji koriste module s `module.url`:
 - [x] Stavke: FAB, forma, swipe akcije rade kad Ionic `Tab3` radi (flagovi s backenda) — Android ooZJUKIC 2026-07-31
 - [x] gen CRM Upiti: tab Akcije + „Kreiraj radni nalog” + navigacija na RN — Android ooZJUKIC 2026-07-31
 - [x] dgl: Info, Stavke, Rad, Privitci, Potpis — vidljivost kao Ionic `MainTabs.tsx` — Android smoke
-- [ ] Android release build prolazi (EAS — sljedeći korak)
-- [ ] iOS release build prolazi (`bundleIdentifier` postavljen; runtime checklist)
-- [x] `FEATURE_PARITY_MATRIX.md` ažuriran — 2026-07-31
-- [x] v2 stavke u `V2_BACKLOG.md`
+- [ ] Android release build / staged Play (MEDIVA + Jukić)
+- [ ] ~~iOS release build~~ → **v2** (D038)
+- [x] `FEATURE_PARITY_MATRIX.md` ažuriran — 2026-07-31 (+ iOS→v2 2026-08-07)
+- [x] v2 stavke u `V2_BACKLOG.md` (uklj. iOS)
 - [x] typecheck / lint / expo-doctor čisti — 2026-07-31 final check
 
 ## Documentation impact
@@ -113,7 +114,7 @@ Expo app se ne deploya na store dok paritet nije potvrđen. Ionic (`src/`) ostaj
 | **0** | Ovaj plan + V2_BACKLOG | ✅ |
 | **1** | Stavke: auto `queries.dst.azur/delete` iz `dst.list` SP | ✅ |
 | **2** | gen tab **Akcije** (`queries.gla.createdoc`) | ✅ |
-| **3** | Paritet review jukic001 + matrica | ✅ Android review 2026-07-31 (`FEATURE_PARITY_MATRIX.md`); iOS još |
+| **3** | Paritet review jukic001 + matrica | ✅ Android 2026-07-31; iOS → **v2** (D038) |
 | **4** | Legacy **servis** (`/servis/*`) — inventar URL pa port | ✅ inventar + alias RN/DNIZ → dgl + SP/UI fallback (`SERVIS_INVENTORY.md`) |
-| **5** | **iOS/Android build** (bundle ID, EAS) | config spreman (app.json + eas.json + doctor); EAS build još nije pokrenut |
+| **5** | **Android** EAS / Play (iOS App Store → v2) | config spreman; staged Play nakon MEDIVA smoke |
 | **6** | Repo cleanup (legacy vs mobile folder) | |

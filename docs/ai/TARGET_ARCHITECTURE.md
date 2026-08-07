@@ -5,7 +5,7 @@
 ## Potvrđeni ciljni principi
 
 - **Expo/React Native aplikacija u `expo/`** - nastaje kao zaseban folder u istom repozitoriju, ne zamjenjuje `src/` odmah.
-- **Android i iOS su ravnopravne ciljane platforme.** Ionic aplikacija (`src/`) je Android-only produkcijska referenca, ali Expo aplikacija se razvija za obje platforme od početka - iOS nije naknadna opcija. Arhitektura, odabrane biblioteke (navigacija, state, storage, kamera, potpis, push) i implementirane funkcionalnosti moraju raditi na oba OS-a; funkcionalnost koja postoji samo na jednoj platformi je iznimka koja se eksplicitno opravdava, ne default.
+- **Android i iOS su dugoročne ciljane platforme; v1 opseg = Android.** Ionic (`src/`) je Android-only produkcijska referenca. Expo kod mora ostati portable (bez nepotrebnih Android-only API-ja). **iOS runtime paritet + TestFlight + App Store = v2** (`V2_BACKLOG.md`, D038) — ne blokira v1 Play release.
 - **Huawei se ne tretira kao zasebna platforma.** Ciljani Huawei uređaji koriste Google Play Services, pa se tretiraju kao standardni Android - nema posebnog tehničkog zahtjeva ni AppGallery/HMS sloja.
 - **Ionic (`src/`) ostaje produkcijska referenca** tijekom cijele migracije, dok Expo ekvivalent nema dokazanu funkcionalnu jednakost po modulu i tenantu (v. `MIGRATION_STRATEGY.md`, `FEATURE_PARITY_MATRIX.md`).
 - **Migracija po vertikalnim funkcionalnim cjelinama** (npr. auth, pa jedan generički modul kraj-do-kraja), ne po horizontalnim slojevima (svi ekrani pa sav state pa sav API).

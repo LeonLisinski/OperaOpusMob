@@ -9,6 +9,7 @@ import { ErrorMessage } from '@/components/ErrorMessage';
 import { HeaderCloseButton } from '@/components/HeaderCloseButton';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
+import { SerijaSearchModal } from '@/components/SerijaSearchModal';
 import { SifarnikSearchModal } from '@/components/SifarnikSearchModal';
 import { StickyFooter } from '@/components/StickyFooter';
 import { dstEditLayoutFor, resetEditForm, saveDstLine, updateEditFormData, updateEditValues } from '@/features/documents/documentsSlice';
@@ -18,10 +19,10 @@ import { spacing } from '@/theme';
 
 /**
  * Forma unosa/izmjene stavke — ekvivalent src/pages/dgl/components/DetailAzurNew.jsx.
- * Dijeli editValues/editFormData i EditFormField/SifarnikSearchModal s glavnom formom
- * dokumenta (documents/form.tsx) jer je posrijedi ista JSON shema kontrola, samo drugi
- * izvor layouta (dstEditItems/dstEditItemsRad umjesto {dgl,gla}EditItems) i SP (queries.dst.azur
- * umjesto spWeb_UpdateDGL/queries.gla.azur — v. DECISION_LOG.md D025/D026).
+ * Dijeli editValues/editFormData i EditFormField s glavnom formom dokumenta
+ * (documents/form.tsx). Šifrarnik (simple/advanced) ide na SifarnikSearchModal;
+ * tip `serija` na SerijaSearchModal + hardkodirani multi-field confirm kao Ionic
+ * onSearchModalSerijaConfirm.
  */
 export default function DstFormScreen() {
   const dispatch = useAppDispatch();
@@ -36,6 +37,8 @@ export default function DstFormScreen() {
 
   const isExistingRecord = dstEditContext?.dstId !== null && dstEditContext?.dstId !== undefined;
   const isSubItem = !isExistingRecord && dstEditContext?.parentId !== null && dstEditContext?.parentId !== undefined;
+  const isSerijaSearch = activeSearchField?.type === 'serija';
+  const isSifarnikSearch = activeSearchField !== null && !isSerijaSearch;
 
   useEffect(() => {
     navigation.setOptions({
@@ -63,6 +66,20 @@ export default function DstFormScreen() {
     if (saveDstLine.fulfilled.match(result)) {
       router.back();
     }
+  };
+
+  /** Ionic DetailAzurNew onSearchModalSerijaConfirm — ignora layout azurFieldKey. */
+  const handleSelectSerija = (row: Record<string, unknown>) => {
+    setActiveSearchField(null);
+    const payload = {
+      sifart: row.sifart,
+      sifsklad: row.sifsklad,
+      skladiste: row.skladiste,
+      artikl: row.artikl,
+      sifser: row.serija,
+    };
+    dispatch(updateEditValues(payload));
+    dispatch(updateEditFormData(payload));
   };
 
   const handleSelectSifarnik = (row: Record<string, unknown>) => {
@@ -157,11 +174,23 @@ export default function DstFormScreen() {
       <ErrorMessage message={saveStatus.error} />
 
       <SifarnikSearchModal
-        key={activeSearchField ? `${activeSearchField.entity ?? ''}-${activeSearchField.azurFieldKey}` : 'none'}
-        visible={activeSearchField !== null}
-        field={activeSearchField}
+        key={
+          isSifarnikSearch
+            ? `sif-${activeSearchField.entity ?? ''}-${activeSearchField.azurFieldKey}`
+            : 'sif-none'
+        }
+        visible={isSifarnikSearch}
+        field={isSifarnikSearch ? activeSearchField : null}
         onClose={() => setActiveSearchField(null)}
         onSelect={handleSelectSifarnik}
+      />
+
+      <SerijaSearchModal
+        key={isSerijaSearch ? `ser-${activeSearchField.azurFieldKey}` : 'ser-none'}
+        visible={isSerijaSearch}
+        debounceMs={activeSearchField?.debaunce ?? 200}
+        onClose={() => setActiveSearchField(null)}
+        onSelect={handleSelectSerija}
       />
     </Screen>
   );

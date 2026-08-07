@@ -366,3 +366,23 @@ ADR-light format: kratak zapis odluke, razloga i posljedica. Nove odluke se doda
 
 **Posljedice:** `OPEN_QUESTIONS.md`, `FEATURE_PARITY_MATRIX.md` (stavke), `PROJECT_CONTEXT.md`, `00-project-context.mdc` ažurirani. Expo backlog: swipe akcije na `documents/lines.tsx`, `queries.dst.azur` u JSON-u po tenantu (odobren zadatak), runtime test na jukic001.
 
+## D037
+
+**Datum:** 2026-08-07 · **Status:** `approved`
+
+**Odluka:** Tip kontrole `serija` u Expo dst formi ide kao **zaseban** `SerijaSearchModal` + `fetchSerijaRows` (`spMob_DST_Ser`), ne kao proširenje `SifarnikSearchModal`. Odabir retka hardkodira `{ sifart, sifsklad, skladiste, artikl, sifser: row.serija }` u `editValues` i `editFormData` — isto kao Ionic `onSearchModalSerijaConfirm` (ignora layout `azurFieldKey`). Layout JSON se ne mijenja; nepotpuni `serija` redovi (bez `selectFieldKey`/`azurFieldKey`) i dalje se preskaču u `layoutContract`.
+
+**Razlog:** Ionic `SearchSer` koristi drugi SP, drugi oblik retka, toggle filtere i multi-field confirm — drugačiji ugovor od `spMob_DGL_Sifarnici`. Kopiranje Ionic `handleChange` klijentskog filtera na kraju i `uuidv4()` na svakom renderu namjerno izostavljeno.
+
+**Posljedice:** MEDIVA `mediva/SRN` validna `serija` polja se prikazuju; runtime smoke na MEDIVA tabletu još treba potvrditi. Jukić dst forme bez `serija` u layoutu nepromijenjene.
+
+## D038
+
+**Datum:** 2026-08-07 · **Status:** `approved` (vlasnik projekta)
+
+**Odluka:** **iOS** (runtime parity checklist, TestFlight, App Store) ide u **v2**. Expo **v1** = Android Play paritet s Ionic produkcijom. Kod u `expo/` ostaje portable (ne uvoditi Android-only API bez potrebe); v2 nije greenfield iOS app nego provjera + objava.
+
+**Razlog:** Ionic nikad nije imao iOS build; produkcijski klijenti (uklj. MEDIVA) su na Androidu. Blokirati v1 na iOS checklist usporava zamjenu Ionica bez koristi za trenutne korisnike.
+
+**Posljedice:** `V2_BACKLOG.md`, `FEATURE_PARITY_MATRIX.md` (`verified` = Android za v1), `PROJECT_CONTEXT.md`, `OPEN_QUESTIONS.md` #12.
+

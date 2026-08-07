@@ -24,15 +24,15 @@ Aplikacija je izgrađena na Ionic React + Capacitor (v6), objavljena za Android.
 
 Cilj je **ista aplikacija, modernizirana i dovršena** — ne novi proizvod od nule:
 
-- **Expo/React Native** (Android + iOS), ljepši UI/UX, čistija arhitektura za održavanje.
+- **Expo/React Native** — **v1 = Android** (Play, paritet s Ionic produkcijom); **iOS** (TestFlight / App Store / runtime checklist) = **v2** (`V2_BACKLOG.md`, D038). Kod ostaje portable.
 - **Zadržati JSON-driven model** — prilagodbe po klijentu kroz `MobLayoutsControls/` i `spMob_*` procedure, bez obaveznog Store releasea za svaku sitnicu (kao web pristup).
 - **Ne dirati API** dok radi; promjene prvenstveno kroz layout JSON i SQL.
-- **Dovršiti** što je u Ionic originalu nedovršeno ili loše (push, servis moduli, mrtvi tabovi, hardkodi).
+- **Dovršiti** što je u Ionic originalu nedovršeno ili loše (push, servis moduli, mrtvi tabovi, hardkodi) — push i iOS u v2.
 - Ionic original je brzo sklopljen — **referenca ponašanja**, ne uzor kvalitete; bugove u Expo-u ne replicirati namjerno.
 
 Ovo **nije** mehaničko prepisivanju Ionic komponenti u React Native.
 
-**Ciljne platforme:** trenutna Ionic aplikacija je Android-only produkcijska referenca. Expo aplikacija se razvija **ravnopravno za Android i iOS** - iOS nije naknadna opcija nego dio ciljne aplikacije od početka, pa arhitektura, odabrane biblioteke i implementirane funkcionalnosti moraju podržavati obje platforme. Huawei uređaji koje SvamPlus klijenti koriste imaju Google Play Services, pa se Huawei ne tretira kao zasebna platforma ni poseban tehnički zahtjev.
+**Ciljne platforme:** Ionic produkcija je Android-only. Expo **v1** = Android Play. iOS ostaje dugoročni cilj (portable kod), ali **objava i parity checklist su v2** (D038). Huawei uređaji koje SvamPlus klijenti koriste imaju Google Play Services, pa se Huawei ne tretira kao zasebna platforma.
 
 ## Test okruženje
 
@@ -45,6 +45,8 @@ Read-only pristup **produkcijskim tenant bazama** moguć po dogovoru — korisno
 ## Backend i layouti
 
 - ASP.NET API: folder **`API/`** u repou (TFS, reference-only).
+- Opera Web: folder **`OperaWeb/`** (TFS `WebERP/OperaWeb`, reference-only).
+- **Dispečer (Slavonija Bus):** folder **`Dispecer/`** — klon s TFS `WebERP/Dispecer` (`http://devops:8080/tfs/DefaultCollection/WebERP/_git/Dispecer`). Reference-only za kasnije mobilne značajke po uzoru na web; **ne mijenjati** kao dio Opera Mobile migracije. Unutar klona postoji i `Dispecer/mobile/` (zaseban Expo kontekst) + `Dispecer/docs/`.
 - Layouti: **`\\operaweb\c$\inetpub\wwwroot\Opera\MobLayoutsControls`** — održavaju konzultanti + tim.
 
 ## Pravilo tijekom migracije

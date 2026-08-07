@@ -2,9 +2,9 @@
 
 Prati status migracije po funkcionalnoj cjelini. Nije popis svih 757 JSON layout datoteka niti svih tenant varijanti.
 
-Android i iOS su ravnopravne ciljane platforme (v. `TARGET_ARCHITECTURE.md`) — stupac "Testirani tenant" koristi oblik `tenant (platforma)`. Cjelina se ne smije označiti `verified` dok paritet nije potvrđen na **obje** platforme.
+Android je **v1 produkcijska** platforma (Ionic referenca je Android-only). iOS ostaje cilj koda (portable Expo), ali **runtime paritet + App Store idu u v2** (`V2_BACKLOG.md`, D038). Stupac "Testirani tenant" koristi oblik `tenant (platforma)`. Za v1, cjelina može biti `verified` nakon potvrde na **Androidu**; iOS se ne blokira kao uvjet v1 zatvaranja.
 
-Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → ERP `svam` → App PIN `plusplus`, **Android** (Expo). iOS još nije prošao isti checklist.
+Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → ERP `svam` → App PIN `plusplus`, **Android** (Expo). MEDIVA Android smoke 2026-08-07 (u tijeku / OK po testeru). iOS checklist → v2.
 
 ## Statusi
 
@@ -14,8 +14,8 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 | `analyzed` | Trenutno ponašanje je dokumentirano, migracija nije počela |
 | `planned` | Plan promjene postoji i odobren je |
 | `in-progress` | Implementacija u `expo/` je u tijeku |
-| `parity-review` | Implementacija postoji; djelomično ili potpuno potvrđena na jednoj platformi |
-| `verified` | Paritet potvrđen na test tenantu na Android **i** iOS |
+| `parity-review` | Implementacija postoji; djelomično ili potpuno potvrđena na Androidu |
+| `verified` | Paritet potvrđen na test tenantu na **Androidu** (v1). iOS potvrda = v2. |
 | `blocked` | Migracija blokirana vanjskim faktorom |
 | `v2` | Namjerno izvan v1 — v. `V2_BACKLOG.md` |
 
@@ -23,19 +23,19 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 
 | Područje | Ionic izvor | Layout/API/SQL | Expo status | Testirani tenant | Kriterij pariteta | Otvoreni problemi / bilješke | Dokumentacija |
 |---|---|---|---|---|---|---|---|
-| Core PIN | `UnlockCore.tsx` | `/data` + `spPinCoreAzur` | parity-review | ooZJUKIC (Android) | Valjan core PIN → auth konfiguracija | Runtime OK na Androidu; iOS nepotvrđen | `CURRENT_ARCHITECTURE.md` §5.2 |
-| ERP login | `Login.tsx` | `/login` | parity-review | ooZJUKIC (Android) | Isti uid/pwd → user/connection | Runtime OK (`svam`); iOS nepotvrđen | §5.2 |
-| App PIN | `UnlockApp.jsx` | `spPinAppAzur` | parity-review | ooZJUKIC (Android) | Otključavanje daje isti unlocked | Runtime OK (`plusplus`); iOS nepotvrđen | §5.2 |
+| Core PIN | `UnlockCore.tsx` | `/data` + `spPinCoreAzur` | parity-review | ooZJUKIC (Android) | Valjan core PIN → auth konfiguracija | Runtime OK na Androidu; iOS → v2 | `CURRENT_ARCHITECTURE.md` §5.2 |
+| ERP login | `Login.tsx` | `/login` | parity-review | ooZJUKIC (Android) | Isti uid/pwd → user/connection | Runtime OK (`svam`); iOS → v2 | §5.2 |
+| App PIN | `UnlockApp.jsx` | `spPinAppAzur` | parity-review | ooZJUKIC (Android) | Otključavanje daje isti unlocked | Runtime OK (`plusplus`); iOS → v2 | §5.2 |
 | Kontrolni centar | `TabAplikacije.jsx` | `spMob_Menu_Query` | parity-review | ooZJUKIC (Android) | Prikaz aplikacija / zaključanost | Favoriti/Profil → v2; Postavke u header ikoni | §5.5, §7.5 |
 | Meni i moduli | `Modules.tsx` | `spMob_Menu_Query` table2 | parity-review | ooZJUKIC (Android) | Navigacija po `module.url` | `dgl`/`gen` OK; `/servis/*` → alias dgl + fallback (Faza 4; MIDA runtime nepotvrđen) | §7.5 |
 | Generička lista | `dgl/List`, `gen/List` | `/doclayouts`, `queries.*.list` | parity-review | ooZJUKIC (Android) | Ista lista/polja za isti modul | RNint, RNodr, CRM Upiti potvrđeni na Androidu | §3.1, §7.3 |
 | Filteri i pretraga | dgl/gen store filter | `filterdefaults`, `statusi`, `searchfields` | parity-review | ooZJUKIC (Android) | Isti SP parami; pretraga nad listom | Date picker OK; badge filtera vizualno OK; **filter cache po modulu** (Upiti↔RN) potvrđen u sesiji 2026-07-31 | §8.4 |
 | Detalj dokumenta | `Tab1` / `TabInfo` | `*ViewItems`, `visiblefield` | parity-review | ooZJUKIC (Android) | Isti prikaz polja/sekcija | Info tab na RN i Upiti OK | §7.3 |
 | Uređivanje forme | `MasterAzur` | `*EditItems`, azur SP | parity-review | ooZJUKIC (Android) | Kontrole + spremanje | Datumi, text, memo, sifarnik OK; memo „Odabir teksta” → v2 | §7.4 |
-| Stavke (dst) | `Tab3`, `DetailAzurNew` | `dst*`, `spMob_*_DST_*` | parity-review | ooZJUKIC (Android) | CRUD + swipe flagovi s retka | Runtime patch `dst.azur/delete` iz list SP; `parentdstid` u JSON; sati `dstdatum2temp` HHmm; swipe/podstavke/Rad tab — Android OK | §7.3, §9.4 |
-| Šifrarnici | `search.jsx` | `spMob_*_Sifarnici` | parity-review | ooZJUKIC (Android) | simple/advanced rezultati | CRM: ne slati `azurFieldKey` kao SP param — popravljeno i potvrđeno | §7.4 |
+| Stavke (dst) | `Tab3`, `DetailAzurNew` | `dst*`, `spMob_*_DST_*` | parity-review | ooZJUKIC (Android); MEDIVA smoke u tijeku | CRUD + swipe flagovi s retka | Runtime patch `dst.azur/delete` iz list SP; `parentdstid` u JSON; sati `dstdatum2temp` HHmm; swipe/podstavke/Rad tab — Android OK; **`serija` kontrola** (`spMob_DST_Ser` / SearchSer) portana u Expo 2026-08-07 — MEDIVA runtime potvrditi | §7.3, §9.4 |
+| Šifrarnici | `search.jsx` | `spMob_*_Sifarnici` | parity-review | ooZJUKIC (Android) | simple/advanced rezultati | CRM: ne slati `azurFieldKey` kao SP param — popravljeno i potvrđeno; **`serija` nije šifrarnik** (zaseban modal, D037) | §7.4 |
 | Privitci (dgl) | `TabPrivitci.jsx` | `/saveatt`, `/getatt`, `prilozi` | parity-review | ooZJUKIC (Android) | Lista/upload/open | Tab + lista viđeni; puni upload/open checklist na uređaju još kratak | §10.4 |
-| Potpis + REPX (dgl) | `Tab4.jsx` | `insertSignature`, `/repxreport` | parity-review | ooZJUKIC (Android) | Potpis + izvještaj | SP prima samo Signature/Text/TextField (bez email parama); native canvas — potvrditi još jednom na iOS | §10.2, §10.5 |
+| Potpis + REPX (dgl) | `Tab4.jsx` | `insertSignature`, `/repxreport` | parity-review | ooZJUKIC (Android) | Potpis + izvještaj | SP prima samo Signature/Text/TextField (bez email parama); native canvas — iOS potvrda → v2 | §10.2, §10.5 |
 | gen Akcije (kreiraj RN) | `TabAkcije.jsx` | `queries.gla.createdoc` | parity-review | ooZJUKIC (Android) | Kreiraj RN → otvori dgl | CreateDoc ne vraća sifdv → lookup preko `spMob_ZJUKIC_DGL_Query`; prebacivanje CC na RN modul; povratak na Upite s filter cache | plan Faza 2 |
 | Postavke | `TabPostavke` | local prefs | parity-review | - | Dark mode, verzija, reset, odjava | Web preview ranije; Android smoke u auth sesiji | §12 |
 | Odjava | `logOut` | Preferences `user` | parity-review | ooZJUKIC (Android) | Briše samo user | OK | §5.4 |
@@ -53,11 +53,10 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 - UI: date picker confirm; filter badge clip; filter cache po modulu
 
 ### Još za zatvoriti v1 (izvan same matrice)
-1. iOS isti checklist (niti jedna cjelina nije `verified` bez iOS)
-2. `/servis/*` runtime na MIDA (kod + inventar gotovi; uređaj nepotvrđen)
-3. EAS Android + iOS preview/production build (**sljedeći korak** — config spreman)
-4. Privitci: svjesni upload + open na uređaju (kratki smoke)
-5. Potpis: end-to-end save + REPX na uređaju (Android već djelomično; iOS obavezno)
+1. `/servis/*` runtime na MIDA (kod + inventar gotovi; uređaj nepotvrđen)
+2. EAS Android production / staged Play rollout (MEDIVA + Jukić smoke)
+3. Privitci: svjesni upload + open na uređaju (kratki smoke)
+4. Potpis: end-to-end save + REPX na Androidu (djelomično već)
 
 ### Namjerno van v1
-Push, Favoriti, Profil, memo „Odabir teksta”, kamera u privitcima, EAS OTA — v. `V2_BACKLOG.md`.
+**iOS** (runtime checklist, TestFlight, App Store), Push, Favoriti, Profil, memo „Odabir teksta”, kamera u privitcima, EAS OTA — v. `V2_BACKLOG.md`.

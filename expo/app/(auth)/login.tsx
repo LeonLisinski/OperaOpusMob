@@ -44,7 +44,7 @@ export default function LoginScreen() {
           text: 'Nastavi',
           onPress: async () => {
             await dispatch(reactivateCore());
-            router.replace('/(auth)/unlock');
+            router.replace('/');
           },
         },
       ],

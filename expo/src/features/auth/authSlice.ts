@@ -228,7 +228,13 @@ const authSlice = createSlice({
         state.coreUnlock.error = null;
         state.login.error = null;
       })
-      .addCase(resetApp.fulfilled, () => initialState);
+      .addCase(resetApp.fulfilled, () => ({
+        // Storage je već prazan — bootstrapSession bi samo potvrdio null core/user.
+        // bootstrapStatus mora ostati 'ready': inače redirect na /(auth)/unlock
+        // zaobilazi app/index.tsx, a (app)/_layout vrti spinner dok status nije ready.
+        ...initialState,
+        bootstrapStatus: 'ready' as const,
+      }));
   },
 });
 

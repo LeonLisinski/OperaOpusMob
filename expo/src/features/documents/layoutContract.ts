@@ -282,7 +282,39 @@ function isFieldValueType(value: unknown): value is ListFieldDef['type'] {
 }
 
 function isEditControlType(value: unknown): value is EditControlType {
-  return value === 'date' || value === 'simple' || value === 'advanced' || value === 'memo' || value === 'text';
+  return (
+    value === 'date' ||
+    value === 'simple' ||
+    value === 'advanced' ||
+    value === 'memo' ||
+    value === 'text' ||
+    value === 'serija' ||
+    value === 'bool'
+  );
+}
+
+/**
+ * Stariji layouti drže Da/Ne kao type:"text". Dok server JSON ne dobije type:"bool",
+ * pretvaramo poznate caption-e u bool kontrolu (bez tenant if-a).
+ */
+const LEGACY_BOOL_CAPTIONS = new Set([
+  'osiguranje pokriće',
+  'prijava osiguranju',
+  'poslan zahtjev',
+  'uslikana šteta',
+  'izvid štete',
+  'uslikan popravak',
+  'polica osiguranja',
+]);
+
+function coerceLegacyBoolField(field: EditFieldDef): EditFieldDef {
+  if (field.type !== 'text') {
+    return field;
+  }
+  if (!LEGACY_BOOL_CAPTIONS.has(field.caption.trim().toLowerCase())) {
+    return field;
+  }
+  return { ...field, type: 'bool' };
 }
 
 function readPlainObject(raw: unknown): Record<string, unknown> {
@@ -317,16 +349,21 @@ function readEditFields(
         devWarn(`EditItems[${index}] nema selectFieldKey, preskačem.`, record);
         return null;
       }
-      if (typeof record.azurFieldKey !== 'string' || record.azurFieldKey.length === 0) {
-        devWarn(`EditItems[${index}] nema azurFieldKey, preskačem.`, record);
+      // Bez azurFieldKey = read-only prikaz (npr. SRNs „Sati rada“) — Ionic i dalje crta polje.
+      const azurFieldKey =
+        typeof record.azurFieldKey === 'string' && record.azurFieldKey.length > 0
+          ? record.azurFieldKey
+          : undefined;
+      if (!azurFieldKey && record.type !== 'text' && record.type !== 'memo' && record.type !== 'date') {
+        devWarn(`EditItems[${index}] nema azurFieldKey, preskačem (nije display tip).`, record);
         return null;
       }
       const field: EditFieldDef = {
         type: record.type,
         caption: typeof record.caption === 'string' ? record.caption : '',
         selectFieldKey: record.selectFieldKey,
-        azurFieldKey: record.azurFieldKey,
       };
+      if (azurFieldKey) field.azurFieldKey = azurFieldKey;
       if (typeof record.selectFieldText === 'string') field.selectFieldText = record.selectFieldText;
       if (typeof record.entity === 'string') field.entity = record.entity;
       if (typeof record.debaunce === 'number') field.debaunce = record.debaunce;
@@ -334,7 +371,7 @@ function readEditFields(
       if (record.disabled === 'allways' || record.disabled === 'edit') field.disabled = record.disabled;
       const dependencies = readEditDependencies(record.dependencies);
       if (dependencies.length > 0) field.dependencies = dependencies;
-      return field;
+      return coerceLegacyBoolField(field);
     })
     .filter((field): field is EditFieldDef => field !== null);
 }

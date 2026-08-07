@@ -64,9 +64,11 @@ Folder je `{tenant}/{sifdv}/` ili `{sifdv}/` (bez prefiksa). Po modulu do 12 dat
 | `dstListItem` / `dstListItemRad` | stavke / stavke rada |
 | `dstEditItems` / `dstEditItemsRad` (+ `*Extends`) | forme stavki |
 
-Tipovi kontrola u `*EditItems`: `date`, `simple`, `advanced`, `memo`, `text`. Polja: `caption`, `entity`, `selectFieldKey`, `selectFieldText`, `azurFieldKey`, `parentIdFieldKey`, `debaunce`, `searchItems`.
+Tipovi kontrola u `*EditItems`: `date`, `simple`, `advanced`, `memo`, `text`, `serija`. Polja: `caption`, `entity`, `selectFieldKey`, `selectFieldText`, `azurFieldKey`, `parentIdFieldKey`, `debaunce`, `searchItems`.
 
 `entity` nije UI pojam — prosljeđuje se kao `action` parametar SP-a `spMob_DGL_Sifarnici` (v. `src/components/search/simple/search.jsx`). Novi šifrarnik znači izmjenu SP-a, ne mobilnog koda.
+
+`serija` nije šifrarnik: Ionic `SearchSer` zove hardkodirani `spMob_DST_Ser` (filteri `sifsklad`/`sifart` iz forme); odabir piše `{ sifart, sifsklad, skladiste, artikl, sifser }` (ne layout `azurFieldKey`). Expo: `SerijaSearchModal` + `serijaApi.ts` (v. DECISION_LOG D037).
 
 ## Mjesto promjene u sustavu
 

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { useRouter, type Href } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,8 +14,16 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { logout } from '@/features/auth/authSlice';
 import { fetchMenu, selectApp } from '@/features/core/coreSlice';
 import type { AppMenuEntry } from '@/features/core/types';
+import { isRasporedApp } from '@/features/raspored/constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { radius, spacing, typography, useTheme } from '@/theme';
+
+function routeAfterAppSelect(app: { code: string; url?: string | null; title?: string }): Href {
+  if (isRasporedApp(app.code, app.url, app.title)) {
+    return '/raspored' as Href;
+  }
+  return { pathname: '/(app)/modules/[code]', params: { code: app.code } };
+}
 
 const logoSource = require('@/assets/images/operaopus-logo.png');
 
@@ -42,7 +50,7 @@ export default function AppsScreen() {
       return;
     }
     dispatch(selectApp(app));
-    router.push({ pathname: '/(app)/modules/[code]', params: { code: app.code } });
+    router.push(routeAfterAppSelect(app));
   };
 
   const onSettingsPress = () => {

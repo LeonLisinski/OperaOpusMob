@@ -52,22 +52,22 @@ Za svaki kriterij iz koraka 1: usporedi Ionic i Expo na **istom tenantu i istom 
 
 Razlika koja je **namjerna** (npr. bolji prikaz greške) se zapisuje kao odluka. Razlika koja nije namjerna je bug.
 
-### 5. Provjeri na više tenanta i na obje platforme
+### 5. Provjeri na više tenanta (Android za v1)
 
 Tenant: najmanje jedan s osnovnim layoutom i jedan s tenant-specifičnim override-om. Ako cjelina dira tenanta čiji layout nemamo — to je **nepoznanica**, ne "prošlo".
 
-Platforma: Android i iOS su ravnopravne ciljane platforme (v. `docs/ai/TARGET_ARCHITECTURE.md`) — provjera na samo jednoj platformi nije dovoljna za `verified`.
+Platforma: **v1 = Android** (Ionic produkcija). iOS checklist = **v2** (`V2_BACKLOG.md`, D038). `verified` za v1 ne zahtijeva iOS.
 
 ### 6. Zapiši status
 
-Ažuriraj red cjeline u `docs/ai/FEATURE_PARITY_MATRIX.md` — status je jedan od: `not-analyzed`, `analyzed`, `planned`, `in-progress`, `parity-review`, `verified`, `blocked`. `verified` smije upisati samo nakon koraka 4 i 5 (dokazana jednakost na ≥ 2 tenanta/platforme). Ionic verzija ostaje netaknuta.
+Ažuriraj red cjeline u `docs/ai/FEATURE_PARITY_MATRIX.md` — status je jedan od: `not-analyzed`, `analyzed`, `planned`, `in-progress`, `parity-review`, `verified`, `blocked`. `verified` smije upisati samo nakon koraka 4 i 5 (dokazana jednakost na ≥ 2 tenanta gdje je to moguće, **Android**). Ionic verzija ostaje netaknuta.
 
 ## Obavezne provjere
 
 - [ ] Kriteriji jednakosti zapisani **prije** pisanja Expo koda
 - [ ] Sve tri varijante (`servis`, `dgl`, `gen`) analizirane, ciljna pokriva razlike
-- [ ] Svih 5 tipova kontrola (`date`, `simple`, `advanced`, `memo`, `text`) radi ako ih cjelina koristi
-- [ ] Testirano na ≥ 2 tenanta i na obje platforme (Android, iOS)
+- [ ] Svih 5 tipova kontrola (`date`, `simple`, `advanced`, `memo`, `text`) radi ako ih cjelina koristi; `serija` ako layout koristi
+- [ ] Testirano na ≥ 2 tenanta na **Androidu** (iOS → v2)
 - [ ] Rollback opisan
 - [ ] Ionic `src/` nije mijenjan
 
@@ -82,4 +82,4 @@ Ažuriraj red cjeline u `docs/ai/FEATURE_PARITY_MATRIX.md` — status je jedan o
 
 ## Kriteriji završetka
 
-Cjelina radi u `expo/`, svaki kriterij jednakosti je provjeren i zabilježen, namjerne razlike su zapisane kao odluke, testirano na najmanje dva tenanta i na obje platforme (Android, iOS), rollback postoji, Ionic je netaknut, i dokumentacijski utjecaj je zapisan.
+Cjelina radi u `expo/`, svaki kriterij jednakosti je provjeren i zabilježen, namjerne razlike su zapisane kao odluke, testirano na najmanje dva tenanta na Androidu (iOS → v2), rollback postoji, Ionic je netaknut, i dokumentacijski utjecaj je zapisan.

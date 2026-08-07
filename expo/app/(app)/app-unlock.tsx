@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
+import { useLocalSearchParams, useNavigation, useRouter, type Href } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
@@ -10,6 +10,7 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { Screen } from '@/components/Screen';
 import { reactivateCore } from '@/features/auth/authSlice';
 import { selectApp, unlockApp } from '@/features/core/coreSlice';
+import { isRasporedApp } from '@/features/raspored/constants';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { radius, spacing, typography, useTheme } from '@/theme';
 
@@ -46,7 +47,11 @@ export default function AppUnlockScreen() {
       if (unlockedApp) {
         dispatch(selectApp(unlockedApp));
       }
-      router.replace({ pathname: '/(app)/modules/[code]', params: { code: appCode } });
+      if (isRasporedApp(appCode, app?.url, appTitle)) {
+        router.replace('/raspored' as Href);
+      } else {
+        router.replace({ pathname: '/(app)/modules/[code]', params: { code: appCode } });
+      }
       return;
     }
     setPin('');
@@ -62,7 +67,7 @@ export default function AppUnlockScreen() {
           text: 'Nastavi',
           onPress: async () => {
             await dispatch(reactivateCore());
-            router.replace('/(auth)/unlock');
+            router.replace('/');
           },
         },
       ],

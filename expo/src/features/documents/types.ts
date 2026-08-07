@@ -46,7 +46,8 @@ export interface QueryDef {
   params?: Record<string, unknown>;
 }
 
-export type EditControlType = 'date' | 'simple' | 'advanced' | 'memo' | 'text';
+/** `serija` = SearchSer modal (spMob_DST_Ser), ne šifrarnik — v. DetailAzurNew + searchser.tsx. */
+export type EditControlType = 'date' | 'simple' | 'advanced' | 'memo' | 'text' | 'serija' | 'bool';
 
 /**
  * Ovisnost jedne kontrole o odabiru u šifrarnik pretraživaču (v. src/pages/dgl/components/
@@ -71,10 +72,10 @@ export interface EditFieldDef {
   caption: string;
   /** Ključ prikazane vrijednosti u editValues (za simple/advanced/date/text/memo). */
   selectFieldKey: string;
-  /** Ključ prikazanog teksta u editValues — samo simple/advanced. */
+  /** Ključ prikazanog teksta u editValues — simple/advanced/serija. */
   selectFieldText?: string;
-  /** Ključ vrijednosti koja se šalje na SP prilikom spremanja. */
-  azurFieldKey: string;
+  /** Ključ vrijednosti koja se šalje na SP prilikom spremanja. Nedostaje = samo prikaz. */
+  azurFieldKey?: string;
   /** Šifrarnik akcija za spMob_*_Sifarnici (samo simple/advanced). */
   entity?: string;
   debaunce?: number;

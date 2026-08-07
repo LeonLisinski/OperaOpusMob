@@ -73,7 +73,8 @@ Pitanja koja stvarno utječu na arhitektonske ili migracijske odluke. Kad odgovo
 
 ## 12. iOS build (Ionic povijest)
 
-- **Status:** djelomično — Expo = Android + iOS. Ionic vjerojatno **nikad nije imao** iOS build (`ios/` folder ne postoji).
+- **Status:** **razriješeno za v1 opseg** (2026-08-07, D038).
+- **Odgovor:** Ionic vjerojatno **nikad nije imao** iOS build (`ios/` folder ne postoji). Expo **v1** = Android. **iOS** runtime + TestFlight + App Store = **v2** (`V2_BACKLOG.md`). Kod u `expo/` ostaje portable.
 
 ## 15. "Odabir teksta" na memo poljima
 

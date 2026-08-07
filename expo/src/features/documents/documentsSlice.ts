@@ -595,16 +595,45 @@ export function readItemId(route: ModuleRoute, item: Record<string, unknown> | n
  * potvrđene iz Ionic izvora, ne pretpostavljene.
  */
 function extractNewRecordId(kind: ModuleRoute['kind'], idField: ModuleRoute['idField'], raw: unknown): string | number | undefined {
-  if (kind === 'dgl') {
-    const record = raw as Record<string, unknown> | undefined;
-    const rows = record && Array.isArray(record.newdglid) ? (record.newdglid as unknown[]) : [];
-    const first = rows[0] as Record<string, unknown> | undefined;
-    const value = first?.[idField];
+  const readId = (row: Record<string, unknown> | undefined): string | number | undefined => {
+    if (!row) return undefined;
+    const value = row[idField] ?? row.dglid ?? row.DglId ?? row.DGLID ?? row.id;
     return typeof value === 'string' || typeof value === 'number' ? value : undefined;
+  };
+
+  const firstRow = (node: unknown): Record<string, unknown> | undefined => {
+    if (Array.isArray(node) && node[0] && typeof node[0] === 'object') {
+      return node[0] as Record<string, unknown>;
+    }
+    if (node && typeof node === 'object') {
+      const value = (node as { value?: unknown }).value;
+      if (Array.isArray(value) && value[0] && typeof value[0] === 'object') {
+        return value[0] as Record<string, unknown>;
+      }
+    }
+    return undefined;
+  };
+
+  if (kind === 'dgl') {
+    if (Array.isArray(raw)) {
+      return readId(firstRow(raw));
+    }
+    if (!raw || typeof raw !== 'object') {
+      return undefined;
+    }
+    const record = raw as Record<string, unknown>;
+    // Ionic: data.newdglid[0].dglid — API može vratiti i table* / value envelope.
+    for (const key of ['newdglid', 'NewDglId', 'table1', 'table2', 'value'] as const) {
+      const id = readId(firstRow(record[key]));
+      if (id !== undefined) {
+        return id;
+      }
+    }
+    return readId(record);
   }
+
   const rows = normalizeDocumentList(raw);
-  const value = rows[0]?.[idField];
-  return typeof value === 'string' || typeof value === 'number' ? value : undefined;
+  return readId(rows[0]);
 }
 
 /** Ponovni dohvat jednog retka nakon spremanja — isti obrazac kao Ionic getGla (queries.{group}.list + id parametar). */
@@ -1359,6 +1388,11 @@ const documentsSlice = createSlice({
       state.filterTemp = cloneFilter(state.filterBaseline);
     },
     startEditForm: (state, action: PayloadAction<Record<string, unknown> | null>) => {
+      // Novi zapis: mora očistiti selectedItem, inače saveDocumentForm šalje stari dglid
+      // i tiho radi UPDATE umjesto INSERT (korisnik vidi "uspjeh" bez novog dokumenta).
+      if (action.payload === null) {
+        state.selectedItem = null;
+      }
       state.editValues = action.payload ? { ...action.payload } : {};
       state.editFormData = {};
       state.saveStatus = { loading: false, error: null };

@@ -13,7 +13,7 @@ Poslovna mobilna aplikacija tvrtke SvamPlus; mobilni klijent za **OperaOpus ERP*
 
 - Očuvati poslovno ponašanje i postojeći okvir: **JSON layouti** + **`spMob_*` procedure** + API koji već radi.
 - **Ne dirati API** osim ako stvarno ne radi ili nedostaje endpoint; prilagodbe idu kroz **layout JSON** i **SQL/store**, kao na webu.
-- Migrirati u **Expo** (Android + iOS), **modernizirati UI/UX**, **dovršiti** nedovršeno u originalu (push, mrtvi tabovi, servis moduli…).
+- Migrirati u **Expo** (**v1 = Android** Play; **iOS = v2**), **modernizirati UI/UX**, **dovršiti** nedovršeno u originalu (push → v2, mrtvi tabovi, servis moduli…).
 - Kod mora biti **održiv za ljude koji ne žele živjeti u kodu** — konfiguracija po tenantu kroz JSON, ne nova verzija appa za svaku sitnicu.
 
 Ionic (`src/`) je **produkcijska referenca ponašanja**, ne uzor kvalitete koda — original ima propuste, hardkode i nelogičnosti. U Expo-u popravljamo arhitekturu; ne kopiramo bugove radi „pariteta“.
@@ -30,6 +30,7 @@ Ne radi se o mehaničkom prepisivanju Ionic komponenti.
 | API sloj u kodu | `src/utils/dataHelper.js` | Svi `fetch` pozivi na jednom mjestu |
 | Redux moduli | `src/pages/*/store/index.jsx` | `auth`, `core.cc`, `servis`, `docs` (=dgl), `gen` |
 | Rute i bootstrap | `src/AppMain.tsx` | Cold start, `PrivateRoute`, sve rute |
+| Dispečer (Slavonija Bus) web | `Dispecer/` | TFS `WebERP/Dispecer` — **reference-only** za kasnije mobilne značajke; ne dirati u sklopu Opera Mobile migracije |
 
 ## Tri paralelna UI modela
 

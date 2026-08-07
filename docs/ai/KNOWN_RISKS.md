@@ -132,6 +132,6 @@ Za svaki rizik: vjerojatnost, utjecaj, dokaz (referenca na `CURRENT_ARCHITECTURE
 - **Vjerojatnost:** visoka - Ionic aplikacija je uvijek bila Android-only (nema `ios/` foldera, nema potvrđenog prijašnjeg iOS builda), tim je mali i bez mobilne specijalizacije
 - **Utjecaj:** visok - App Store review proces, code signing/certifikati, TestFlight distribucija i iOS-specifična ograničenja (npr. background rad, push) su novo područje za tim
 - **Dokaz:** `PROJECT_CONTEXT.md`, `00-project-context.mdc` (Ionic "Android only")
-- **Ublažavanje:** iOS se uvodi od Faze 3 (temeljna arhitektura), ne tek na kraju, da se rano otkriju platformska ograničenja; Faza 10 rollouta prati Android i iOS odvojeno po tempu
-- **Vlasnik / izvor odgovora:** razvojni tim; treba li vanjska pomoć za prvi App Store release je otvoreno pitanje
-- **Status:** otvoreno
+- **Ublažavanje:** **v1 = Android**; iOS runtime + App Store = **v2** (D038, `V2_BACKLOG.md`). Kod u `expo/` ostaje portable; ne uvoditi Android-only ovisnosti bez potrebe.
+- **Vlasnik / izvor odgovora:** razvojni tim; treba li vanjska pomoć za prvi App Store release je otvoreno pitanje (v2)
+- **Status:** prihvaćeno za v1 (iOS odgođen u v2) — 2026-08-07
