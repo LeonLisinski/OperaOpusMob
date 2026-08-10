@@ -23,7 +23,9 @@ Pitanja koja stvarno utječu na arhitektonske ili migracijske odluke. Kad odgovo
 
 ## 5. Server-side push infrastruktura, FCM projekt i iOS APNs
 
-- **Status:** otvoreno — **cilj je push na Android i iOS** u Expo aplikaciji. Server-side dio, FCM/APNs certifikati i Apple Developer nalog još nisu mapirani.
+- **Status:** **djelomično razriješeno** za SB Raspored Android v1 (2026-08-10, D039).
+- **Odgovor (SB v1):** Disp `POST /api/push/send` + `MobKorisnik.PushToken` postoje. Expo app šalje **Expo push token**; Firebase credentials na `dispapi` **nisu** preduvjet za taj kanal. Još treba ops potvrda: live `MobKorisnik` deploy, outbound `exp.host`, test vozač.
+- **Ostaje otvoreno:** generički Opera push za sve tenante; native FCM usklađenje; iOS APNs / Apple Developer (v2).
 
 ## 6. Način deploymenta layouta
 

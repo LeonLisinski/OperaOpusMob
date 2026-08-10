@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import {
   ActivityIndicator,
@@ -14,6 +14,7 @@ import {
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { Screen } from '@/components/Screen';
+import { useRegisterRasporedPush } from '@/features/push/useRegisterRasporedPush';
 import {
   aktualnoRange,
   dayLabel,
@@ -46,8 +47,15 @@ type ListRow =
   | { kind: 'pending-actions' }
   | { kind: 'confirmed-title' };
 
+function parseRasporedTab(value: string | string[] | undefined): RasporedTab | null {
+  const raw = Array.isArray(value) ? value[0] : value;
+  if (raw === 'aktualno' || raw === 'sutra' || raw === 'povijest') return raw;
+  return null;
+}
+
 export default function RasporedScreen() {
   const navigation = useNavigation();
+  const params = useLocalSearchParams<{ tab?: string | string[]; fromPush?: string | string[] }>();
   const { colors } = useTheme();
 
   const [tab, setTab] = useState<RasporedTab>('aktualno');
@@ -57,10 +65,18 @@ export default function RasporedScreen() {
   const [manualUndone, setManualUndone] = useState<Set<string>>(() => new Set());
   const [nowTick, setNowTick] = useState(() => Date.now());
   const listRef = useRef<FlatList<ListRow>>(null);
+  const lastPushRefreshKey = useRef<string | null>(null);
+
+  useRegisterRasporedPush(true);
 
   useEffect(() => {
     navigation.setOptions({ title: 'Raspored' });
   }, [navigation]);
+
+  useEffect(() => {
+    const next = parseRasporedTab(params.tab);
+    if (next) setTab(next);
+  }, [params.tab]);
 
   useEffect(() => {
     const id = setInterval(() => setNowTick(Date.now()), 60_000);
@@ -92,6 +108,17 @@ export default function RasporedScreen() {
     confirmDay,
     confirmDays,
   } = useRasporedObavijesti(tab === 'povijest' ? null : range, sifOsobe);
+
+  useEffect(() => {
+    const fromPushRaw = params.fromPush;
+    const fromPush = Array.isArray(fromPushRaw) ? fromPushRaw[0] : fromPushRaw;
+    if (!fromPush) return;
+    const key = `${String(params.tab ?? '')}|${fromPush}`;
+    if (lastPushRefreshKey.current === key) return;
+    lastPushRefreshKey.current = key;
+    void refreshRides();
+    void refreshObavijesti();
+  }, [params.fromPush, params.tab, refreshRides, refreshObavijesti]);
 
   const statusByDatum = useMemo(() => {
     const map = new Map<string, string>();

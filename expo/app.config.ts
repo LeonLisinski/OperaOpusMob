@@ -28,12 +28,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       NSPhotoLibraryUsageDescription:
         'Aplikacija koristi datoteke i fotografije kao privitke poslovnih dokumenata.',
       CFBundleAllowMixedLocalizations: true,
+      // Priprema za iOS push (v2) — runtime/APNs certifikati još nisu u opsegu.
+      UIBackgroundModes: ['remote-notification'],
     },
   },
   android: {
     package: packageName,
     versionCode: 20011,
     softwareKeyboardLayoutMode: 'resize',
+    // FCM registracija za Expo Push (production package). Preview package
+    // (com.opera.mobile.preview) treba zaseban Firebase Android app + JSON ako
+    // push testiramo na preview APK-u — inače koristi production build.
+    ...(packageName === 'com.opera.mobile'
+      ? { googleServicesFile: './google-services.json' as const }
+      : {}),
     adaptiveIcon: {
       // Isti vizual kao Ionic `assets/icon.png` (zeleni graf na teal pozadini).
       backgroundColor: '#2A4549',
@@ -60,6 +68,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     'expo-sharing',
     'expo-document-picker',
     '@react-native-community/datetimepicker',
+    [
+      'expo-notifications',
+      {
+        color: '#2A4549',
+        defaultChannel: 'raspored',
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

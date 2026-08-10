@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { brandHeaderOptions } from '@/components/AppHeader';
 import { Screen } from '@/components/Screen';
+import { PushBootstrap } from '@/features/push/PushBootstrap';
 import { useAppSelector } from '@/store/hooks';
 import { useTheme } from '@/theme';
 
@@ -30,18 +31,21 @@ export default function AppLayout() {
   }
 
   return (
-    <Stack screenOptions={brandHeaderOptions(colors)}>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="apps" options={{ headerShown: false }} />
-      <Stack.Screen name="settings" options={{ title: 'Postavke' }} />
-      <Stack.Screen name="modules/[code]" options={{ title: 'Moduli' }} />
-      <Stack.Screen name="raspored/index" options={{ title: 'Raspored' }} />
-      <Stack.Screen name="documents/list" options={{ title: 'Popis' }} />
-      <Stack.Screen name="documents/doc" options={{ title: 'Dokument' }} />
-      <Stack.Screen name="documents/form" options={{ presentation: 'modal', title: 'Forma' }} />
-      <Stack.Screen name="documents/dst-form" options={{ presentation: 'modal', title: 'Stavka' }} />
-      <Stack.Screen name="app-unlock" options={{ presentation: 'modal', title: 'Otključavanje aplikacije' }} />
-    </Stack>
+    <>
+      <PushBootstrap />
+      <Stack screenOptions={brandHeaderOptions(colors)}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="apps" options={{ headerShown: false }} />
+        <Stack.Screen name="settings" options={{ title: 'Postavke' }} />
+        <Stack.Screen name="modules/[code]" options={{ title: 'Moduli' }} />
+        <Stack.Screen name="raspored/index" options={{ title: 'Raspored' }} />
+        <Stack.Screen name="documents/list" options={{ title: 'Popis' }} />
+        <Stack.Screen name="documents/doc" options={{ title: 'Dokument' }} />
+        <Stack.Screen name="documents/form" options={{ presentation: 'modal', title: 'Forma' }} />
+        <Stack.Screen name="documents/dst-form" options={{ presentation: 'modal', title: 'Stavka' }} />
+        <Stack.Screen name="app-unlock" options={{ presentation: 'modal', title: 'Otključavanje aplikacije' }} />
+      </Stack>
+    </>
   );
 }
 

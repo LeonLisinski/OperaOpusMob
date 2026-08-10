@@ -386,3 +386,13 @@ ADR-light format: kratak zapis odluke, razloga i posljedica. Nove odluke se doda
 
 **Posljedice:** `V2_BACKLOG.md`, `FEATURE_PARITY_MATRIX.md` (`verified` = Android za v1), `PROJECT_CONTEXT.md`, `OPEN_QUESTIONS.md` #12.
 
+## D039
+
+**Datum:** 2026-08-10 · **Status:** `approved`
+
+**Odluka:** SB Raspored push (Android v1) koristi **ERP `sifosobe` + `spMobKorisnikSave Action=TOKEN`** (bez MOB login PIN-a). Klijent snima **Expo push token** (`ExponentPushToken[…]`); Disp `PushService` šalje preko Expo kanala. Tap `data.type=raspored_obavijest` → Raspored Aktualno. Firebase/native FCM i iOS runtime nisu u kritičnom putu ovog koraka.
+
+**Razlog:** Disp već šalje i snima token po `SifOsobe`; Opera Mobile zadržava jedan login lanac (CC + Servis). Firebase na `dispapi` nije potvrđen — Expo kanal radi bez njega.
+
+**Posljedice:** Preduvjet aktivan `MobKorisnik` red; novi APK s `expo-notifications`; Disp outbound na `exp.host`. **Android delivery preko Expo Push Service zahtijeva FCM V1 credentials na EAS projektu + `google-services.json` u Expo app** (to nije isto što Disp `Push:FirebaseCredentials*` — Disp za Expo tokene ne treba Firebase). Plan: `.cursor/plans/2026-08-10-sb-raspored-push.md`. Kod: `expo/src/features/push/*`.
+

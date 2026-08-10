@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { hydrateUnlockedApps, mergeUnlockedApps, resetCore } from '@/features/core/coreSlice';
 import { resetDocuments } from '@/features/documents/documentsSlice';
+import { clearPushForSifOsobe } from '@/features/push/registerPush';
 import { coreUnlockRequest, erpLoginRequest } from '@/services/api/authApi';
 import { extractKorime, extractTenantDatabase, normalizeAppUnlockResponse, normalizeLoginUser } from '@/services/api/responseNormalizers';
 import { getDeviceIdentity } from '@/services/device/deviceIdentity';
@@ -22,6 +23,30 @@ import type { RootState } from '@/store';
 import { toUserMessage } from '@/types/api';
 
 import type { CoreConfig, ErpConnection, ErpUser } from './types';
+
+function resolveSifOsobeFromUser(user: ErpUser | null | undefined): string | null {
+  if (!user) return null;
+  const raw = (user as Record<string, unknown>).sifosobe ?? (user as Record<string, unknown>).SifOsobe;
+  if (raw == null) return null;
+  const value = String(raw).trim();
+  return value.length > 0 ? value : null;
+}
+
+/** Best-effort CLEAR_TOKEN prije brisanja sesije — ne smije baciti van. */
+async function clearPushTokenFromAuthState(state: RootState): Promise<void> {
+  const core = state.auth.core;
+  const user = state.auth.user;
+  const connection = state.auth.connection;
+  if (!core?.apiBaseUrl) return;
+  const sifOsobe = resolveSifOsobeFromUser(user);
+  if (!sifOsobe) return;
+  const tenantDb = extractTenantDatabase(connection as Record<string, unknown> | null, core.db);
+  await clearPushForSifOsobe({
+    apiBaseUrl: core.apiBaseUrl,
+    tenantDb,
+    sifOsobe,
+  });
+}
 
 export type BootstrapStatus = 'idle' | 'loading' | 'ready';
 
@@ -152,26 +177,38 @@ export const loginErp = createAsyncThunk<
  * (odabrani modul, layout, lista) se briše da sljedeći korisnik na istom uređaju
  * ne vidi ostatke prethodne sesije.
  */
-export const logout = createAsyncThunk('auth/logout', async (_, { dispatch }) => {
-  await clearUserSessionStorage();
-  dispatch(resetDocuments());
-});
+export const logout = createAsyncThunk<void, void, { state: RootState }>(
+  'auth/logout',
+  async (_, { dispatch, getState }) => {
+    await clearPushTokenFromAuthState(getState());
+    await clearUserSessionStorage();
+    dispatch(resetDocuments());
+  },
+);
 
 /**
  * Ponovna Core PIN aktivacija — briše spremljenu aktivaciju i sesiju, zadržava
  * identitet uređaja (Android ID). Korisnik ide natrag na ekran za Core PIN.
  */
-export const reactivateCore = createAsyncThunk('auth/reactivateCore', async (_, { dispatch }) => {
-  await clearCoreActivationStorage();
-  dispatch(resetCore());
-  dispatch(resetDocuments());
-});
+export const reactivateCore = createAsyncThunk<void, void, { state: RootState }>(
+  'auth/reactivateCore',
+  async (_, { dispatch, getState }) => {
+    await clearPushTokenFromAuthState(getState());
+    await clearCoreActivationStorage();
+    dispatch(resetCore());
+    dispatch(resetDocuments());
+  },
+);
 
 /** Potpuni reset aplikacije — briše i installation ID uređaja. */
-export const resetApp = createAsyncThunk('auth/resetApp', async (_, { dispatch }) => {
-  await resetAllSessionStorage();
-  dispatch(resetCore());
-});
+export const resetApp = createAsyncThunk<void, void, { state: RootState }>(
+  'auth/resetApp',
+  async (_, { dispatch, getState }) => {
+    await clearPushTokenFromAuthState(getState());
+    await resetAllSessionStorage();
+    dispatch(resetCore());
+  },
+);
 
 const authSlice = createSlice({
   name: 'auth',

@@ -1,6 +1,6 @@
 # Slavonija Bus — Opera Mobile app **Raspored**
 
-Datum: 2026-08-07 · Status: **Faza 1 u Expo kodu** (pregled) · Faza 2/3 kasnije · Bez pusha u buildu · Bez EAS
+Datum: 2026-08-07 · Status: **Faza 1+2 u Expo** · **Faza 3 push (Android) u kodu** · Expo push token + TOKEN po SifOsobe · Bez MOB logina · iOS runtime v2
 
 Referenca: Dispečer TFS `main` @ `3ceb123` (“Dorade”, 2026-08), `Dispecer/docs/mobilna-app/mob-korisnik-api.md`, OperaMobile PinApp `raspored-mobile`.
 
@@ -113,15 +113,13 @@ Nakon centralnog unlocka: **`POST /api/login`** s `loginType: "MOB"`, `uid`/`pwd
 - **B (Disp ugovor):** nakon Core unlocka za Raspored-tok koristiti MOB login (Disp docs). Kako to sjeda uz zajednički CC + Servis ERP login — dogovoriti.  
 - **C (Faza 1 bez pusha):** ostati na ERP `sifosobe` za pregled (+ kasnije odgovor); push tek kad `MobKorisnik` + token budu u toku.
 
-Do odluke: **Faza 1 kod** ne uvodi MOB login dok se ne potvrdi; plan ispod razdvaja Fazu 1 (pregled) od Faze 2 (odgovor) i Faze 3 (push).
+**Odluka 2026-08-10 (vlasnik):** **A u praksi bez drugog PIN-a** — ERP sesija + `spMobKorisnikSave Action=TOKEN` po `SifOsobe` (v. `DECISION_LOG` D039). MOB login se **ne** uvodi.
 
 ### 4.4 Laički: kako smo riješili „MOB login“ za Fazu 1
 
 **Problem:** Disp je napravio zaseban mobilni login (`MobKorisnik` + PIN) jer push token ide tamo. To nije isto što ERP login (`svam` itd.).
 
-**Što radimo sada (Faza 1):** vozač se logira **kao i dosad u Opera Mobile** (Core → ERP → App PIN). Raspored uzima **`sifosobe` iz tog ERP logina** i njime zove `spDispVozniRed`. Nema drugog „Disp PIN“ ekrana.
-
-**Što kasnije (push):** treba će `MobKorisnik` + token — to je Faza 3, nije dio pregleda.
+**Što radimo (Faza 1–3):** vozač se logira **kao i dosad u Opera Mobile** (Core → ERP → App PIN). Raspored uzima **`sifosobe` iz tog ERP logina**. Pri ulasku u Raspored app snima **Expo push token** na `MobKorisnik` preko istog `SifOsobe` — bez drugog Disp PIN ekrana. Preduvjet: aktivan red u `MobKorisnik` za tog vozača.
 
 **Zašto `svam` prije nije vidio vožnje:** `svam` nije bio vozač u rasporedu. Na test snapshotu `ooSLABUS_20260423_NT` privremeno je `svam` → `SifOsobe=4146` (Zoran Lazović) da se može smoke-testirati. Na produkciji treba pravi ERP korisnik-vozač.
 
@@ -233,20 +231,21 @@ Vožnje na snapshotu su u **prošlosti** (do ~srpnja) → u app otvori **Povijes
 
 ## 11. Otvorena pitanja
 
-1. **Auth A/B/C** (§4) — kritično prije Faze 2/3 i prije MOB logina u Expo  
-2. **Potvrda: samo Potvrdi (Josip) vs Prihvati/Odbij (Sanja)** (§6.3) — treba SB/Svam odluka prije Faze 2 UI  
+1. ~~**Auth A/B/C**~~ — **riješeno D039** (ERP + TOKEN po SifOsobe)  
+2. ~~**Potvrda: samo Potvrdi vs Prihvati/Odbij**~~ — Potvrdi (Josip) u Expo Fazi 2  
 3. Bus vs registracija polje u `spDispVozniRed`  
 4. Ostaje li zasebni `Dispecer/mobile` u prod ili ga Opera Raspored zamjenjuje  
-5. Smoke: koji ERP user / `SifOsobe` ima vožnje za test  
-6. Disp web: preklapanje autobusa (Ana-Marija) — izvan Opera Mobile scope
+5. Smoke: koji ERP user / `SifOsobe` ima `MobKorisnik` + vožnje za push test  
+6. Disp web: preklapanje autobusa (Ana-Marija) — izvan Opera Mobile scope  
+7. Ops: live `MobKorisnik` + `exp.host` outbound + EAS FCM za Android delivery
 
 ---
 
 ## 12. Redoslijed implementacije (dotjerano)
 
-1. **Faza 1 — pregled** — **implementirano u Expo** (`expo/app/(app)/raspored`, `features/raspored`, grana u `apps.tsx` / `app-unlock.tsx`). Identitet: ERP `sifosobe`.  
-2. **Faza 2 — potvrda dana:** UI prema **finalnoj SB odluci** (§6.3) + `spDispRasporedObavijestList`/`Save`; badge statusa.  
-3. **Faza 3 — push** (zasebno odobrenje): `MobKorisnik` token + deep link `raspored_obavijest`; uskladiti auth s Disp ugovorom.  
+1. **Faza 1 — pregled** — **implementirano** (`expo/app/(app)/raspored`, ERP `sifosobe`).  
+2. **Faza 2 — potvrda dana** — **implementirano** (samo Potvrdi / `PRIHVACENO`).  
+3. **Faza 3 — push** — **Android klijent u kodu** (`expo/src/features/push`): Expo token → `spMobKorisnikSave TOKEN`; tap → Aktualno. Preduvjeti: `MobKorisnik` red + novi APK s `expo-notifications` + Disp outbound na `exp.host`. Firebase **nije** u kritičnom putu v1. iOS runtime = v2.  
 4. Ne dirati Disp web Pošalji — već u Dispečeru (eventualno sakriti Odbij na webu ako SB odluči samo Potvrdi).
 
 ---
