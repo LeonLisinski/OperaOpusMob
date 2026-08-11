@@ -39,9 +39,10 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 | gen Akcije (kreiraj RN) | `TabAkcije.jsx` | `queries.gla.createdoc` | parity-review | ooZJUKIC (Android) | Kreiraj RN → otvori dgl | CreateDoc ne vraća sifdv → lookup preko `spMob_ZJUKIC_DGL_Query`; prebacivanje CC na RN modul; povratak na Upite s filter cache | plan Faza 2 |
 | Postavke | `TabPostavke` | local prefs | parity-review | - | Dark mode, verzija, reset, odjava | Web preview ranije; Android smoke u auth sesiji | §12 |
 | Odjava | `logOut` | Preferences `user` | parity-review | ooZJUKIC (Android) | Briše samo user | OK | §5.4 |
-| Legacy `/servis/*` | `src/pages/servis/` | hardkod SP | parity-review | MIDA (SQL meni) | Meni URL vodi na radni ekran | Expo: alias → dgl + runtime SP/UI fallback (`servis-rn` / `servis-dniz`). Komentari tab / DNIZ write-komentar / close-status još ne. Runtime na MIDA uređaju nepotvrđen. v. `SERVIS_INVENTORY.md` | plan Faza 4 |
-| Push | Capacitor push demo | - | v2 | - | - | `V2_BACKLOG.md` | - |
-| CC Favoriti / Profil | CC tabovi | - | v2 | - | - | `V2_BACKLOG.md` | - |
+| Legacy `/servis/*` | `src/pages/servis/` | hardkod SP | parity-review | MIDA (SQL meni) | Meni URL vodi na radni ekran | Expo: alias → dgl + fallback. Runtime na MIDA **nije prioritet** dok se ne dokaže aktivna upotreba. DNIZ write komentar / Favoriti → van fokusa / v2 | `SERVIS_INVENTORY.md` |
+| Raspored (SB) | — (novo u Expo) | Disp + `MobKorisnik` | parity-review | ooSLABUS NT / Android | Lista + tabovi; push → Aktualno | UI + Expo push token smokean na `com.opera.mobile`; v. `SLABUS_RASPORED_DESIGN.md`, D039 | § raspored |
+| Push (SB) | Capacitor demo | Expo Push + FCM V1 na EAS | parity-review | SB Android | Token save + tap navigacija | Generički Opera push / iOS APNs → v2; preview package bez `google-services.json` | D039, `V2_BACKLOG.md` |
+| CC Favoriti / Profil | CC tabovi | - | v2 | - | - | Van fokusa | `V2_BACKLOG.md` |
 
 ## Review log — 2026-07-31 (Android / ooZJUKIC)
 
@@ -53,10 +54,10 @@ Zadnji runtime review: **2026-07-31**, tenant **ooZJUKIC** / PIN `jukic001` → 
 - UI: date picker confirm; filter badge clip; filter cache po modulu
 
 ### Još za zatvoriti v1 (izvan same matrice)
-1. `/servis/*` runtime na MIDA (kod + inventar gotovi; uređaj nepotvrđen)
-2. EAS Android production / staged Play rollout (MEDIVA + Jukić smoke)
+1. Novi Android build + smoke: Jasika/MEDIVA stavke Azur override, Adriateh potpis `db`, App unlock race (lokalne izmjene — v. `docs/preuzimanje/`)
+2. EAS / Play rollout kad QA zatvori checklist
 3. Privitci: svjesni upload + open na uređaju (kratki smoke)
-4. Potpis: end-to-end save + REPX na Androidu (djelomično već)
+4. Potpis + REPX E2E na Androidu (nakon `db` fix builda)
 
-### Namjerno van v1
-**iOS** (runtime checklist, TestFlight, App Store), Push, Favoriti, Profil, memo „Odabir teksta”, kamera u privitcima, EAS OTA — v. `V2_BACKLOG.md`.
+### Namjerno van v1 / van trenutnog fokusa
+**iOS**, CC Favoriti/Profil, memo „Odabir teksta”, kamera u privitcima, EAS OTA, DNIZ write komentar — v. `V2_BACKLOG.md` / dogovor tima. MIDA `/servis` runtime nije prioritet dok se ne dokaže aktivna upotreba.

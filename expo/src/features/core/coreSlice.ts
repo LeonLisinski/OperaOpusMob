@@ -54,7 +54,9 @@ function applyUnlockedFlags(apps: AppMenuEntry[], unlockedApps: UnlockedAppEntry
 
 function mapMenuResponse(raw: unknown, unlockedApps: UnlockedAppEntry[]): AppMenuEntry[] {
   const { table1, table2 } = normalizeMenuResponse(raw);
-  const unlockedCodes = new Set(unlockedApps.map((entry) => entry.code));
+  // Isto kao applyUnlockedFlags — case/trim moraju biti usklađeni, inače app
+  // nakon uspješnog PIN-a opet izgleda zaključana kad se menu osvježi.
+  const unlockedCodes = new Set(unlockedApps.map((entry) => entry.code.trim().toLowerCase()));
 
   return table1.map((app) => {
     const code = String(app.code ?? '');
@@ -66,7 +68,7 @@ function mapMenuResponse(raw: unknown, unlockedApps: UnlockedAppEntry[]): AppMen
       appid: app.appid as number | string,
       code,
       title: String(app.title ?? code),
-      unlocked: unlockedCodes.has(code),
+      unlocked: unlockedCodes.has(code.trim().toLowerCase()),
       items: [group],
     } satisfies AppMenuEntry;
   });
@@ -93,7 +95,9 @@ export const fetchMenu = createAsyncThunk<AppMenuEntry[], void, { state: RootSta
         tenantDb,
         korime: user.korime,
       });
-      return mapMenuResponse(raw, state.core.unlockedApps);
+      // unlockedApps čitaj NAKON awaita — inače paralelni unlockApp / hydrate
+      // ostane u starom snapshotu i menu vrati sve appove kao zaključane.
+      return mapMenuResponse(raw, getState().core.unlockedApps);
     } catch (error) {
       return rejectWithValue(toUserMessage(error));
     }

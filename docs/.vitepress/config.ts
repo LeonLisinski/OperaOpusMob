@@ -12,7 +12,7 @@ export default withMermaid({
     [
       'script',
       {},
-      `(function(){try{var v=localStorage.getItem('opera-docs-sidebar-collapsed');if(v!=='true')return;var p=location.pathname.replace(/\\/$/,'')||'/';var base='/OperaOpusMob';if(p.indexOf(base)===0)p=p.slice(base.length)||'/';var prefixes=['/user','/technical','/ai'];var has=prefixes.some(function(k){return p===k||p.indexOf(k+'/')===0});if(has)document.documentElement.classList.add('sidebar-collapsed')}catch(e){}})()`,
+      `(function(){try{var v=localStorage.getItem('opera-docs-sidebar-collapsed');if(v!=='true')return;var p=location.pathname.replace(/\\/$/,'')||'/';var base='/OperaOpusMob';if(p.indexOf(base)===0)p=p.slice(base.length)||'/';var prefixes=['/user','/technical','/ai','/preuzimanje'];var has=prefixes.some(function(k){return p===k||p.indexOf(k+'/')===0});if(has)document.documentElement.classList.add('sidebar-collapsed')}catch(e){}})()`,
     ],
   ],
 
@@ -39,12 +39,21 @@ export default withMermaid({
 
     nav: [
       { text: 'Početna', link: '/' },
+      { text: 'Upute za preuzimanje', link: '/preuzimanje/' },
       { text: 'Korisnička', link: '/user/' },
       { text: 'Tehnička', link: '/technical/' },
       { text: 'AI / Razvoj', link: '/ai/SYSTEM_MAP' },
     ],
 
     sidebar: {
+      '/preuzimanje/': [
+        {
+          text: 'Preuzimanje projekta',
+          items: [
+            { text: 'Upute za preuzimanje', link: '/preuzimanje/' },
+          ],
+        },
+      ],
       '/user/': [
         {
           text: 'Korisnička dokumentacija',

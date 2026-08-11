@@ -26,6 +26,15 @@
         "buildType": "apk"
       }
     },
+    "apk-production": {
+      "distribution": "internal",
+      "env": {
+        "APP_VARIANT": "production"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "production": {
       "credentialsSource": "local",
       "env": {

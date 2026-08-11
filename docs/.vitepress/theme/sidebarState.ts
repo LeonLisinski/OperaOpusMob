@@ -1,7 +1,7 @@
 export const SIDEBAR_STORAGE_KEY = 'opera-docs-sidebar-collapsed'
 
 /** Putanje koje imaju lijevi sidebar (moraju odgovarati config.ts sidebar ključevima). */
-export const SIDEBAR_PREFIXES = ['/user', '/technical', '/ai']
+export const SIDEBAR_PREFIXES = ['/user', '/technical', '/ai', '/preuzimanje']
 
 export function normalizeDocPath(path: string, base = '/OperaOpusMob/'): string {
   let p = path.split('?')[0].split('#')[0]

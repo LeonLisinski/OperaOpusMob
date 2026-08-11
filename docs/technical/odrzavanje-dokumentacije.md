@@ -13,6 +13,7 @@ Dokumentacija mora pratiti **stvarno** ponašanje sustava - ne plan, ne namjeru.
 
 | Razina | Folder | Za koga | Što sadrži |
 |---|---|---|---|
+| Preuzimanje | `docs/preuzimanje/` | Developer na handoffu | Expo/EAS, lokalni rad, Git, MCP kratko |
 | AI / arhitektura | `docs/ai/` | Tim, Cursor, arhitekti | Dokazano stanje, odluke, rizici, paritet, migracija |
 | Tehnička | `docs/technical/` | Developeri | Setup, struktura, build, održavanje docs |
 | Korisnička | `docs/user/` | Krajnji korisnici | Upute za ekrane i tokove u aplikaciji |
@@ -28,7 +29,7 @@ Ako `technical/` ili `user/` proturječe `docs/ai/`, **`docs/ai/` je mjerodavan*
 | **Brisanje / uklanjanje** | Uklonjen gumb, modul, endpoint | Isto + ukloni zastarjele odlomke iz `user/`; označi u matrici pariteta |
 | **Arhitektura / odluka** | Novi slice, drugi storage, novi engine | `DECISION_LOG`, `TARGET_ARCHITECTURE` ili `CURRENT_ARCHITECTURE`, `SYSTEM_MAP` ako se mijenja mapa područja |
 | **Rizik ili blokada** | Nepoznat API, SQL bez pristupa | `KNOWN_RISKS`, `OPEN_QUESTIONS` |
-| **Setup / build** | Nova ovisnost, EAS, env varijabla | `technical/okruzenje`, `technical/build` |
+| **Setup / build** | Nova ovisnost, EAS, env varijabla | `technical/okruzenje`, `technical/build`, po potrebi `preuzimanje/` |
 | **JSON layout** | Novi field tip, SP mapiranje | `technical/json-layouti`, po potrebi `CURRENT_ARCHITECTURE` §7 |
 | **Samo vizual (UI)** | Boja, razmak, font | Dokumentacija **nije** obavezna osim ako korisnik traži |
 | **Samo docs site** | VitePress tema, CSS | `docs/.vitepress/` - ne dira `ai/` osim ako se ne mijenja sadržaj |

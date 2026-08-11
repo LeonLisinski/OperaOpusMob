@@ -11,12 +11,18 @@ ERP-IONIC7/
 ├── src/                  Ionic referenca (produkcija, ne dirati bez odobrenja)
 ├── expo/                 Expo/React Native aplikacija (cilj)
 ├── MobLayoutsControls/   JSON layouti po tenant-u
+├── API/                  ASP.NET API snapshot (referenca)
+├── Dispecer/             Disp web — referenca (SB raspored)
+├── OperaWeb/             Web Opera — referenca
 ├── docs/
+│   ├── preuzimanje/      Handoff (Expo/EAS build)
 │   ├── user/             Korisničke upute
 │   ├── technical/        Ova dokumentacija
 │   └── ai/               Kanonska arhitektura i migracija
 └── .cursor/rules/        Pravila za AI i developere
 ```
+
+Preuzimaš projekt? → **[Upute za preuzimanje](/preuzimanje/)**.
 
 ## Sadržaj
 
@@ -26,7 +32,7 @@ ERP-IONIC7/
 | [Struktura projekta](./struktura) | Mape, rute, state, servisi |
 | [JSON layouti](./json-layouti) | Kako konfiguracija definira UI |
 | [API i state](./api-i-state) | Pozivi na backend, Redux slice-ovi |
-| [Build i testiranje](./build) | Android/iOS build, ograničenja web preview-a |
+| [Build i testiranje](./build) | Lokalni + EAS (preview / apk-production / production) |
 | [Održavanje dokumentacije](./odrzavanje-dokumentacije) | Kada i gdje ažurirati docs nakon promjena u kodu |
 
 ## Brzi start

@@ -27,7 +27,7 @@ Cilj je **ista aplikacija, modernizirana i dovršena** — ne novi proizvod od n
 - **Expo/React Native** — **v1 = Android** (Play, paritet s Ionic produkcijom); **iOS** (TestFlight / App Store / runtime checklist) = **v2** (`V2_BACKLOG.md`, D038). Kod ostaje portable.
 - **Zadržati JSON-driven model** — prilagodbe po klijentu kroz `MobLayoutsControls/` i `spMob_*` procedure, bez obaveznog Store releasea za svaku sitnicu (kao web pristup).
 - **Ne dirati API** dok radi; promjene prvenstveno kroz layout JSON i SQL.
-- **Dovršiti** što je u Ionic originalu nedovršeno ili loše (push, servis moduli, mrtvi tabovi, hardkodi) — push i iOS u v2.
+- **Dovršiti** što je u Ionic originalu nedovršeno ili loše (hardkodi, mrtvi tabovi) — **iOS** i generički Opera push ostaju v2; **SB Raspored push** (Expo token) je u v1 opsegu (D039).
 - Ionic original je brzo sklopljen — **referenca ponašanja**, ne uzor kvalitete; bugove u Expo-u ne replicirati namjerno.
 
 Ovo **nije** mehaničko prepisivanju Ionic komponenti u React Native.

@@ -19,6 +19,20 @@ type LayoutQueryPatch = {
 /** Ionic dgl/store deleteDst — fiksni SP za brisanje stavke (Tab3.jsx). */
 const IONIC_DST_DELETE_SP = 'spMob_DST_RadniNalozi_Azur';
 
+/**
+ * Ionic dgl/store saveDoc hardkodira `spMob_ZJUKIC_DST_Azur` za sve dgl tenante.
+ * Konvencija `*_DST_Query` → `*_DST_Azur` vrijedi samo ako je Azur SP stvarno deployan.
+ * Dokaz (API `sys.procedures`, 2026-08-11):
+ * - Jasika prod `ooJASIKA_20250606_MOB`: ima `spMob_JASIKA_DST_Query` + `spMob_ZJUKIC_DST_Azur`,
+ *   NEMA `spMob_JASIKA_DST_Azur` → derive bi pao; Ionic radi zbog hardkoda.
+ * - MEDIVA `ooMEDIVA_20260305`: isto — `spMob_MEDIVA_DST_Query`, nema `*_MEDIVA_DST_Azur`.
+ * Override mapira list SP → stvarni Azur (Ionic paritet), ne if po imenu klijenta u UI-u.
+ */
+const DST_LIST_SP_AZUR_OVERRIDES: Record<string, string> = {
+  spmob_jasika_dst_query: 'spMob_ZJUKIC_DST_Azur',
+  spmob_mediva_dst_query: 'spMob_ZJUKIC_DST_Azur',
+};
+
 const ZJUKIC_RN_DST_PATCH: LayoutQueryPatch = {
   dst: {
     azur: { sp: 'spMob_ZJUKIC_DST_Azur', params: {} },
@@ -59,11 +73,15 @@ function readListSp(raw: Record<string, unknown>): string | null {
 /**
  * Iz queries.dst.list SP imena izvedi azur/delete — isti obrazac imenovanja kao u MobLayoutsControls
  * (npr. spMob_ZJUKIC_DST_Query → spMob_ZJUKIC_DST_Azur). Delete prati Ionic Tab3 (RadniNalozi Azur).
+ * Ako tenant nema `*_DST_Azur` pod konvencijom, v. DST_LIST_SP_AZUR_OVERRIDES (Ionic hardkod).
  */
 function deriveDstPatchFromListSp(listSp: string): LayoutQueryPatch | null {
   const patch: LayoutQueryPatch = { dst: {} };
 
-  if (/_Query$/i.test(listSp)) {
+  const overrideAzur = DST_LIST_SP_AZUR_OVERRIDES[listSp.trim().toLowerCase()];
+  if (overrideAzur) {
+    patch.dst!.azur = { sp: overrideAzur, params: {} };
+  } else if (/_Query$/i.test(listSp)) {
     patch.dst!.azur = { sp: listSp.replace(/_Query$/i, '_Azur'), params: {} };
   }
 

@@ -6,9 +6,10 @@ export interface GenerateReportResponse {
 }
 
 /**
- * POST /repxreport — ekvivalent src/utils/dataHelper.js getReport. `type: 'mobile'` je
- * jedina vrijednost koju frontend ikad šalje (v. src/pages/dgl/tabs/Tab4.jsx). Ovo NIJE
- * /data SP poziv — tijelo zahtjeva ima ravnu strukturu s `reportname`/`mailTo`/... poljima.
+ * POST /repxreport — ekvivalent src/utils/dataHelper.js getReport.
+ * `db` mora biti Core PIN baza (`auth.db` / `core.db`), NE connection.database —
+ * Ionic getReport šalje auth.db; /data koristi connection.database.
+ * `type: 'mobile'` je jedina vrijednost koju frontend šalje (Tab4.jsx).
  */
 export async function generateReportRequest(params: {
   apiBaseUrl: string;

@@ -4,27 +4,34 @@ Razvojna i projektna dokumentacija migracije mobilnog klijenta OperaOpus ERP-a (
 
 **Online verzija:** https://leonlisinski.github.io/OperaOpusMob/
 
-Ionic aplikacija (`src/`) je postojeća produkcijska referenca. Expo aplikacija je ciljana zamjena koja se razvija ravnopravno za Android i iOS.
+Ionic aplikacija (`src/`) je postojeća produkcijska referenca. Expo (`expo/`) je ciljana zamjena — **v1 = Android**; iOS runtime/store = v2.
 
 ## Najvažniji dokumenti
 
+- [**Upute za preuzimanje**](preuzimanje/index.md) — handoff: folderi, Expo login, lokalni i EAS build
 - [Karta sustava](ai/SYSTEM_MAP.md) - glavna ulazna točka, gdje je što u sustavu
 - [Kontekst projekta](ai/PROJECT_CONTEXT.md) - poslovni kontekst i cilj migracije
-- [Trenutna arhitektura](ai/CURRENT_ARCHITECTURE.md) - dokazano stanje Ionic aplikacije
-- [Ciljna arhitektura](ai/TARGET_ARCHITECTURE.md) - potvrđeni principi za Expo (status: Draft)
-- [Strategija migracije](ai/MIGRATION_STRATEGY.md) - faze migracije s kriterijima završetka
+- [Matrica pariteta](ai/FEATURE_PARITY_MATRIX.md) - status funkcija Ionic → Expo
+- [Build](technical/build.md) - EAS profili i naredbe
 - [Otvorena pitanja](ai/OPEN_QUESTIONS.md) - što još blokira pojedine odluke
 
 ## Struktura
 
 ```
 docs/
+├── preuzimanje/    upute za privremeno preuzimanje (handoff)
 ├── user/           upute za korisnike aplikacije
 ├── technical/      dokumentacija za developere
 └── ai/             kanonska arhitektura i migracija
 ```
 
 **Online verzija:** https://leonlisinski.github.io/OperaOpusMob/
+
+### `docs/preuzimanje/`
+
+| Dokument | Sadržaj |
+|---|---|
+| [Upute za preuzimanje](preuzimanje/index.md) | Mapa foldera, Cursor, Expo/EAS login, lokalni rad, cloud build, Git, MCP |
 
 ### `docs/user/`
 
@@ -50,7 +57,7 @@ Dokumentacija za developere: razvojno okruženje, struktura koda, JSON layouti, 
 | [Struktura](technical/struktura.md) | Mape, rute, Redux, tema |
 | [JSON layouti](technical/json-layouti.md) | MobLayoutsControls, queries.json |
 | [API i state](technical/api-i-state.md) | Endpointi, slice-ovi, storage |
-| [Build](technical/build.md) | Native build, testiranje, ograničenja |
+| [Build](technical/build.md) | Lokalni + EAS profili (preview / apk-production / production) |
 | [Održavanje dokumentacije](technical/odrzavanje-dokumentacije.md) | Kada i gdje ažurirati docs nakon promjena |
 
 ### `docs/ai/`

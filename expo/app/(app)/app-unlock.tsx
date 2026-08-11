@@ -25,7 +25,9 @@ export default function AppUnlockScreen() {
   const appCode = params.code ?? '';
   const appTitle = params.title ?? appCode;
 
-  const app = useAppSelector((state) => state.core.apps.find((item) => item.code === appCode) ?? null);
+  const app = useAppSelector(
+    (state) => state.core.apps.find((item) => item.code.trim().toLowerCase() === appCode.trim().toLowerCase()) ?? null,
+  );
 
   const [pin, setPin] = useState('');
   const { loading, error } = useAppSelector((state) => state.core.appUnlock);

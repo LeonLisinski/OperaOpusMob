@@ -70,3 +70,5 @@ Za lokalni razvoj s mock podacima koristite web preview s presretanjem `fetch` p
 ## Cursor / AI kontekst
 
 Pravila projekta su u `.cursor/rules/`. Prije netrivijalne promjene koristite skill `plan-project-change` i provjerite utjecaj na sva tri UI modela (`servis`, `dgl`, `gen`) gdje je primjenjivo.
+
+Privremeno preuzimanje (Expo account, EAS build naredbe, Git remotes): **[Upute za preuzimanje](/preuzimanje/)**.

@@ -127,8 +127,11 @@ function getTenantDb(state: RootState): string {
   );
 }
 
-/** Ionic `/getatt` i `/saveatt` šalju `auth.db` iz core PIN-a, ne `connection.database` (v. dataHelper.js). */
-function getAttachmentDb(state: RootState): string {
+/**
+ * Ionic `auth.db` (Core PIN baza) — koriste `/getatt`, `/saveatt` i `/repxreport` (getReport).
+ * `/data` SP pozivi koriste `connection.database` (getTenantDb). Ne miješati.
+ */
+function getCorePinDb(state: RootState): string {
   return state.auth.core?.db ?? getTenantDb(state);
 }
 
@@ -1164,7 +1167,7 @@ export const uploadAttachments = createAsyncThunk<
   try {
     await uploadAttachmentsRequest({
       apiBaseUrl: core.apiBaseUrl,
-      tenantDb: getAttachmentDb(state),
+      tenantDb: getCorePinDb(state),
       itemId,
       files,
     });
@@ -1206,7 +1209,7 @@ export const openAttachment = createAsyncThunk<
   try {
     const response = await fetchAttachmentRequest({
       apiBaseUrl: core.apiBaseUrl,
-      tenantDb: getAttachmentDb(state),
+      tenantDb: getCorePinDb(state),
       id: attachmentId,
       fileName,
     });
@@ -1293,6 +1296,8 @@ export const submitSignature = createAsyncThunk<
     return rejectWithValue('Dokument nema identifikator za spremanje potpisa.');
   }
   const tenantDb = getTenantDb(state);
+  // /repxreport u Ionicu šalje auth.db (Core PIN), ne connection.database — v. dataHelper getReport.
+  const reportDb = getCorePinDb(state);
 
   try {
     // TFS spMob_DGL_Azur (insertSignature) prima samo Signature/SignatureText/SignatureTextField
@@ -1316,9 +1321,18 @@ export const submitSignature = createAsyncThunk<
   const { mailTo, mailSubject, mailBody } = buildSignatureReportMail(selectedItem, layout.properties, data.signatureEmail);
 
   try {
+    if (__DEV__) {
+      console.log('[repxreport]', {
+        db: reportDb,
+        reportname: reportName,
+        parameters: { id: dglid, dglid, ime: data.signatureText },
+        mailTo,
+        type: 'mobile',
+      });
+    }
     const report = await generateReportRequest({
       apiBaseUrl: core.apiBaseUrl,
-      tenantDb,
+      tenantDb: reportDb,
       reportName,
       parameters: { id: dglid, dglid, ime: data.signatureText },
       mailTo,
