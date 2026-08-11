@@ -14,14 +14,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Opera Mobile',
   slug: 'operamobile',
-  version: '2.0.11',
+  version: '2.0.12',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
   scheme: 'operamobile',
   userInterfaceStyle: 'automatic',
   ios: {
     bundleIdentifier: packageName,
-    buildNumber: '20011',
+    buildNumber: '20012',
     supportsTablet: true,
     infoPlist: {
       ITSAppUsesNonExemptEncryption: false,
@@ -34,7 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: packageName,
-    versionCode: 20011,
+    versionCode: 20012,
     softwareKeyboardLayoutMode: 'resize',
     // FCM registracija za Expo Push (production package). Preview package
     // (com.opera.mobile.preview) treba zaseban Firebase Android app + JSON ako

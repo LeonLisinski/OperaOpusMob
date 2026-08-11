@@ -25,7 +25,7 @@ Detaljan handoff (account, profili, Git): **[Upute za preuzimanje](/preuzimanje/
 | Expo owner / slug | `svampluss-team` / `operamobile` |
 | Android/iOS production | `com.opera.mobile` |
 | Android/iOS preview/dev | `com.opera.mobile.preview` |
-| Verzija (app) | `2.0.11` / versionCode `20011` |
+| Verzija (app) | `2.0.12` / versionCode `20012` |
 | EAS projectId | u `extra.eas.projectId` |
 
 `APP_VARIANT` (`eas.json` `env`) bira package: `preview`/`development` → `.preview`; inače production package.
